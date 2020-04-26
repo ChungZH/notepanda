@@ -18,6 +18,8 @@ public:
 private slots:
     void newDocument();
     void open();
+    void save();
+    void saveAs();
     void about();
 
 private:
