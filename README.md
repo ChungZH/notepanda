@@ -1,3 +1,5 @@
+<div align="center"><img src="./images/logo.png" width="150px"/></div>
+
 # Notepanda
 
 ![C++ & Qt](https://img.shields.io/badge/C%2B%2B%20%26%20Qt-forever-ff69b4?style=flat) 
