@@ -30,6 +30,3 @@ See
 :spiral_notepad: Notepanda © ChungZH.
 
 > [Blog](https://chungzh.cn) · [Portfolio](https://chungzh.cc) · [GitHub](https://github.com/ChungZH)
-
-
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FChungZH%2Fnotepanda.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FChungZH%2Fnotepanda?ref=badge_large)
