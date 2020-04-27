@@ -16,16 +16,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    main.cpp \
-    notepanda.cpp \
-    texteditor.cpp
+    src/main.cpp \
+    src/notepanda.cpp \
+    src/texteditor.cpp
 
 HEADERS += \
-    notepanda.h \
-    texteditor.h
+    src/notepanda.h \
+    src/texteditor.h
 
 FORMS += \
-    notepanda.ui
+    src/notepanda.ui
 
 RC_ICONS = images/panda.ico
 
