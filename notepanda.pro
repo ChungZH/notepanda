@@ -17,10 +17,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
-    notepanda.cpp
+    notepanda.cpp \
+    texteditor.cpp
 
 HEADERS += \
-    notepanda.h
+    notepanda.h \
+    texteditor.h
 
 FORMS += \
     notepanda.ui

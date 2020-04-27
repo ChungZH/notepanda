@@ -2,9 +2,12 @@
 #define NOTEPANDA_H
 
 #include <QMainWindow>
+#include <QPlainTextEdit>
+#include "texteditor.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class notepanda; }
+class TextEditor;
 QT_END_NAMESPACE
 
 class notepanda : public QMainWindow
@@ -16,14 +19,10 @@ public:
     ~notepanda();
 
 private slots:
-    void newDocument();
-    void open();
-    void save();
-    void saveAs();
     void about();
 
 private:
     Ui::notepanda *ui;
-    QString currentFile;
+    TextEditor *plainTextEdit;
 };
 #endif // NOTEPANDA_H
