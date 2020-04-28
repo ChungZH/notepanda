@@ -16,6 +16,7 @@ void TextEditor::newDocument()
 {
   currentFile.clear();
   TextEditor::setPlainText(QString());
+  emit changeTitle();
 }
 
 void TextEditor::open()
@@ -28,7 +29,7 @@ void TextEditor::open()
                          tr("Cannot open file: ") + file.errorString());
     return;
   }
-  setWindowTitle(fileName);
+  emit changeTitle();
   QTextStream in(&file);
   QString text = in.readAll();
   TextEditor::setPlainText(text);
@@ -52,7 +53,8 @@ void TextEditor::save()
                          tr("Cannot save file: ") + file.errorString());
     return;
   }
-  setWindowTitle(fileName);
+
+  emit changeTitle();
   QTextStream out(&file);
   QString text = TextEditor::toPlainText();
   out << text;
@@ -71,7 +73,7 @@ void TextEditor::saveAs()
   }
 
   currentFile = flieName;
-  setWindowTitle(flieName);
+  emit changeTitle();
   QTextStream out(&file);
   QString text = TextEditor::toPlainText();
   out << text;

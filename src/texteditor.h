@@ -17,6 +17,7 @@ class TextEditor : public QPlainTextEdit
 
  public:
   TextEditor(QWidget *parent = nullptr);
+  QString currentFile;
 
  public slots:
   void newDocument();
@@ -24,8 +25,13 @@ class TextEditor : public QPlainTextEdit
   void save();
   void saveAs();
 
+  // move to public
+  /*
  private:
-  QString currentFile;
+  QString currentFile;*/
+
+ signals:
+  void changeTitle();
 };
 
 #endif  // TEXTEDITOR_H

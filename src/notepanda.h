@@ -24,6 +24,7 @@ class notepanda : public QMainWindow
 
  private slots:
   void about();
+  void changeWindowTitle();
 
  private:
   Ui::notepanda *ui;
