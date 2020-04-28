@@ -14,14 +14,28 @@ Just practice XD
 
 🚧 WIP
 
+## Why write this text editor?
+
+I recently started getting started with Qt, this is my first Qt project, the first C++ project, and the first project in my life. I hope to develop my skills through this project.
+
+I'm not going to use this as a replacement for my other text editors because it's too simple and I am too poor :)
+
+So enjoy this toy :tea:
+
 ## Feature
 
 - Basic operation
+  
   - New
+  
   - Open
+  
   - Save
+  
   - Save as
+  
   - ...
+
 - Nothing :)
 
 ## Roadmap

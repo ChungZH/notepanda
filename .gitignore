@@ -37,8 +37,8 @@
 *.user
 .vs/
 *.qm
-./.vscode
+.vscode/
 CMakeSettings.json
 /makespec/qv2ray.spec
 
-build**/
+build/

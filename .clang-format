@@ -1,0 +1,11 @@
+Language:	Cpp
+BasedOnStyle: Google
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterClass: true
+  AfterNamespace: true
+  AfterStruct: true
+  AfterFunction: true
+  BeforeCatch: false
+  BeforeElse: false
+  
