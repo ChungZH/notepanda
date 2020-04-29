@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/remixicons">
+        <file>images/remixicons/information-line.svg</file>
+        <file>images/remixicons/file-add-line.svg</file>
+        <file>images/remixicons/save-2-line.svg</file>
+        <file>images/remixicons/save-line.svg</file>
+        <file>images/remixicons/arrow-go-back-line.svg</file>
+        <file>images/remixicons/arrow-go-forward-line.svg</file>
+        <file>images/remixicons/file-3-line.svg</file>
+    </qresource>
+</RCC>
