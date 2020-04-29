@@ -1,4 +1,4 @@
-<div align="center"><img src="./images/logo.png" width="150px"/></div>
+<div align="center"><img src="./images/banner.png" width="280px"/></div>
 
 # Notepanda
 
