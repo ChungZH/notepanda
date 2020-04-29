@@ -1,11 +1,11 @@
 #include <QApplication>
 
-#include "notepanda.h"
+#include "mainwindow.h"
 
 int main(int argc, char *argv[])
 {
   QApplication EditorApp(argc, argv);
-  notepanda Editor;
-  Editor.show();
+  MainWindow notepanda;
+  notepanda.show();
   return EditorApp.exec();
 }

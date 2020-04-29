@@ -9,25 +9,27 @@
 QT_BEGIN_NAMESPACE
 namespace Ui
 {
-class notepanda;
+class MainWindow;
 }
 class TextEditor;
 QT_END_NAMESPACE
 
-class notepanda : public QMainWindow
+class MainWindow : public QMainWindow
 {
   Q_OBJECT
 
  public:
-  notepanda(QWidget *parent = nullptr);
-  ~notepanda();
+  MainWindow(QWidget *parent = nullptr);
+  ~MainWindow();
 
  private slots:
   void about();
   void changeWindowTitle();
+  void setActUndoState(bool available);
+  void setActRedoState(bool available);
 
  private:
-  Ui::notepanda *ui;
+  Ui::MainWindow *ui;
   TextEditor *plainTextEdit;
 };
 #endif  // NOTEPANDA_H
