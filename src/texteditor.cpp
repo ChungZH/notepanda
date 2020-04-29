@@ -8,8 +8,6 @@
 #include <QTextBlock>
 #include <QTextStream>
 
-//![constructor]
-
 TextEditor::TextEditor(QWidget *parent) : QPlainTextEdit(parent) {}
 
 void TextEditor::newDocument()
@@ -79,3 +77,7 @@ void TextEditor::saveAs()
   out << text;
   file.close();
 }
+
+void TextEditor::undo() { QPlainTextEdit::undo(); }
+
+void TextEditor::redo() { QPlainTextEdit::redo(); }

@@ -24,11 +24,8 @@ class TextEditor : public QPlainTextEdit
   void open();
   void save();
   void saveAs();
-
-  // move to public
-  /*
- private:
-  QString currentFile;*/
+  void undo();
+  void redo();
 
  signals:
   void changeTitle();

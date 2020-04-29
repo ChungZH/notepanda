@@ -17,15 +17,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     src/main.cpp \
-    src/notepanda.cpp \
+    src/mainwindow.cpp \
     src/texteditor.cpp
 
 HEADERS += \
-    src/notepanda.h \
+    src/mainwindow.h \
     src/texteditor.h
 
 FORMS += \
-    src/notepanda.ui
+    src/mainwindow.ui
 
 RC_ICONS = images/panda.ico
 
