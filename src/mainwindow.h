@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QPlainTextEdit>
+#include <QToolBar>
 
 #include "texteditor.h"
 
@@ -27,9 +28,13 @@ class MainWindow : public QMainWindow
   void changeWindowTitle();
   void setActUndoState(bool available);
   void setActRedoState(bool available);
+  void setActCopyState(bool available);
+  void setActCutState(bool available);
+  void quit();
 
  private:
   Ui::MainWindow *ui;
   TextEditor *plainTextEdit;
+  QToolBar *ToolBar;
 };
 #endif  // NOTEPANDA_H

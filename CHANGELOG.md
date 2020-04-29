@@ -9,7 +9,12 @@ All notable changes to this project will be documented in this file.
 - More basic operation
   - Undo
   - Redo
+  - Copy
+  - Paste
+  - Cut
+  - Quit
 - Icons (from [Remix Icon - Open source icon library](https://remixicon.com/))
+- Toolbar
 
 ### 🦋 Optimization
 

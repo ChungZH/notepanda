@@ -81,3 +81,24 @@ void TextEditor::saveAs()
 void TextEditor::undo() { QPlainTextEdit::undo(); }
 
 void TextEditor::redo() { QPlainTextEdit::redo(); }
+
+void TextEditor::copy()
+{
+#if QT_CONFIG(clipboard)
+  QPlainTextEdit::copy();
+#endif
+}
+
+void TextEditor::paste()
+{
+#if QT_CONFIG(clipboard)
+  QPlainTextEdit::paste();
+#endif
+}
+
+void TextEditor::cut()
+{
+#if QT_CONFIG(clipboard)
+  QPlainTextEdit::cut();
+#endif
+}

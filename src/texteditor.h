@@ -26,6 +26,9 @@ class TextEditor : public QPlainTextEdit
   void saveAs();
   void undo();
   void redo();
+  void copy();
+  void paste();
+  void cut();
 
  signals:
   void changeTitle();

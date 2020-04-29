@@ -7,5 +7,9 @@
         <file>images/remixicons/arrow-go-back-line.svg</file>
         <file>images/remixicons/arrow-go-forward-line.svg</file>
         <file>images/remixicons/file-3-line.svg</file>
+        <file>images/remixicons/clipboard-line.svg</file>
+        <file>images/remixicons/file-copy-line.svg</file>
+        <file>images/remixicons/close-line.svg</file>
+        <file>images/remixicons/scissors-cut-line.svg</file>
     </qresource>
 </RCC>

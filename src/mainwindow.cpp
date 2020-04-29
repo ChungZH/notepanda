@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QTextStream>
+#include <QToolBar>
 
 #include "texteditor.h"
 #include "ui_mainwindow.h"
@@ -13,6 +14,18 @@ MainWindow::MainWindow(QWidget *parent)
 {
   ui->setupUi(this);
   ui->setupUi(this);
+
+  ToolBar = new QToolBar;
+  ToolBar->addAction(ui->actionNew);
+  ToolBar->addAction(ui->actionOpen);
+  ToolBar->addAction(ui->actionSave);
+  ToolBar->addAction(ui->actionSave_As);
+  ToolBar->addAction(ui->actionUndo);
+  ToolBar->addAction(ui->actionRedo);
+  ToolBar->addAction(ui->actionQuit);
+  ToolBar->addAction(ui->actionAbout);
+  this->addToolBar(ToolBar);
+
   plainTextEdit = new TextEditor;
   this->setCentralWidget(plainTextEdit);
 
@@ -30,6 +43,7 @@ MainWindow::MainWindow(QWidget *parent)
           &TextEditor::undo);
   connect(ui->actionRedo, &QAction::triggered, plainTextEdit,
           &TextEditor::redo);
+  connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::quit);
   connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::about);
   connect(plainTextEdit, &TextEditor::changeTitle, this,
           &MainWindow::changeWindowTitle);
@@ -37,6 +51,22 @@ MainWindow::MainWindow(QWidget *parent)
           &MainWindow::setActUndoState);
   connect(plainTextEdit, &TextEditor::redoAvailable, this,
           &MainWindow::setActRedoState);
+
+#if !QT_CONFIG(clipboard)
+  ui->actionCut->setEnabled(false);
+  ui->actionCopy->setEnabled(false);
+  ui->actionPaste->setEnabled(false);
+#else
+  connect(ui->actionCopy, &QAction::triggered, plainTextEdit,
+          &TextEditor::copy);
+  connect(ui->actionPaste, &QAction::triggered, plainTextEdit,
+          &TextEditor::paste);
+  connect(ui->actionCut, &QAction::triggered, plainTextEdit, &TextEditor::cut);
+  connect(plainTextEdit, &TextEditor::copyAvailable, this,
+          &MainWindow::setActCopyState);
+  connect(plainTextEdit, &TextEditor::copyAvailable, this,
+          &MainWindow::setActCutState);
+#endif
 }
 
 MainWindow::~MainWindow()
@@ -73,3 +103,15 @@ void MainWindow::setActRedoState(bool available)
 {
   ui->actionRedo->setDisabled(!available);
 }
+
+void MainWindow::setActCopyState(bool available)
+{
+  ui->actionCopy->setDisabled(!available);
+}
+
+void MainWindow::setActCutState(bool available)
+{
+  ui->actionCut->setDisabled(!available);
+}
+
+void MainWindow::quit() { QCoreApplication::quit(); }
