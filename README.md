@@ -2,6 +2,7 @@
 
 # Notepanda
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a226323cc991499b9c324238949d3cb5)](https://app.codacy.com/manual/ChungZH/notepanda?utm_source=github.com&utm_medium=referral&utm_content=ChungZH/notepanda&utm_campaign=Badge_Grade_Dashboard)
 ![C++ & Qt](https://img.shields.io/badge/C%2B%2B%20%26%20Qt-forever-ff69b4?style=flat) [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FChungZH%2Fnotepanda.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FChungZH%2Fnotepanda?ref=badge_shield)
 
 ![LICENSE](https://img.shields.io/github/license/ChungZH/notepanda)
