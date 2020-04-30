@@ -3,6 +3,7 @@
 
 #include <QDebug>
 #include <QMessageBox>
+#include <QSize>
 #include <QTextStream>
 #include <QToolBar>
 
@@ -24,7 +25,10 @@ MainWindow::MainWindow(QWidget *parent)
   ToolBar->addAction(ui->actionRedo);
   ToolBar->addAction(ui->actionQuit);
   ToolBar->addAction(ui->actionAbout);
-  this->addToolBar(ToolBar);
+
+  QSize *qs = new QSize;
+  ToolBar->setIconSize(qs->scaled(26, 26, Qt::IgnoreAspectRatio));
+  this->addToolBar(Qt::LeftToolBarArea, ToolBar);
 
   plainTextEdit = new TextEditor;
   this->setCentralWidget(plainTextEdit);
@@ -87,15 +91,15 @@ void MainWindow::about()
 
 void MainWindow::changeWindowTitle()
 {
-  setWindowTitle(plainTextEdit->currentFile.split("/").last() + " - Notepanda");
+  if (!plainTextEdit->currentFile.isEmpty())
+    setWindowTitle(plainTextEdit->currentFile.split("/").last() +
+                   " - Notepanda");
+  else
+    setWindowTitle(tr("Untitled") + " - Notepanda");
 }
 
 void MainWindow::setActUndoState(bool available)
 {
-  // BE CAREFUL
-  // !available
-  // BUT NOT
-  // available
   ui->actionUndo->setDisabled(!available);
 }
 
