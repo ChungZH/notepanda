@@ -7,7 +7,6 @@
 #include <QTextStream>
 #include <QToolBar>
 
-#include "texteditor.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)

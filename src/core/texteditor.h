@@ -18,6 +18,11 @@ class TextEditor : public QPlainTextEdit
  public:
   TextEditor(QWidget *parent = nullptr);
   QString currentFile;
+  void lineNumberAreaPaintEvent(QPaintEvent *event);
+  int lineNumberAreaWidth();
+
+ protected:
+  void resizeEvent(QResizeEvent *event) override;
 
  public slots:
   void newDocument();
@@ -29,6 +34,12 @@ class TextEditor : public QPlainTextEdit
   void copy();
   void paste();
   void cut();
+  void updateLineNumberAreaWidth(int newBlockCount);
+  void highlightCurrentLine();
+  void updateLineNumberArea(const QRect &rect, int dy);
+
+ private:
+  QWidget *lineNumberArea;
 
  signals:
   void changeTitle();

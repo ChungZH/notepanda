@@ -5,7 +5,7 @@
 #include <QPlainTextEdit>
 #include <QToolBar>
 
-#include "texteditor.h"
+#include "../core/texteditor.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui

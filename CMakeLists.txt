@@ -15,11 +15,11 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 add_executable(notepanda
     src/main.cpp
-    src/mainwindow.cpp
-    src/mainwindow.h
-    src/mainwindow.ui
-    src/texteditor.cpp
-    src/texteditor.h
+    src/ui/mainwindow.cpp
+    src/ui/mainwindow.h
+    src/ui/mainwindow.ui
+    src/core/texteditor.cpp
+    src/core/texteditor.h
     notepanda.rc
 )
 
