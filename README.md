@@ -47,7 +47,7 @@ See [Projects](https://github.com/ChungZH/notepanda/projects/).
 
 See [Releases](https://github.com/ChungZH/notepanda/releases).
 
-`v0.0.1-alpha` now.
+`v0.0.1-rc.1` now.
 
 ## LICENSE
 
