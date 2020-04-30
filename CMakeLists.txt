@@ -17,11 +17,14 @@ add_executable(notepanda
     src/main.cpp
     src/ui/mainwindow.cpp
     src/ui/mainwindow.h
+    src/ui/linenumberarea.h
     src/ui/mainwindow.ui
     src/core/texteditor.cpp
     src/core/texteditor.h
     notepanda.rc
 )
+
+file(GLOB_RECURSE IMAGES images/remixicons/*.svg images/*.ico)
 
 set(CMAKE_BUILD_TYPE Release)
 
