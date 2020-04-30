@@ -1,4 +1,4 @@
-<div align="center"><img src="./images/banner.png" width="280px"/></div>
+<div align="center"><img src="./images/banner.png" width="300px"/></div>
 
 # Notepanda
 
@@ -37,7 +37,7 @@ So enjoy this toy :tea:
   
   - ...
 
-- Nothing :)
+- Line numbers
 
 ## Roadmap
 
