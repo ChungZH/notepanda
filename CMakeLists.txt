@@ -13,7 +13,11 @@ endif()
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
-add_executable(notepanda
+if(WIN32)
+    set(GUI_TYPE WIN32)
+endif()
+
+set(SOURCES
     src/main.cpp
     src/ui/mainwindow.cpp
     src/ui/mainwindow.h
@@ -22,9 +26,13 @@ add_executable(notepanda
     src/core/texteditor.cpp
     src/core/texteditor.h
     notepanda.rc
+    resources.qrc
 )
 
-file(GLOB_RECURSE IMAGES images/remixicons/*.svg images/*.ico)
+add_executable(notepanda
+    ${GUI_TYPE}
+    ${SOURCES}
+)
 
 set(CMAKE_BUILD_TYPE Release)
 
