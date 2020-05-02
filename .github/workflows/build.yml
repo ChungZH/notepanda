@@ -1,0 +1,69 @@
+name: Build CI
+
+on:
+  push:
+    branches: [ fucking-cmake ]
+jobs:
+  build:
+    strategy:
+      matrix:
+        qt_version: [5.14.2]
+        platform: [ubuntu-16.04, macos-latestt]
+        arch: [x86, x64]
+        exclude:
+          - platform: ubuntu-16.04
+            arch: x86
+          - platform: macos-latest
+            arch: x86
+    runs-on: ubuntu-latest
+    steps:
+    - name: Cache Qt
+      id: cache-qt
+      uses: actions/cache@v1
+      with:
+        path: ../Qt
+        key: QtCache-${{ matrix.platform }}-${{ matrix.arch }}-${{ matrix.qt_version }}
+    - name: Installing Qt - ${{ matrix.arch }}
+      uses: jurplel/install-qt-action@v2.5.0
+      with:
+        version: ${{ matrix.qt_version }}
+        arch: ${{ matrix.qtarch }}
+        mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
+        cached: ${{ steps.cache-qt.outputs.cache-hit }}
+    - name: Linux - ${{ matrix.qt_version }} - Generate Dependencies and Build
+      if: matrix.platform == 'ubuntu-16.04'
+      shell: bash
+      env:
+        CC: /usr/bin/gcc-9
+        CXX: /usr/bin/g++-9
+      run: |
+        mkdir build
+        cd build
+        cmake .. -DCMAKE_BUILD_TYPE=Release
+        cmake —build .
+    - name: Linux - ${{ matrix.qt_version }} - Generating AppImage
+      if: matrix.platform == 'ubuntu-16.04'
+      run: | 
+        cd build
+        wget https://github.com/probonopd/linuxdeployqt/releases/download/6/linuxdeployqt-6-x86_64.AppImage
+        chmod +x ./linuxdeployqt-6-x86_64.AppImage
+        ./linuxdeployqt-6-x86_64.AppImage --appimage-extract
+        cd AppDir
+        wget -c https://github.com/darealshinji/AppImageKit-checkrt/releases/download/continuous/AppRun-patched-x86_64 -O AppRun
+        chmod a+x AppRun
+        mkdir -p ./usr/{lib,optional}/
+        wget -c https://github.com/darealshinji/AppImageKit-checkrt/releases/download/continuous/exec-x86_64.so -O ./usr/optional/exec.so
+        mkdir -p ./usr/optional/libstdc++/
+        cp -fv /usr/lib/x86_64-linux-gnu/libstdc++.so.6 ./usr/optional/libstdc++/
+        mkdir -p ./usr/optional/libgcc_s/
+        cp -fv /lib/x86_64-linux-gnu/libgcc_s.so.1 ./usr/optional/libgcc_s/
+        cp -fv /usr/lib/x86_64-linux-gnu/{libssl.so.1.1,libcrypto.so.1.1} ./usr/lib/
+        cd ..
+        squashfs-root/AppRun AppDir/usr/share/applications/qv2ray.desktop -appimage -no-strip -always-overwrite
+        mv ./Notepanda*.AppImage ./Notepanda.AppImage
+    - name: Linux - ${{ matrix.qt_version }} - Uploading artifact
+      if: matrix.platform == 'ubuntu-16.04'
+      uses: actions/upload-artifact@master
+      with:
+        name: Notepanda-${{ github.sha }}.linux-${{ matrix.arch }}.qt${{ matrix.qt_version }}.AppImage
+        path: build/Qv2ray.AppImage
