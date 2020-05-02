@@ -107,6 +107,7 @@ jobs:
           brew install tree
           tree .
           macdeployqt notepanda.app -dmg
+          tree .
       # --------------------------------------------------------
       - name: macOS - ${{ matrix.qt_version }} - Uploading Artifact
         if: matrix.platform == 'macos-latest'
