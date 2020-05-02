@@ -8,33 +8,46 @@ jobs:
     strategy:
       matrix:
         qt_version: [5.14.2]
-        platform: [ubuntu-16.04, macos-latestt]
+        platform: [ubuntu-16.04, windows-latest]
         arch: [x86, x64]
+        include: 
+          - platform: windows-latest
+            arch: x86
+            qtarch: win32_msvc2017
+          - platform: windows-latest
+            arch: x64
+            qtarch: win64_msvc2017_64
         exclude:
           - platform: ubuntu-16.04
             arch: x86
-          - platform: macos-latest
-            arch: x86
+      fail-fast: false
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Checking out sources
         uses: actions/checkout@master
+        
+      - name: Install MSVC compiler
+        if: matrix.platform == 'windows-latest'
+        uses: ilammy/msvc-dev-cmd@v1
+        with: 
+          # 14.1 is for vs2017, 14.2 is vs2019, following the upstream vcpkg build from Qv2ray-deps repo
+          toolset: 14.2
+          arch: ${{ matrix.arch }}
+# Install & Cache Qt---------------------------------------
       - name: Cache Qt
         id: cache-qt
         uses: actions/cache@v1
         with:
           path: ../Qt
           key: QtCache-${{ matrix.platform }}-${{ matrix.arch }}-${{ matrix.qt_version }}
-      - name: Installing Deps
-        run: |
-          sudo apt install libgl-dev libx11-dev libxkbcommon-x11-dev
       - name: Installing Qt - ${{ matrix.arch }}
         uses: jurplel/install-qt-action@v2.5.0
         with:
           version: ${{ matrix.qt_version }}
           arch: ${{ matrix.qtarch }}
-          mirror: "http://mirrors.ocf.berkeley.edu/qt/"
+          mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
           cached: ${{ steps.cache-qt.outputs.cache-hit }}
+# Linux------------------------------------------
       - name: Linux - ${{ matrix.qt_version }} - Generate Dependencies and Build
         if: matrix.platform == 'ubuntu-16.04'
         shell: bash
@@ -42,6 +55,7 @@ jobs:
           CC: /usr/bin/gcc-9
           CXX: /usr/bin/g++-9
         run: |
+          sudo apt install libgl-dev libx11-dev libxkbcommon-x11-dev
           mkdir build
           cd build
           cmake .. -DCMAKE_INSTALL_PREFIX=./AppDir/usr -DCMAKE_BUILD_TYPE=Release
@@ -73,3 +87,29 @@ jobs:
         with:
           name: Notepanda-${{ github.sha }}.linux-${{ matrix.arch }}.qt${{ matrix.qt_version }}.AppImage
           path: build/Notepanda.AppImage
+# Windows---------------------------------------------------------------------- 
+      - name: Windows - ${{ matrix.qt_version }} - Generate Dependencies and Build
+        shell: bash
+        if: matrix.platform == 'windows-latest'
+        env:
+          CC: cl.exe
+          CXX: cl.exe
+        run: |
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_INSTALL_PREFIX=./deployment -DCMAKE_BUILD_TYPE=Release
+          cmake --build .
+          cmake --install .
+# --------------------------------------------------------
+      - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Create 7z Release
+        if: matrix.platform == 'windows-latest'
+        uses: DuckSoft/create-7z-action@v1.0
+        with:
+          pathSource: ./build/deployment/
+          pathTarget: ./release.7z
+      - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Uploading artifact
+        if: matrix.platform == 'windows-latest'
+        uses: actions/upload-artifact@master
+        with:
+          name: Qv2ray-${{ github.sha }}.Windows-${{ matrix.arch }}.qt${{ matrix.qt_version }}.7z
+          path: release.7z          
