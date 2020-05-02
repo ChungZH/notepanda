@@ -25,6 +25,9 @@ jobs:
         with:
           path: ../Qt
           key: QtCache-${{ matrix.platform }}-${{ matrix.arch }}-${{ matrix.qt_version }}
+      - name: Installing Deps
+        run: |
+          sudo apt install libgl-dev libx11-dev libxkbcommon-x11-dev
       - name: Installing Qt - ${{ matrix.arch }}
         uses: jurplel/install-qt-action@v2.5.0
         with:
