@@ -61,13 +61,19 @@ set(SOURCES
     src/ui/mainwindow.ui
     src/core/texteditor.cpp
     src/core/texteditor.h
-    notepanda.rc
-    resources.qrc
+    assets/notepanda.rc
+    ${CMAKE_SOURCE_DIR}/resources.qrc
 )
 
 add_executable(notepanda
     ${GUI_TYPE}
     ${SOURCES}
 )
+
+if(UNIX AND NOT APPLE AND NOT WIN32)
+    install(TARGETS notepanda RUNTIME DESTINATION bin)
+    install(FILES assets/notepanda.desktop DESTINATION share/applications)
+    install(FILES images/notepanda.png DESTINATION share/icons/hicolor/256x256/apps)
+endif()
 
 target_link_libraries(notepanda Qt5::Widgets)

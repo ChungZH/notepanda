@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Notepanda
+Type=Application
+Comment=A simple cross-platform notepad. Based on Qt and C++. 
+Keywords=Notepad;Editor;Text;
+Terminal=false
+Icon=notepanda
+Exec=notepanda
+Categories=Qt;
