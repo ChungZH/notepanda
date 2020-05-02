@@ -43,6 +43,7 @@ jobs:
         cd build
         cmake .. -DCMAKE_INSTALL_PREFIX=./AppDir/usr -DCMAKE_BUILD_TYPE=Release
         cmake —build .
+        cmake --install .
     - name: Linux - ${{ matrix.qt_version }} - Generating AppImage
       if: matrix.platform == 'ubuntu-16.04'
       run: | 
