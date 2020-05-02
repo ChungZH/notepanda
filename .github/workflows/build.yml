@@ -1,8 +1,7 @@
 name: Build CI
 
-on:
-  push:
-    branches: [master, ci]
+on: [push, pull_request]
+
 jobs:
   build:
     strategy:
@@ -10,7 +9,7 @@ jobs:
         qt_version: [5.14.2]
         platform: [ubuntu-16.04, windows-latest]
         arch: [x86, x64]
-        include: 
+        include:
           - platform: windows-latest
             arch: x86
             qtarch: win32_msvc2017
@@ -27,15 +26,15 @@ jobs:
     steps:
       - name: Checking out sources
         uses: actions/checkout@master
-        
+
       - name: Install MSVC compiler
         if: matrix.platform == 'windows-latest'
         uses: ilammy/msvc-dev-cmd@v1
-        with: 
+        with:
           # 14.1 is for vs2017, 14.2 is vs2019, following the upstream vcpkg build from Qv2ray-deps repo
           toolset: 14.2
           arch: ${{ matrix.arch }}
-# Install & Cache Qt---------------------------------------
+      # Install & Cache Qt---------------------------------------
       - name: Cache Qt
         id: cache-qt
         uses: actions/cache@v1
@@ -47,9 +46,9 @@ jobs:
         with:
           version: ${{ matrix.qt_version }}
           arch: ${{ matrix.qtarch }}
-          mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
+          mirror: "http://mirrors.ocf.berkeley.edu/qt/"
           cached: ${{ steps.cache-qt.outputs.cache-hit }}
-# Linux------------------------------------------
+      # Linux------------------------------------------
       - name: Linux - ${{ matrix.qt_version }} - Generate Dependencies and Build
         if: matrix.platform == 'ubuntu-16.04'
         shell: bash
@@ -89,7 +88,7 @@ jobs:
         with:
           name: Notepanda-${{ github.sha }}.linux-${{ matrix.arch }}.qt${{ matrix.qt_version }}.AppImage
           path: build/Notepanda.AppImage
-# Windows---------------------------------------------------------------------- 
+      # Windows----------------------------------------------------------------------
       - name: Windows - ${{ matrix.qt_version }} - Generate Dependencies and Build
         shell: bash
         if: matrix.platform == 'windows-latest'
@@ -104,7 +103,7 @@ jobs:
           cmake --install .
           cd Debug
           windeployqt notepanda.exe
-# --------------------------------------------------------
+      # --------------------------------------------------------
       - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Create 7z Release
         if: matrix.platform == 'windows-latest'
         uses: DuckSoft/create-7z-action@v1.0
@@ -116,4 +115,4 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: Notepanda-${{ github.sha }}.Windows-${{ matrix.arch }}.qt${{ matrix.qt_version }}.7z
-          path: release.7z          
+          path: release.7z
