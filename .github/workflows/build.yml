@@ -106,7 +106,7 @@ jobs:
           sudo cmake --install .
           brew install tree
           tree .
-          macdeployqt notepanda -dmg
+          macdeployqt notepanda.app -dmg
       # --------------------------------------------------------
       - name: macOS - ${{ matrix.qt_version }} - Uploading Artifact
         if: matrix.platform == 'macos-latest'
