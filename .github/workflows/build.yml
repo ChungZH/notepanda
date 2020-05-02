@@ -7,7 +7,7 @@ jobs:
     strategy:
       matrix:
         qt_version: [5.14.2]
-        platform: [ubuntu-16.04, windows-latest]
+        platform: [ubuntu-16.04, macos-latest, windows-latest]
         arch: [x86, x64]
         include:
           - platform: windows-latest
@@ -20,6 +20,8 @@ jobs:
             cmakearch: x64
         exclude:
           - platform: ubuntu-16.04
+            arch: x86
+          - platform: macos-latest
             arch: x86
       fail-fast: false
     runs-on: ${{ matrix.platform }}
@@ -103,6 +105,31 @@ jobs:
           cmake --install .
           cd Debug
           windeployqt notepanda.exe
+      #---------------------------------------------------------
+      - uses: actions/setup-node@v1
+        if: matrix.platform == 'macos-latest'
+        with:
+          node-version: '10.x'
+      - run: npm install -g appdmg
+        if: matrix.platform == 'macos-latest'
+      - name: macOS - ${{ matrix.qt_version }} - Generate Dependencies and Build
+        shell: bash
+        if: matrix.platform == 'macos-latest'
+        run: |
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_DEPLOYMENT_TARGET=10.13 -DDS_STORE_SCRIPT=ON
+          cmake --build . 
+          sudo cmake --install .
+          cd Debug
+          macdeployqt Notepanda.app -dmg
+# --------------------------------------------------------
+      - name: macOS - ${{ matrix.qt_version }} - Uploading Artifact
+        if: matrix.platform == 'macos-latest'
+        uses: actions/upload-artifact@master
+        with:
+          name: Notepanda-${{ github.sha }}.macOS-${{ matrix.arch }}.qt${{ matrix.qt_version }}.dmg
+          path: Notepanda.dmg          
       # --------------------------------------------------------
       - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Create 7z Release
         if: matrix.platform == 'windows-latest'
