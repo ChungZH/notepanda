@@ -95,12 +95,6 @@ jobs:
           cd Debug
           windeployqt notepanda.exe
       #---------------------------------------------------------
-      - uses: actions/setup-node@v1
-        if: matrix.platform == 'macos-latest'
-        with:
-          node-version: "10.x"
-      - run: npm install -g appdmg
-        if: matrix.platform == 'macos-latest'
       - name: macOS - ${{ matrix.qt_version }} - Generate Dependencies and Build
         shell: bash
         if: matrix.platform == 'macos-latest'
@@ -110,12 +104,7 @@ jobs:
           cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_DEPLOYMENT_TARGET=10.13 -DDS_STORE_SCRIPT=ON
           cmake --build . 
           sudo cmake --install .
-          brew install tree
-          cd ../
-          tree .
-          cd build
-          cd Debug
-          macdeployqt Notepanda.app -dmg
+          macdeployqt notepanda -dmg
       # --------------------------------------------------------
       - name: macOS - ${{ matrix.qt_version }} - Uploading Artifact
         if: matrix.platform == 'macos-latest'
