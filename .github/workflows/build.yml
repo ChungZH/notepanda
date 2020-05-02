@@ -114,7 +114,7 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: Notepanda-${{ github.sha }}.macOS-${{ matrix.arch }}.qt${{ matrix.qt_version }}.dmg
-          path: notepanda.dmg
+          path: build/notepanda.dmg
       # --------------------------------------------------------
       - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Create 7z Release
         if: matrix.platform == 'windows-latest'
