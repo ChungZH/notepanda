@@ -2,7 +2,7 @@ name: Build CI
 
 on:
   push:
-    branches: [ fucking-cmake ]
+    branches: [ master, fucking-cmake ]
 jobs:
   build:
     strategy:
