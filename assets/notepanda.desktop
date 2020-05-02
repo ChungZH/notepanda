@@ -6,4 +6,4 @@ Keywords=Notepad;Editor;Text;
 Terminal=false
 Icon=notepanda
 Exec=notepanda
-Categories=Qt;Notepad;Text;
+Categories=Qt;
