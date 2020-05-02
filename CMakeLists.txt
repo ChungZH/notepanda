@@ -61,8 +61,8 @@ set(SOURCES
     src/ui/mainwindow.ui
     src/core/texteditor.cpp
     src/core/texteditor.h
-    notepanda.rc
-    resources.qrc
+    assets/notepanda.rc
+    ${CMAKE_SOURCE_DIR}/resources.qrc
 )
 
 add_executable(notepanda
