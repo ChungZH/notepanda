@@ -70,4 +70,10 @@ add_executable(notepanda
     ${SOURCES}
 )
 
+if(UNIX AND NOT APPLE AND NOT WIN32)
+    install(TARGETS notepanda RUNTIME DESTINATION bin)
+    install(FILES assets/notepanda.desktop DESTINATION share/applications)
+    install(FILES images/notepanda.png DESTINATION share/icons/hicolor/256x256/apps)
+endif()
+
 target_link_libraries(notepanda Qt5::Widgets)
