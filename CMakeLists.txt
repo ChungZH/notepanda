@@ -51,6 +51,8 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 if(WIN32)
     set(GUI_TYPE WIN32)
+elseif(APPLE)
+    set(GUI_TYPE MACOSX_BUNDLE)
 endif()
 
 set(SOURCES
