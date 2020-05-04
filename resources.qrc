@@ -13,4 +13,7 @@
         <file>images/remixicons/scissors-cut-line.svg</file>
         <file>images/remixicons/printer-line.svg</file>
     </qresource>
+    <qresource prefix="/asset">
+        <file>images/logo.png</file>
+    </qresource>
 </RCC>

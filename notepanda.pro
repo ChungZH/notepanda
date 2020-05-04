@@ -17,15 +17,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     src/main.cpp \
+    src/ui/aboutwindow.cpp \
     src/ui/mainwindow.cpp \
     src/core/texteditor.cpp
 
 HEADERS += \
+    src/ui/aboutwindow.h \
     src/ui/linenumberarea.h \
     src/ui/mainwindow.h \
     src/core/texteditor.h
 
 FORMS += \
+    src/ui/aboutwindow.ui \
     src/ui/mainwindow.ui
 
 RC_ICONS = images/panda.ico

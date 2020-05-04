@@ -1,4 +1,4 @@
-
+#include "aboutwindow.h"
 #include "mainwindow.h"
 
 #include <QDebug>
@@ -88,12 +88,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::about()
 {
-  QMessageBox::about(
-      this, tr("About Notepanda"),
-      tr("<center><b>Notepanda</b></center> <br> <center>A simple "
-         "cross-platform notepad. Based on Qt and C++.</center><br>"
-         "<b>Vesrion:</b> 0.0.1-alpha<br>"
-         "Copyright © 2020 ChungZH & Shawfing."));
+  AboutWindow(this).exec();
 }
 
 void MainWindow::changeWindowTitle()
