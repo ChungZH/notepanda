@@ -10,6 +10,11 @@
     <height>351</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Arial</family>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
@@ -75,6 +80,11 @@
      <height>28</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>Arial</family>
+    </font>
+   </property>
    <property name="text">
     <string>About Qt</string>
    </property>
@@ -85,7 +95,7 @@
      <x>190</x>
      <y>40</y>
      <width>481</width>
-     <height>45</height>
+     <height>51</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -93,6 +103,7 @@
      <widget class="QLabel" name="label">
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>26</pointsize>
        </font>
       </property>
@@ -109,7 +120,7 @@
      <x>190</x>
      <y>110</y>
      <width>706</width>
-     <height>121</height>
+     <height>124</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -117,6 +128,7 @@
      <widget class="QLabel" name="label_2">
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>13</pointsize>
        </font>
       </property>
@@ -129,6 +141,7 @@
      <widget class="QLabel" name="label_3">
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>13</pointsize>
        </font>
       </property>
@@ -141,6 +154,7 @@
      <widget class="QLabel" name="label_4">
       <property name="font">
        <font>
+        <family>Arial</family>
         <pointsize>13</pointsize>
        </font>
       </property>
