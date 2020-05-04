@@ -53,6 +53,8 @@
     <addaction name="actionSave"/>
     <addaction name="actionSave_As"/>
     <addaction name="separator"/>
+    <addaction name="actionPrint"/>
+    <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuAbout">
@@ -79,7 +81,7 @@
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionNew">
    <property name="icon">
-    <iconset resource="../resources.qrc">
+    <iconset resource="../../resources.qrc">
      <normaloff>:/remixicons/images/remixicons/file-add-line.svg</normaloff>:/remixicons/images/remixicons/file-add-line.svg</iconset>
    </property>
    <property name="text">
@@ -91,7 +93,7 @@
   </action>
   <action name="actionOpen">
    <property name="icon">
-    <iconset resource="../resources.qrc">
+    <iconset resource="../../resources.qrc">
      <normaloff>:/remixicons/images/remixicons/file-3-line.svg</normaloff>:/remixicons/images/remixicons/file-3-line.svg</iconset>
    </property>
    <property name="text">
@@ -103,7 +105,7 @@
   </action>
   <action name="actionAbout">
    <property name="icon">
-    <iconset resource="../resources.qrc">
+    <iconset resource="../../resources.qrc">
      <normaloff>:/remixicons/images/remixicons/information-line.svg</normaloff>:/remixicons/images/remixicons/information-line.svg</iconset>
    </property>
    <property name="text">
@@ -112,7 +114,7 @@
   </action>
   <action name="actionSave">
    <property name="icon">
-    <iconset resource="../resources.qrc">
+    <iconset resource="../../resources.qrc">
      <normaloff>:/remixicons/images/remixicons/save-line.svg</normaloff>:/remixicons/images/remixicons/save-line.svg</iconset>
    </property>
    <property name="text">
@@ -124,7 +126,7 @@
   </action>
   <action name="actionSave_As">
    <property name="icon">
-    <iconset resource="../resources.qrc">
+    <iconset resource="../../resources.qrc">
      <normaloff>:/remixicons/images/remixicons/save-2-line.svg</normaloff>:/remixicons/images/remixicons/save-2-line.svg</iconset>
    </property>
    <property name="text">
@@ -136,7 +138,7 @@
   </action>
   <action name="actionUndo">
    <property name="icon">
-    <iconset resource="../resources.qrc">
+    <iconset resource="../../resources.qrc">
      <normaloff>:/remixicons/images/remixicons/arrow-go-back-line.svg</normaloff>:/remixicons/images/remixicons/arrow-go-back-line.svg</iconset>
    </property>
    <property name="text">
@@ -151,7 +153,7 @@
   </action>
   <action name="actionRedo">
    <property name="icon">
-    <iconset resource="../resources.qrc">
+    <iconset resource="../../resources.qrc">
      <normaloff>:/remixicons/images/remixicons/arrow-go-forward-line.svg</normaloff>:/remixicons/images/remixicons/arrow-go-forward-line.svg</iconset>
    </property>
    <property name="text">
@@ -166,7 +168,7 @@
   </action>
   <action name="actionCopy">
    <property name="icon">
-    <iconset resource="../resources.qrc">
+    <iconset resource="../../resources.qrc">
      <normaloff>:/remixicons/images/remixicons/clipboard-line.svg</normaloff>:/remixicons/images/remixicons/clipboard-line.svg</iconset>
    </property>
    <property name="text">
@@ -181,7 +183,7 @@
   </action>
   <action name="actionPaste">
    <property name="icon">
-    <iconset resource="../resources.qrc">
+    <iconset resource="../../resources.qrc">
      <normaloff>:/remixicons/images/remixicons/file-copy-line.svg</normaloff>:/remixicons/images/remixicons/file-copy-line.svg</iconset>
    </property>
    <property name="text">
@@ -196,7 +198,7 @@
   </action>
   <action name="actionQuit">
    <property name="icon">
-    <iconset resource="../resources.qrc">
+    <iconset resource="../../resources.qrc">
      <normaloff>:/remixicons/images/remixicons/close-line.svg</normaloff>:/remixicons/images/remixicons/close-line.svg</iconset>
    </property>
    <property name="text">
@@ -208,7 +210,7 @@
   </action>
   <action name="actionCut">
    <property name="icon">
-    <iconset resource="../resources.qrc">
+    <iconset resource="../../resources.qrc">
      <normaloff>:/remixicons/images/remixicons/scissors-cut-line.svg</normaloff>:/remixicons/images/remixicons/scissors-cut-line.svg</iconset>
    </property>
    <property name="text">
@@ -221,9 +223,24 @@
     <string>Ctrl+X</string>
    </property>
   </action>
+  <action name="actionPrint">
+   <property name="icon">
+    <iconset resource="../../resources.qrc">
+     <normaloff>:/remixicons/images/remixicons/printer-line.svg</normaloff>:/remixicons/images/remixicons/printer-line.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Print</string>
+   </property>
+   <property name="toolTip">
+    <string>Print</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+  </action>
  </widget>
  <resources>
-  <include location="../resources.qrc"/>
+  <include location="../../resources.qrc"/>
  </resources>
  <connections/>
 </ui>

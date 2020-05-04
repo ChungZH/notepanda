@@ -11,5 +11,6 @@
         <file>images/remixicons/file-copy-line.svg</file>
         <file>images/remixicons/close-line.svg</file>
         <file>images/remixicons/scissors-cut-line.svg</file>
+        <file>images/remixicons/printer-line.svg</file>
     </qresource>
 </RCC>

@@ -93,6 +93,19 @@ void TextEditor::saveAs()
   file.close();
 }
 
+void TextEditor::print()
+{
+#if defined(QT_PRINTSUPPORT_LIB) && QT_CONFIG(printer)
+  QPrinter printDev;
+#if QT_CONFIG(printdialog)
+  QPrintDialog dialog(&printDev, this);
+  if (dialog.exec() == QDialog::Rejected)
+    return;
+#endif // QT_CONFIG(printdialog)
+  QPlainTextEdit:print(&printDev);
+#endif // QT_CONFIG(printer)
+}
+
 void TextEditor::undo() { QPlainTextEdit::undo(); }
 
 void TextEditor::redo() { QPlainTextEdit::redo(); }
@@ -138,7 +151,7 @@ int TextEditor::lineNumberAreaWidth()
 
 void TextEditor::updateLineNumberAreaWidth(int /* newBlockCount */)
 {
-  setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
+  setViewportMargins(lineNumberAreaWidth(), 0, 5, 0);
 }
 
 //![slotUpdateExtraAreaWidth]

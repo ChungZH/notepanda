@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
   ToolBar->addAction(ui->actionOpen);
   ToolBar->addAction(ui->actionSave);
   ToolBar->addAction(ui->actionSave_As);
+  ToolBar->addAction(ui->actionPrint);
   ToolBar->addAction(ui->actionUndo);
   ToolBar->addAction(ui->actionRedo);
   ToolBar->addAction(ui->actionQuit);
@@ -42,6 +43,8 @@ MainWindow::MainWindow(QWidget *parent)
           &TextEditor::save);
   connect(ui->actionSave_As, &QAction::triggered, plainTextEdit,
           &TextEditor::saveAs);
+  connect(ui->actionPrint, &QAction::triggered, plainTextEdit,
+          &TextEditor::print);
   connect(ui->actionUndo, &QAction::triggered, plainTextEdit,
           &TextEditor::undo);
   connect(ui->actionRedo, &QAction::triggered, plainTextEdit,
@@ -55,6 +58,11 @@ MainWindow::MainWindow(QWidget *parent)
   connect(plainTextEdit, &TextEditor::redoAvailable, this,
           &MainWindow::setActRedoState);
 
+
+// Disable menu actions for unavailable features
+#if !defined(QT_PRINTSUPPORT_LIB) || !QT_CONFIG(printer)
+  ui->actionPrint->setEnabled(false);
+#endif
 #if !QT_CONFIG(clipboard)
   ui->actionCut->setEnabled(false);
   ui->actionCopy->setEnabled(false);
