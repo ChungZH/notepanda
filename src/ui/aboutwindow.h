@@ -6,20 +6,16 @@
 #include <QLabel>
 #include <QGridLayout>
 
-QT_BEGIN_NAMESPACE
-namespace Ui
-{
-class AboutWindow;
-}
-QT_END_NAMESPACE
+#include <ui_aboutwindow.h>
 
-
-class AboutWindow : public QDialog
+class AboutWindow
+      : public QDialog
+      , private Ui::AboutWindow
 {
   Q_OBJECT
 
  public:
-  AboutWindow(QWidget *parent = nullptr);
+  explicit AboutWindow(QWidget *parent = nullptr);
 
  private:
   Ui::AboutWindow *ui;

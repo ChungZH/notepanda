@@ -88,7 +88,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::about()
 {
-  AboutWindow().exec();
+  AboutWindow(this).exec();
 }
 
 void MainWindow::changeWindowTitle()
