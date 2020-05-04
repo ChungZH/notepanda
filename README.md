@@ -26,18 +26,9 @@ So enjoy this toy :tea:
 ## Feature
 
 - Basic operation
-  
-  - New
-  
-  - Open
-  
-  - Save
-  
-  - Save as
-  
-  - ...
 
 - Line numbers
+- Show characters & line numbers
 
 ## Roadmap
 

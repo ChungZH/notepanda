@@ -56,6 +56,8 @@ MainWindow::MainWindow(QWidget *parent)
           &MainWindow::setActUndoState);
   connect(plainTextEdit, &TextEditor::redoAvailable, this,
           &MainWindow::setActRedoState);
+  connect(plainTextEdit, &TextEditor::textChanged, this,
+          &MainWindow::updateStatusBar);
 
 // Disable menu actions for unavailable features
 #if !defined(QT_PRINTSUPPORT_LIB) || !QT_CONFIG(printer)
@@ -119,3 +121,8 @@ void MainWindow::setActCutState(bool available)
 }
 
 void MainWindow::quit() { QCoreApplication::quit(); }
+
+void MainWindow::updateStatusBar()
+{
+  statusBar()->showMessage(tr("Characters:")+QString::number(plainTextEdit->document()->characterCount()-1)+" Lines:"+QString::number(plainTextEdit->document()->lineCount()));
+}

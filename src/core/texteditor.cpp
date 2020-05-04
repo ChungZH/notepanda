@@ -52,7 +52,7 @@ void TextEditor::open()
 void TextEditor::save()
 {
   QString fileName;
-
+  qDebug() << TextEditor::document()->characterCount();
   if (currentFile.isEmpty()) {
     fileName = QFileDialog::getSaveFileName(this, tr("Save"));
     currentFile = fileName;

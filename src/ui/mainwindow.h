@@ -31,6 +31,7 @@ class MainWindow : public QMainWindow
   void setActCopyState(bool available);
   void setActCutState(bool available);
   void quit();
+  void updateStatusBar();
 
  private:
   Ui::MainWindow *ui;
