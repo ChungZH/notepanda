@@ -1,8 +1,6 @@
 #ifndef ABOUTWINDOW_H
 #define ABOUTWINDOW_H
 
-#include "ui_aboutwindow.h"
-
 #include <QWidget>
 #include <QDialog>
 #include <QLabel>

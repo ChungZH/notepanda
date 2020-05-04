@@ -1,4 +1,5 @@
 #include "aboutwindow.h"
+#include "ui_aboutwindow.h"
 
 #include <QApplication>
 #include <QAction>

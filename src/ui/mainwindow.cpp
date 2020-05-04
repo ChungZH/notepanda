@@ -2,7 +2,6 @@
 #include "mainwindow.h"
 
 #include <QDebug>
-#include <QMessageBox>
 #include <QSize>
 #include <QTextStream>
 #include <QToolBar>
@@ -26,14 +25,14 @@ MainWindow::MainWindow(QWidget *parent)
   ToolBar->addAction(ui->actionQuit);
   ToolBar->addAction(ui->actionAbout);
 
+  ToolBar->setStyleSheet("background-color: #ffffff");
+
   QSize *qs = new QSize;
   ToolBar->setIconSize(qs->scaled(26, 26, Qt::IgnoreAspectRatio));
   this->addToolBar(Qt::LeftToolBarArea, ToolBar);
 
   plainTextEdit = new TextEditor;
   this->setCentralWidget(plainTextEdit);
-
-  setWindowTitle("Notepanda");
 
   connect(ui->actionNew, &QAction::triggered, plainTextEdit,
           &TextEditor::newDocument);
@@ -57,7 +56,6 @@ MainWindow::MainWindow(QWidget *parent)
           &MainWindow::setActUndoState);
   connect(plainTextEdit, &TextEditor::redoAvailable, this,
           &MainWindow::setActRedoState);
-
 
 // Disable menu actions for unavailable features
 #if !defined(QT_PRINTSUPPORT_LIB) || !QT_CONFIG(printer)
