@@ -57,6 +57,9 @@ endif()
 
 set(SOURCES
     src/main.cpp
+    src/ui/aboutwindow.cpp
+    src/ui/aboutwindow.h
+    src/ui/aboutwindow.ui
     src/ui/mainwindow.cpp
     src/ui/mainwindow.h
     src/ui/linenumberarea.h
