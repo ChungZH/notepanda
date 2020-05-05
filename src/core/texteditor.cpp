@@ -14,6 +14,10 @@
 TextEditor::TextEditor(QWidget *parent) : QPlainTextEdit(parent)
 {
   lineNumberArea = new LineNumberArea(this);
+  lineNumberArea->setForegroundRole(QPalette::HighlightedText);
+  lineNumberArea->setBackgroundRole(QPalette::Base);
+  qDebug() << lineNumberArea->foregroundRole();
+  qDebug() << lineNumberArea->backgroundRole();
 
   connect(this, &TextEditor::blockCountChanged, this,
           &TextEditor::updateLineNumberAreaWidth);
