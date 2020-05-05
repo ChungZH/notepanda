@@ -87,7 +87,7 @@ include(InstallRequiredSystemLibraries)
 set(CPACK_PACKAGE_VENDOR "ChungZH")
 set(CPACK_PACKAGE_VERSION ${VERSION_STRING})
 set(CPACK_PACKAGE_DESCRIPTION "A simple cross-platform notepad.")
-set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/ChungZH/notepanda)
+set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/ChungZH/notepanda")
 set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/images/panda.ico")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE.md")
 
