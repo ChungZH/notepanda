@@ -1,6 +1,7 @@
 #include "texteditor.h"
 
 #include <QDebug>
+#include <QStyle>
 #include <QFile>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -163,8 +164,7 @@ void TextEditor::updateLineNumberArea(const QRect &rect, int dy)
   if (dy)
     lineNumberArea->scroll(0, dy);
   else
-    lineNumberArea->update(0, rect.y(), lineNumberArea->width(), rect.height());
-
+    lineNumberArea->update(0, rect.y(), lineNumberArea->sizeHint().width(), rect.height());
   if (rect.contains(viewport()->rect())) updateLineNumberAreaWidth(0);
 }
 

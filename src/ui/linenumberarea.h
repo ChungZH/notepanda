@@ -7,8 +7,11 @@
 
 class LineNumberArea : public QWidget
 {
+  Q_OBJECT
+
  public:
   LineNumberArea(TextEditor *editor) : QWidget(editor), textEditor(editor) {}
+  ~LineNumberArea(){}
 
   QSize sizeHint() const override
   {
