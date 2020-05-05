@@ -15,5 +15,9 @@
     </qresource>
     <qresource prefix="/asset">
         <file>images/logo.png</file>
+        <file>assets/CREDIT.md</file>
+        <file>makespec/VERSION</file>
+        <file>makespec/VERSIONSUFFIX</file>
+        <file>makespec/BUILDVERSION</file>
     </qresource>
 </RCC>
