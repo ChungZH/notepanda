@@ -151,7 +151,7 @@ int TextEditor::lineNumberAreaWidth()
 
 void TextEditor::updateLineNumberAreaWidth(int /* newBlockCount */)
 {
-  setViewportMargins(lineNumberAreaWidth(), 0, 5, 0);
+  setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
 }
 
 //![slotUpdateExtraAreaWidth]

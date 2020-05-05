@@ -59,6 +59,11 @@ MainWindow::MainWindow(QWidget *parent)
   connect(plainTextEdit, &TextEditor::textChanged, this,
           &MainWindow::updateStatusBar);
 
+  updateStatusBar();
+  changeWindowTitle();
+  setActUndoState(0);
+  setActRedoState(0);
+
 // Disable menu actions for unavailable features
 #if !defined(QT_PRINTSUPPORT_LIB) || !QT_CONFIG(printer)
   ui->actionPrint->setEnabled(false);
@@ -77,6 +82,8 @@ MainWindow::MainWindow(QWidget *parent)
           &MainWindow::setActCopyState);
   connect(plainTextEdit, &TextEditor::copyAvailable, this,
           &MainWindow::setActCutState);
+  setActCutState(0);
+  setActCopyState(0);
 #endif
 }
 
