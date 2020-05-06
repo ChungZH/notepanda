@@ -64,6 +64,9 @@ set(SOURCES
     src/ui/mainwindow.h
     src/ui/linenumberarea.h
     src/ui/mainwindow.ui
+    src/ui/preferenceswindow.cpp
+    src/ui/preferenceswindow.h
+    src/ui/preferenceswindow.ui
     src/core/texteditor.cpp
     src/core/texteditor.h
     assets/notepanda.rc
