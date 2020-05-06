@@ -26,10 +26,6 @@ class MainWindow : public QMainWindow
  private slots:
   void about();
   void changeWindowTitle();
-  void setActUndoState(bool available);
-  void setActRedoState(bool available);
-  void setActCopyState(bool available);
-  void setActCutState(bool available);
   void quit();
   void updateStatusBar();
 

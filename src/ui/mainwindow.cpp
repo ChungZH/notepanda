@@ -1,4 +1,3 @@
-#include "aboutwindow.h"
 #include "mainwindow.h"
 
 #include <QDebug>
@@ -6,6 +5,7 @@
 #include <QTextStream>
 #include <QToolBar>
 
+#include "aboutwindow.h"
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -19,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
   ToolBar->addAction(ui->actionOpen);
   ToolBar->addAction(ui->actionSave);
   ToolBar->addAction(ui->actionSave_As);
+  ToolBar->addAction(ui->actionPreferences);
   ToolBar->addAction(ui->actionPrint);
   ToolBar->addAction(ui->actionUndo);
   ToolBar->addAction(ui->actionRedo);
@@ -32,6 +33,8 @@ MainWindow::MainWindow(QWidget *parent)
   this->addToolBar(Qt::LeftToolBarArea, ToolBar);
 
   plainTextEdit = new TextEditor;
+  plainTextEdit->lineNumberArea->setForegroundRole(QPalette::HighlightedText);
+  plainTextEdit->lineNumberArea->setBackgroundRole(QPalette::Base);
   this->setCentralWidget(plainTextEdit);
 
   connect(ui->actionNew, &QAction::triggered, plainTextEdit,
@@ -53,16 +56,20 @@ MainWindow::MainWindow(QWidget *parent)
   connect(plainTextEdit, &TextEditor::changeTitle, this,
           &MainWindow::changeWindowTitle);
   connect(plainTextEdit, &TextEditor::undoAvailable, this,
-          &MainWindow::setActUndoState);
+          [=](bool undoIsAvailable) {
+            ui->actionUndo->setDisabled(!undoIsAvailable);
+          });
   connect(plainTextEdit, &TextEditor::redoAvailable, this,
-          &MainWindow::setActRedoState);
+          [=](bool redoIsAvailable) {
+            ui->actionRedo->setDisabled(!redoIsAvailable);
+          });
   connect(plainTextEdit, &TextEditor::textChanged, this,
           &MainWindow::updateStatusBar);
 
   updateStatusBar();
   changeWindowTitle();
-  setActUndoState(0);
-  setActRedoState(0);
+  ui->actionUndo->setDisabled(1);
+  ui->actionRedo->setDisabled(1);
 
 // Disable menu actions for unavailable features
 #if !defined(QT_PRINTSUPPORT_LIB) || !QT_CONFIG(printer)
@@ -79,11 +86,15 @@ MainWindow::MainWindow(QWidget *parent)
           &TextEditor::paste);
   connect(ui->actionCut, &QAction::triggered, plainTextEdit, &TextEditor::cut);
   connect(plainTextEdit, &TextEditor::copyAvailable, this,
-          &MainWindow::setActCopyState);
+          [&](bool isCopyAvailable) {
+            ui->actionCopy->setDisabled(!isCopyAvailable);
+          });
   connect(plainTextEdit, &TextEditor::copyAvailable, this,
-          &MainWindow::setActCutState);
-  setActCutState(0);
-  setActCopyState(0);
+          [&](bool isCutAvailable) {
+            ui->actionCut->setDisabled(!isCutAvailable);
+          });
+  ui->actionCopy->setDisabled(1);
+  ui->actionCut->setDisabled(1);
 #endif
 }
 
@@ -93,10 +104,7 @@ MainWindow::~MainWindow()
   delete plainTextEdit;
 }
 
-void MainWindow::about()
-{
-  AboutWindow(this).exec();
-}
+void MainWindow::about() { AboutWindow(this).exec(); }
 
 void MainWindow::changeWindowTitle()
 {
@@ -107,29 +115,12 @@ void MainWindow::changeWindowTitle()
     setWindowTitle(tr("Untitled") + " - Notepanda");
 }
 
-void MainWindow::setActUndoState(bool available)
-{
-  ui->actionUndo->setDisabled(!available);
-}
-
-void MainWindow::setActRedoState(bool available)
-{
-  ui->actionRedo->setDisabled(!available);
-}
-
-void MainWindow::setActCopyState(bool available)
-{
-  ui->actionCopy->setDisabled(!available);
-}
-
-void MainWindow::setActCutState(bool available)
-{
-  ui->actionCut->setDisabled(!available);
-}
-
 void MainWindow::quit() { QCoreApplication::quit(); }
 
 void MainWindow::updateStatusBar()
 {
-  statusBar()->showMessage(tr("Characters:")+QString::number(plainTextEdit->document()->characterCount()-1)+" Lines:"+QString::number(plainTextEdit->document()->lineCount()));
+  statusBar()->showMessage(
+      tr("Characters:") +
+      QString::number(plainTextEdit->document()->characterCount() - 1) +
+      " Lines:" + QString::number(plainTextEdit->document()->lineCount()));
 }
