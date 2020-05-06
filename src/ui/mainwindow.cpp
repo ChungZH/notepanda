@@ -6,7 +6,9 @@
 #include <QToolBar>
 
 #include "aboutwindow.h"
+#include "preferenceswindow.h"
 #include "ui_mainwindow.h"
+#include "ui_preferenceswindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -45,6 +47,8 @@ MainWindow::MainWindow(QWidget *parent)
           &TextEditor::save);
   connect(ui->actionSave_As, &QAction::triggered, plainTextEdit,
           &TextEditor::saveAs);
+  connect(ui->actionPreferences, &QAction::triggered, this,
+          [&]() { PreferencesWindow(this).exec(); });
   connect(ui->actionPrint, &QAction::triggered, plainTextEdit,
           &TextEditor::print);
   connect(ui->actionUndo, &QAction::triggered, plainTextEdit,
@@ -52,7 +56,8 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->actionRedo, &QAction::triggered, plainTextEdit,
           &TextEditor::redo);
   connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::quit);
-  connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::about);
+  connect(ui->actionAbout, &QAction::triggered, this,
+          [&]() { AboutWindow(this).exec(); });
   connect(plainTextEdit, &TextEditor::changeTitle, this,
           &MainWindow::changeWindowTitle);
   connect(plainTextEdit, &TextEditor::undoAvailable, this,
@@ -103,8 +108,6 @@ MainWindow::~MainWindow()
   delete ui;
   delete plainTextEdit;
 }
-
-void MainWindow::about() { AboutWindow(this).exec(); }
 
 void MainWindow::changeWindowTitle()
 {

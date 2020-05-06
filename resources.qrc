@@ -12,6 +12,7 @@
         <file>images/remixicons/close-line.svg</file>
         <file>images/remixicons/scissors-cut-line.svg</file>
         <file>images/remixicons/printer-line.svg</file>
+        <file>images/remixicons/settings-4-line.svg</file>
     </qresource>
     <qresource prefix="/asset">
         <file>images/logo.png</file>
@@ -19,5 +20,6 @@
         <file>makespec/VERSION</file>
         <file>makespec/VERSIONSUFFIX</file>
         <file>makespec/BUILDVERSION</file>
+        <file>images/panda.ico</file>
     </qresource>
 </RCC>

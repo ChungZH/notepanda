@@ -24,7 +24,6 @@ class MainWindow : public QMainWindow
   ~MainWindow();
 
  private slots:
-  void about();
   void changeWindowTitle();
   void quit();
   void updateStatusBar();

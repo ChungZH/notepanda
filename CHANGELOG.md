@@ -9,6 +9,12 @@ All notable changes to this project will be documented in this file.
 - Print
 - Beautify the interface
 - Show characters & line numbers on status bar
+- Preferences Window
+
+### Optimization
+
+- Refactor
+	- Use Lambda to set action undo&redo&copy&cut's state.
 
 ## 0.0.1-rc.1
 

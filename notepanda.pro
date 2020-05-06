@@ -19,17 +19,20 @@ SOURCES += \
     src/main.cpp \
     src/ui/aboutwindow.cpp \
     src/ui/mainwindow.cpp \
-    src/core/texteditor.cpp
+    src/core/texteditor.cpp \
+    src/ui/preferenceswindow.cpp
 
 HEADERS += \
     src/ui/aboutwindow.h \
     src/ui/linenumberarea.h \
     src/ui/mainwindow.h \
-    src/core/texteditor.h
+    src/core/texteditor.h \
+    src/ui/preferenceswindow.h
 
 FORMS += \
     src/ui/aboutwindow.ui \
-    src/ui/mainwindow.ui
+    src/ui/mainwindow.ui \
+    src/ui/preferenceswindow.ui
 
 RC_ICONS = images/panda.ico
 
