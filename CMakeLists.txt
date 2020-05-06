@@ -81,4 +81,52 @@ if(UNIX AND NOT APPLE AND NOT WIN32)
     install(FILES images/notepanda.png DESTINATION share/icons/hicolor/256x256/apps)
 endif()
 
+include(InstallRequiredSystemLibraries)
+
+# Packaging
+set(CPACK_PACKAGE_VENDOR "ChungZH")
+set(CPACK_PACKAGE_VERSION ${VERSION_STRING})
+set(CPACK_PACKAGE_DESCRIPTION "A simple cross-platform notepad.")
+set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/ChungZH/notepanda")
+set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/images/panda.ico")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE.md")
+
+
+if(MSVC)
+   if(NOT BUILD_NSIS)
+    set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION .)
+   endif()
+endif()
+
+if(MSVC)
+    if(BUILD_NSIS)
+        add_definitions(-DQV2RAY_NO_ASIDECONFIG)
+        set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/images\\\\panda.ico")
+        set(CPACK_GENERATOR "NSIS")
+        set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/images/panda.ico")
+        set(CPACK_NSIS_MUI_UNIICON "${CMAKE_SOURCE_DIR}/images/panda.ico")
+        set(CPACK_NSIS_DISPLAY_NAME "Notepanda")
+        set(CPACK_NSIS_PACKAGE_NAME "Notepanda")
+        set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
+            CreateShortCut \\\"$DESKTOP\\\\Notepanda.lnk\\\" \\\"$INSTDIR\\\\notepanda.exe\\\"
+            CreateDirectory \\\"$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\Notepanda\\\"
+            CreateShortCut \\\"$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\Notepanda\\\\Notepanda.lnk\\\" \\\"$INSTDIR\\\\notepanda.exe\\\"
+            WriteRegStr HKLM \\\"Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Uninstall\\\\notepanda\\\" \\\"DisplayIcon\\\" \\\"$INSTDIR\\\\notepanda.exe\\\"
+            WriteRegStr HKLM \\\"Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Uninstall\\\\notepanda\\\" \\\"HelpLink\\\" \\\"https://github.com/ChungZH/notepanda\\\"
+            WriteRegStr HKLM \\\"Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Uninstall\\\\notepanda\\\" \\\"InstallLocation\\\" \\\"$INSTDIR\\\"
+            WriteRegStr HKLM \\\"Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Uninstall\\\\notepanda\\\" \\\"URLUpdateInfo\\\" \\\"https://github.com/ChungZH/notepanda/releases\\\"
+            WriteRegStr HKLM \\\"Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Uninstall\\\\notepanda\\\" \\\"URLInfoAbout\\\" \\\"https://github.com/ChungZH/notepanda\\\"
+        ")
+        set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
+            Delete \\\"$DESKTOP\\\\Notepanda.lnk\\\"
+            Delete \\\"$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\Notepanda\\\\Notepanda.lnk\\\"
+            RMDir \\\"$SMPROGRAMS\\\\$STARTMENU_FOLDER\\\\Notepanda\\\"
+            DeleteRegKey HKLM \\\"Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Uninstall\\\\notepanda\\\"
+        ")
+        set(CPACK_PACKAGE_INSTALL_DIRECTORY "notepanda")
+    endif()
+endif()
+
 target_link_libraries(notepanda Qt5::Widgets)
+
+include(CPack)
