@@ -46,8 +46,10 @@ message("| Welcome to contribute!                          |")
 message("|-------------------------------------------------|")
 message(" ")
 
+include_directories(dep/syntax-highlighting)
 
 find_package(Qt5 COMPONENTS Widgets Svg REQUIRED)
+find_package(KF5SyntaxHighlighting REQUIRED)
 
 if(WIN32)
     set(GUI_TYPE WIN32)
@@ -130,6 +132,6 @@ if(MSVC)
     endif()
 endif()
 
-target_link_libraries(notepanda Qt5::Widgets Qt5::Svg)
+target_link_libraries(notepanda Qt5::Widgets Qt5::Svg KF5::SyntaxHighlighting)
 
 include(CPack)
