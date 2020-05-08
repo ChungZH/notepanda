@@ -112,8 +112,6 @@ jobs:
           cmake .. -DCMAKE_BUILD_TYPE=Release -A ${{ matrix.cmakearch }}
           cmake --build .
           cmake --install .
-          cd Debug
-          windeployqt notepanda.exe
       #---------------------------------------------------------
       - name: macOS - ${{ matrix.qt_version }} - Generate Dependencies and Build
         shell: bash
