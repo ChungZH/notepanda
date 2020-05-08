@@ -29,9 +29,7 @@ So enjoy this toy 🍵️
 ## Feature
 
 - Basic operation
-
 - Line numbers
-- Show characters & line numbers
 
 ## Roadmap
 
@@ -41,7 +39,7 @@ See [Projects](https://github.com/ChungZH/notepanda/projects/).
 
 Go to [Releases](https://github.com/ChungZH/notepanda/releases) page.
 
-The latest version is `v0.0.1-rc.1` now.
+The latest version is `v0.0.1` now.
 
 ## Contributions / Bugs
 
