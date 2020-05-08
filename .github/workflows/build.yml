@@ -90,6 +90,15 @@ jobs:
         with:
           name: Notepanda-${{ github.sha }}.linux-${{ matrix.arch }}.qt${{ matrix.qt_version }}.AppImage
           path: build/Notepanda.AppImage
+      - name: Linux - ${{ matrix.qt_version }} - Upload binaries to release
+        uses: svenstaro/upload-release-action@v1-release
+        if: github.event_name == 'release' && matrix.platform == 'ubuntu-16.04' && matrix.qt_version == '5.14.2'
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/Notepanda.AppImage
+          asset_name: Notepanda.${{ steps.get_version.outputs.VERSION }}.linux-${{ matrix.arch }}.AppImage
+          tag: ${{ github.ref }}
+          overwrite: true
       # Windows----------------------------------------------------------------------
       - name: Windows - ${{ matrix.qt_version }} - Generate Dependencies and Build
         shell: bash
@@ -115,10 +124,7 @@ jobs:
           cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_DEPLOYMENT_TARGET=10.13 -DDS_STORE_SCRIPT=ON
           cmake --build . 
           sudo cmake --install .
-          brew install tree
-          tree .
           macdeployqt notepanda.app -dmg
-          tree .
       # --------------------------------------------------------
       - name: macOS - ${{ matrix.qt_version }} - Uploading Artifact
         if: matrix.platform == 'macos-latest'
@@ -126,6 +132,15 @@ jobs:
         with:
           name: Notepanda-${{ github.sha }}.macOS-${{ matrix.arch }}.qt${{ matrix.qt_version }}.dmg
           path: build/notepanda.dmg
+      - name: macOS - ${{ matrix.qt_version }} - Upload binaries to release
+        uses: svenstaro/upload-release-action@v1-release
+        if: github.event_name == 'release' && matrix.platform == 'macos-latest' && matrix.qt_version == '5.14.2'
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/notepanda.dmg
+          asset_name: Notepanda-${{ steps.get_version.outputs.VERSION }}.macOS-${{ matrix.arch }}.dmg
+          tag: ${{ github.ref }}
+          overwrite: true
       # --------------------------------------------------------
       - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Create 7z Release
         if: matrix.platform == 'windows-latest'
@@ -139,3 +154,12 @@ jobs:
         with:
           name: Notepanda-${{ github.sha }}.Windows-${{ matrix.arch }}.qt${{ matrix.qt_version }}.7z
           path: release.7z
+      - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Upload binaries to release
+        uses: svenstaro/upload-release-action@v1-release
+        if: github.event_name == 'release' && matrix.platform == 'windows-latest' && matrix.qt_version == '5.14.2'
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: release.7z
+          asset_name: Notepanda.${{ steps.get_version.outputs.VERSION }}.Windows-${{ matrix.arch }}.7z
+          tag: ${{ github.ref }}
+          overwrite: true
