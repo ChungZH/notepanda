@@ -99,6 +99,7 @@ if(WIN32)
         COMMAND windeployqt ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.exe --dir ${CMAKE_BINARY_DIR}/winqt/
         )
     install(DIRECTORY ${CMAKE_BINARY_DIR}/winqt/ DESTINATION .)
+endif()
 
 if(MSVC)
    if(NOT BUILD_NSIS)
