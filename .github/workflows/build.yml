@@ -103,8 +103,6 @@ jobs:
           cmake .. -DCMAKE_BUILD_TYPE=Release -A ${{ matrix.cmakearch }}
           cmake --build .
           cmake --install .
-          cd Debug
-          windeployqt notepanda.exe
       #---------------------------------------------------------
       - name: macOS - ${{ matrix.qt_version }} - Generate Dependencies and Build
         shell: bash
@@ -115,10 +113,7 @@ jobs:
           cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_DEPLOYMENT_TARGET=10.13 -DDS_STORE_SCRIPT=ON
           cmake --build . 
           sudo cmake --install .
-          brew install tree
-          tree .
           macdeployqt notepanda.app -dmg
-          tree .
       # --------------------------------------------------------
       - name: macOS - ${{ matrix.qt_version }} - Uploading Artifact
         if: matrix.platform == 'macos-latest'

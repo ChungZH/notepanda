@@ -86,6 +86,7 @@ jobs:
           cd build
           cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DBUILD_NSIS=ON
           cmake --build . --target package --parallel $(nproc)
+          cmake --install .
       - name: Windows - Get package name
         shell: bash
         id: get_package
