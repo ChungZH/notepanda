@@ -1,4 +1,4 @@
-﻿# Changelog
+# Changelog
 
 All notable changes to this project will be documented in this file.
 
@@ -16,9 +16,13 @@ All notable changes to this project will be documented in this file.
 - Refactor
 	- Use Lambda to set action undo&redo&copy&cut's state.
 
+### Bug
+
+- Fix cannot load SVG files.
+
 ## 0.0.1-rc.1
 
-### 🌵 Features
+### 🌵 Features
 
 - More basic operation
   - Undo
@@ -45,7 +49,7 @@ All notable changes to this project will be documented in this file.
 
 [GitHub Release](https://github.com/ChungZH/notepanda/releases/tag/v0.0.1-alpha)
 
-### 🌵 Features
+### 🌵 Features
 
 - Basic operation
   - New

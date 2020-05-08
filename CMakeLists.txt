@@ -47,7 +47,7 @@ message("|-------------------------------------------------|")
 message(" ")
 
 
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Widgets Svg REQUIRED)
 
 if(WIN32)
     set(GUI_TYPE WIN32)
@@ -130,6 +130,6 @@ if(MSVC)
     endif()
 endif()
 
-target_link_libraries(notepanda Qt5::Widgets)
+target_link_libraries(notepanda Qt5::Widgets Qt5::Svg)
 
 include(CPack)
