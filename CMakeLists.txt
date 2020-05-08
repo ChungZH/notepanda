@@ -95,10 +95,17 @@ set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/images/panda.ico")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE.md")
 
 if(WIN32)
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND windeployqt ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.exe --dir ${CMAKE_BINARY_DIR}/winqt/
-        )
-    install(DIRECTORY ${CMAKE_BINARY_DIR}/winqt/ DESTINATION .)
+    if (BUILD_NSIS)
+        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND windeployqt ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.exe --dir ${CMAKE_BINARY_DIR}/winqt/
+            )
+        install(DIRECTORY ${CMAKE_BINARY_DIR}/winqt/ DESTINATION .)
+    else()
+        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND windeployqt ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.exe
+            )
+    endif()
+    
 endif()
 
 if(MSVC)
