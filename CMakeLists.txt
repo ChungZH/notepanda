@@ -47,7 +47,7 @@ message("|-------------------------------------------------|")
 message(" ")
 
 add_subdirectory(src/3rdparty/syntax-highlighting)
-add_subdirectory(src/3rdparty/extra-cmake-modules)
+add_subdirectory(src/3rdparty/syntax-highlighting/extra-cmake-modules)
 
 find_package(Qt5 COMPONENTS Widgets Svg REQUIRED)
 find_package(KF5SyntaxHighlighting)
