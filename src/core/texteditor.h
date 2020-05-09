@@ -3,6 +3,8 @@
 
 #include <QPlainTextEdit>
 
+#include <repository.h>
+
 QT_BEGIN_NAMESPACE
 class QPaintEvent;
 class QResizeEvent;
@@ -10,6 +12,11 @@ class QSize;
 class QWidget;
 class QFileDialog;
 QT_END_NAMESPACE
+
+namespace KSyntaxHighlighting
+{
+class SyntaxHighlighter;
+}
 
 class TextEditor : public QPlainTextEdit
 {
@@ -39,6 +46,11 @@ class TextEditor : public QPlainTextEdit
   void updateLineNumberAreaWidth(int newBlockCount);
   void highlightCurrentLine();
   void updateLineNumberArea(const QRect &rect, int dy);
+
+private:
+  void setTheme(const KSyntaxHighlighting::Theme &theme);
+  KSyntaxHighlighting::Repository m_repository;
+  KSyntaxHighlighting::SyntaxHighlighter *m_highlighter;
 
  signals:
   void changeTitle();

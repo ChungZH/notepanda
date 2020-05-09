@@ -1,18 +1,31 @@
 #include "texteditor.h"
 
+#include <QApplication>
 #include <QDebug>
-#include <QStyle>
 #include <QFile>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QPainter>
+#include <QStyle>
 #include <QTextBlock>
 #include <QTextStream>
 
+// KSyntaxHighlighting
+#include <definition.h>
+#include <foldingregion.h>
+#include <syntaxhighlighter.h>
+#include <theme.h>
+
 #include "../ui/linenumberarea.h"
 
-TextEditor::TextEditor(QWidget *parent) : QPlainTextEdit(parent)
+TextEditor::TextEditor(QWidget *parent)
+    : QPlainTextEdit(parent),
+      m_highlighter(new KSyntaxHighlighting::SyntaxHighlighter(document()))
 {
+  // TODO: Dark & Light
+  setTheme(
+      m_repository.defaultTheme(KSyntaxHighlighting::Repository::DarkTheme));
+  // Line number area
   lineNumberArea = new LineNumberArea(this);
 
   connect(this, &TextEditor::blockCountChanged, this,
@@ -100,11 +113,11 @@ void TextEditor::print()
   QPrinter printDev;
 #if QT_CONFIG(printdialog)
   QPrintDialog dialog(&printDev, this);
-  if (dialog.exec() == QDialog::Rejected)
-    return;
-#endif // QT_CONFIG(printdialog)
-  QPlainTextEdit:print(&printDev);
-#endif // QT_CONFIG(printer)
+  if (dialog.exec() == QDialog::Rejected) return;
+#endif  // QT_CONFIG(printdialog)
+QPlainTextEdit:
+  print(&printDev);
+#endif  // QT_CONFIG(printer)
 }
 
 void TextEditor::undo() { QPlainTextEdit::undo(); }
@@ -164,7 +177,8 @@ void TextEditor::updateLineNumberArea(const QRect &rect, int dy)
   if (dy)
     lineNumberArea->scroll(0, dy);
   else
-    lineNumberArea->update(0, rect.y(), lineNumberArea->sizeHint().width(), rect.height());
+    lineNumberArea->update(0, rect.y(), lineNumberArea->sizeHint().width(),
+                           rect.height());
   if (rect.contains(viewport()->rect())) updateLineNumberAreaWidth(0);
 }
 
@@ -237,4 +251,21 @@ void TextEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
     bottom = top + qRound(blockBoundingRect(block).height());
     ++blockNumber;
   }
+}
+
+void TextEditor::setTheme(const KSyntaxHighlighting::Theme &theme)
+{
+  auto pal = qApp->palette();
+  if (theme.isValid()) {
+    pal.setColor(
+        QPalette::Base,
+        theme.editorColor(KSyntaxHighlighting::Theme::BackgroundColor));
+    pal.setColor(QPalette::Highlight,
+                 theme.editorColor(KSyntaxHighlighting::Theme::TextSelection));
+  }
+  setPalette(pal);
+
+  m_highlighter->setTheme(theme);
+  m_highlighter->rehighlight();
+  highlightCurrentLine();
 }

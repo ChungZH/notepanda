@@ -1,6 +1,6 @@
 QT       += core gui KSyntaxHighlighting
 
-SUBDIRS += dep/syntax-highlighting
+INCLUDEPATH += dep/syntax-highlighting
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

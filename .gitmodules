@@ -1,3 +1,0 @@
-[submodule "dep/syntax-highlighting"]
-	path = dep/syntax-highlighting
-	url = git://anongit.kde.org/syntax-highlighting.git
