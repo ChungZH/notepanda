@@ -1,0 +1,279 @@
+% LaTeX test file for kate's syntax highlighting and code folding
+
+\ordinaryLaTeXcommandwithoption[10pt,a4paper]{article}
+% BEGIN region
+%comment, this is all ok % $ 
+\%no comments please
+\\%comment
+% END of region
+
+\newcommand{\nohighlighting}
+
+\section{normal}
+
+\ref{blue}
+\pageref{blue}
+\cite{blue}
+
+<beginfold id='1'>\begin</beginfold id='1'>{environmentshavespecialcolors}
+normal
+<endfold id='1'>\end</endfold id='1'>{environmentshavespecialcolors<endfold id='1'>}</endfold id='1'>
+
+$equations are green, \commands somewhat darker$
+normal
+$<beginfold id='2'>$</beginfold id='2'>equations are green, \commands somewhat darker<endfold id='2'>$$</endfold id='2'>
+normal
+\( 
+\frac{1}{2}
+<beginfold id='1'>\begin</beginfold id='1'>{test}
+<endfold id='1'>\end</endfold id='1'>{test}
+\)
+normal
+<beginfold id='2'>\[</beginfold id='2'>
+%comment 
+displaymath 
+<endfold id='2'>\]</endfold id='2'>
+normal
+<beginfold id='1'>\begin</beginfold id='1'>{equation}
+green\darkergreen
+<beginfold id='1'>\begin</beginfold id='1'>{test}
+\test
+<endfold id='1'>\end</endfold id='1'>{test<endfold id='1'>}</endfold id='1'>
+<endfold id='1'>\end</endfold id='1'>{equation<endfold id='1'>}</endfold id='1'>
+
+<beginfold id='1'>\begin</beginfold id='1'>{equation*}
+green\darkergreen
+%comment
+<beginfold id='1'>\begin</beginfold id='1'>{test}
+\test
+<endfold id='1'>\end</endfold id='1'>{test<endfold id='1'>}</endfold id='1'>
+\%no comment
+<endfold id='1'>\end</endfold id='1'>{equation*<endfold id='1'>}</endfold id='1'>
+
+\{     %this should be comment
+
+\verb%this shouldn't be%and this should be normal text
+\verb!verbatim text! normal text
+
+text \texttt{more text}
+
+<beginfold id='1'>\begin</beginfold id='1'>{verbatim}
+text inside a verbatim environment is also treated special $ %,
+you can even put a \begin{verbatim} inside
+\end{verbatim<endfold id='1'>}</endfold id='1'>
+
+normal
+
+<beginfold id='1'>\begin</beginfold id='1'>{Verbatim}
+&@@#^%&^#$
+\end{Verbatim<endfold id='1'>}</endfold id='1'>
+
+<beginfold id='1'>\begin</beginfold id='1'>{Verbatim*}
+@*&^#@*(^#(*@&
+\end{Verbatim*<endfold id='1'>}</endfold id='1'>
+
+normal
+
+<beginfold id='1'>\begin</beginfold id='1'>{Verbatim}
+\begin{verbatim}
+This is a verbatim block.
+\end{verbatim}
+\end{Verbatim<endfold id='1'>}</endfold id='1'>
+
+normal
+
+% test alignat
+<beginfold id='1'>\begin</beginfold id='1'>{alignat}{2}
+A  &= B &= C \\
+A  &= B &= C
+<endfold id='1'>\end</endfold id='1'>{alignat<endfold id='1'>}</endfold id='1'>
+normal text
+
+\iffalse
+\fill commented out text
+\fi
+
+% Math mode
+
+Depending on the value of $x$ the equation \( f(x) = \sum_{i=0}^{n} \frac{a_i}{1+x} \) may diverge or converge.
+ 
+<beginfold id='2'>\[</beginfold id='2'> f(x) = \sum_{i=0}^{n} \frac{a_i}{1+x} <endfold id='2'>\]</endfold id='2'>
+ 
+<beginfold id='2'>\[</beginfold id='2'>
+S = \{ z \in \mathbb{C}\, |\, |z| < 1 \} \quad \textrm{and} \quad S_2=\partial{S}
+<endfold id='2'>\]</endfold id='2'>
+
+<beginfold id='2'>\[</beginfold id='2'>
+\frac{
+    <beginfold id='1'>\begin</beginfold id='1'>{array}[b]{r}
+      \left( x_1 x_2 \right)\\
+      \times \left( x'_1 x'_2 \right)
+    <endfold id='1'>\end</endfold id='1'>{array}
+  }{
+    \left( y_1y_2y_3y_4 \right)
+  }
+<endfold id='2'>\]</endfold id='2'>
+
+<beginfold id='1'>\begin</beginfold id='1'>{eqnarray*}
+<beginfold id='1'>\begin</beginfold id='1'>{eqnarray*}
+f(x) = \sum_{i=0}^{n} \frac{a_i}{1+x} \\
+\textstyle f(x) = \textstyle \sum_{i=0}^{n} \frac{a_i}{1+x} \\
+\scriptstyle f(x) = \scriptstyle \sum_{i=0}^{n} \frac{a_i}{1+x} \\
+\scriptscriptstyle f(x) = \scriptscriptstyle \sum_{i=0}^{n} \frac{a_i}{1+x}
+<endfold id='1'>\end</endfold id='1'>{eqnarray*<endfold id='1'>}</endfold id='1'>
+<endfold id='1'>\end</endfold id='1'>{eqnarray*<endfold id='1'>}</endfold id='1'>
+
+<beginfold id='1'>\begin</beginfold id='1'>{xalignat}{3}
+i_{11} & =i_{23}\nonumber
+<endfold id='1'>\end</endfold id='1'>{xalignat<endfold id='1'>}</endfold id='1'>
+
+c
+<beginfold id='1'>\begin</beginfold id='1'>{equation}
+c
+<beginfold id='1'>\begin</beginfold id='1'>{aligned}
+a & b\\
+c & d
+<endfold id='1'>\end</endfold id='1'>{aligned<endfold id='1'>}</endfold id='1'>
+c
+<endfold id='1'>\end</endfold id='1'>{equation<endfold id='1'>}</endfold id='1'>
+c
+
+$<beginfold id='2'>$</beginfold id='2'>E=mc^2<endfold id='2'>$$</endfold id='2'>
+ 
+<beginfold id='1'>\begin</beginfold id='1'>{equation}
+E=m
+<endfold id='1'>\end</endfold id='1'>{equation<endfold id='1'>}</endfold id='1'>
+
+<beginfold id='1'>\begin</beginfold id='1'>{equation
+x=3\textrm{plop}
+<endfold id='1'>\end</endfold id='1'>{equation<endfold id='1'>}</endfold id='1'>
+
+<beginfold id='2'>\[</beginfold id='2'> <beginfold id='1'>\begin</beginfold id='1'>{array}{llll}
+  x^3 = (-x)^3 & \text{if $x > 0$}\\
+  x^3 = (-x)^3 & \text{if {$x > 0$}}\\
+  x^3 = (-x)^3 & \text{if {\color{green} $x > 0$}}\\
+<endfold id='1'>\end</endfold id='1'>{array} <endfold id='2'>\]</endfold id='2'>
+
+\section*{Notes for My Paper}
+
+<beginfold id='1'>\begin</beginfold id='1'>{center}
+<beginfold id='1'>\begin</beginfold id='1'>{tabular}{ |c|c|c| } 
+ \hline
+ cell1 & cell2 & cell3 \\ 
+ cell4 & cell5 & cell6 \\ 
+ cell7 & cell8 & cell9 \\ 
+ \hline
+\end{tabular<endfold id='1'>}</endfold id='1'>
+
+<beginfold id='1'>\begin</beginfold id='1'>{tabular*}{0.75\textwidth}{@{\extracolsep{\fill} } | c | c | c | r | }
+  \hline
+  label 1 & label 2 & label 3 & label 4 \\
+  \hline 
+  item 1  & item 2  & item 3  & item 4  \\
+  \hline
+\end{tabular*<endfold id='1'>}</endfold id='1'>
+
+<beginfold id='1'>\begin</beginfold id='1'>{tabular*}{0.75\textwidth}{ | c | c | c | r | }
+  \hline
+  label 1 & label 2 & label 3 & label 4 \\
+  \hline 
+  item 1  & item 2  & item 3  & item 4  \\
+  \hline
+\end{tabular*<endfold id='1'>}</endfold id='1'>
+<endfold id='1'>\end</endfold id='1'>{center<endfold id='1'>}</endfold id='1'>
+
+
+<beginfold id='1'>\begin</beginfold id='1'>{tabularx}{1\textwidth}{ |>{\setlength\hsize{1\hsize}\centering}X|>{\setlength\hsize{1\hsize}\raggedleft}X@{} >{\setlength\hsize{1\hsize}\raggedright}X|>{\setlength\hsize{1\hsize}\centering}X| } 
+  \hline
+Label 1 & \multicolumn{2}{>{\centering\setlength\hsize{2\hsize} }X|}{Label 2} & Label 3\tabularnewline
+\hline 
+  123  & 123  & 456  & 123  \tabularnewline
+  \hline
+  123  & 123  & 456  & 123  \tabularnewline
+  \hline
+\end{tabularx<endfold id='1'>}</endfold id='1'>
+
+<beginfold id='1'>\begin</beginfold id='1'>{lstlisting}
+Write('Case insensitive ');
+Write('Pascal keywords.');
+\end{lstlisting<endfold id='1'>}</endfold id='1'>
+
+<beginfold id='1'>\begin</beginfold id='1'>{lstlisting}%[frame=single]
+Write('Case insensitive ');
+Write('Pascal keywords.');
+\end{lstlisting<endfold id='1'>}</endfold id='1'>
+
+<beginfold id='1'>\begin</beginfold id='1'>{lstlisting}[frame=single]
+Write('Case insensitive ');
+Write('Pascal keywords.');
+\end{lstlisting<endfold id='1'>}</endfold id='1'>
+
+<beginfold id='1'>\begin</beginfold id='1'>{lstlisting}[frame=single] % blah blah
+Write('Case insensitive ');
+Write('Pascal keywords.');
+\end{lstlisting<endfold id='1'>}</endfold id='1'>
+
+<beginfold id='1'>\begin</beginfold id='1'>{lstlisting}
+[frame=single] % blah blah
+Write('Case insensitive ');
+Write('Pascal keywords.');
+\end{lstlisting<endfold id='1'>}</endfold id='1'>
+
+<beginfold id='1'>\begin</beginfold id='1'>{minted}{python}
+def foo<beginfold id='19'>(</beginfold id='19'>x<endfold id='19'>)</endfold id='19'>:
+    return x
+<endfold id='1'>\end</endfold id='1'>{minted<endfold id='1'>}</endfold id='1'>
+
+<beginfold id='1'>\begin</beginfold id='1'>{minted}
+% blah blah
+{python}
+def foo<beginfold id='19'>(</beginfold id='19'>x<endfold id='19'>)</endfold id='19'>:
+    return x
+<endfold id='1'>\end</endfold id='1'>{minted<endfold id='1'>}</endfold id='1'>
+
+<beginfold id='1'>\begin</beginfold id='1'>{minted}[frame=lines]{python}
+def foo<beginfold id='19'>(</beginfold id='19'>x<endfold id='19'>)</endfold id='19'>:
+    return x
+<endfold id='1'>\end</endfold id='1'>{minted<endfold id='1'>}</endfold id='1'>
+
+<beginfold id='1'>\begin</beginfold id='1'>{minted}
+% plop
+[frame=lines,
+fontsize=\footnotesize
+]
+% ok
+{python}
+def foo<beginfold id='19'>(</beginfold id='19'>x<endfold id='19'>)</endfold id='19'>:
+    return x
+<endfold id='1'>\end</endfold id='1'>{minted<endfold id='1'>}</endfold id='1'>
+
+<beginfold id='1'>\begin</beginfold id='1'>{comment}
+This is a comment block.
+\end{comment<endfold id='1'>}</endfold id='1'>
+
+\documentclass{article}
+\usepackage{fancyvrb}
+
+\documentclass[12pt]{article}
+<beginfold id='1'>\begin</beginfold id='1'>{document}
+
+Text that has a footnote\footnote{This $i_s$ the <beginfold id='2'>\[</beginfold id='2'>i_s<endfold id='2'>\]</endfold id='2'> $<beginfold id='2'>$</beginfold id='2'>x_i<endfold id='2'>$$</endfold id='2'> \(x_i\)footnote}\addtocounter{footnote}{-1}\addtocounter{footnote}{-1} looks like this. Later text referring to same footnote\footnotemark uses the other command.
+
+<endfold id='1'>\end</endfold id='1'>{document<endfold id='1'>}</endfold id='1'>
+
+% A delimiter is not required before "\" in keywords of kind "\command" (see bug #413493)
+<beginfold id='1'>\begin</beginfold id='1'>{equation}123<endfold id='1'>\end</endfold id='1'>{equation<endfold id='1'>}</endfold id='1'>
+
+<beginfold id='1'>\begin</beginfold id='1'>{comment}Comment\end{comment<endfold id='1'>}</endfold id='1'>
+\iffalse text\fi normal text
+
+text<beginfold id='1'>\begin</beginfold id='1'>{tabular}text\end{tabular<endfold id='1'>}</endfold id='1'>
+text<beginfold id='1'>\begin</beginfold id='1'>{a}text<endfold id='1'>\end</endfold id='1'>{a<endfold id='1'>}</endfold id='1'>
+
+% Close brackets correctly in some commands (see bug #415384)
+\input{\a{}}
+\cites{ text { text } text }
+
+% Parentheses within [ ... ] (see bug #418979)
+\cite[eq. (1.1)]{some_reference}
+\cite[eq. \(x^n + y^n = z^n\)]{some reference}

@@ -1,0 +1,53 @@
+# comment
+
+include Makefile.in
+-include Makefile.doesntexist
+
+.PHONY: all
+
+all: target
+
+foo = bar $(var) \
+    $(baz) quux
+
+<beginfold id='2'>ifeq</beginfold id='2'> ($(CC),gcc)
+    bla=$(call func,param1,param2)
+<endfold id='2'></endfold id='2'><beginfold id='2'>else</beginfold id='2'> ifeq "x" "y"
+    $(error this seems wrong)
+<endfold id='2'></endfold id='2'><beginfold id='2'>else</beginfold id='2'>
+    libs=$(normal_libs)
+<endfold id='2'>endif</endfold id='2'>
+
+target1:
+        error
+
+target2: bla.cpp $@
+	$(CC) bla.c -o bla.o
+	$(CC) bla.o $< \
+	    -o bla.exe
+	@echo "hello"
+
+# String Substitution
+VAR := $(ANOTHER_VAR:%=%+1)
+
+rempl := x
+foo := a b c
+bar := foo
+hello := $($(bar):a=$(rempl))
+
+# Conditionals
+bar =
+foo = $(bar)
+<beginfold id='2'>ifdef</beginfold id='2'> bar
+frobozz = yes
+<endfold id='2'></endfold id='2'><beginfold id='2'>else</beginfold id='2'> ifdef foo
+frobozz = no
+<endfold id='2'>endif</endfold id='2'>
+
+error_type := 0
+check:
+<beginfold id='2'>ifeq</beginfold id='2'> ($(error_type),0)
+<endfold id='2'></endfold id='2'><beginfold id='2'>else</beginfold id='2'> ifeq ($(error_type),1)
+<endfold id='2'></endfold id='2'><beginfold id='2'>else</beginfold id='2'> ifeq ($(error_type),2)
+<endfold id='2'></endfold id='2'><beginfold id='2'>else</beginfold id='2'> ifeq ($(error_type),3)
+<endfold id='2'>endif</endfold id='2'>

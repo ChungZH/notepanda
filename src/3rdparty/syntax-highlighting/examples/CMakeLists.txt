@@ -1,0 +1,2 @@
+ecm_optional_add_subdirectory(codeeditor)
+ecm_optional_add_subdirectory(codepdfprinter)
