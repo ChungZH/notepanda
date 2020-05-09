@@ -46,10 +46,12 @@ message("| Welcome to contribute!                          |")
 message("|-------------------------------------------------|")
 message(" ")
 
-include_directories(dep/syntax-highlighting)
+include_directories(src/3rdparty/syntax-highlighting)
+include_directories(src/3rdparty/extra-cmake-modules)
 
 find_package(Qt5 COMPONENTS Widgets Svg REQUIRED)
-find_package(KF5SyntaxHighlighting REQUIRED)
+find_package(KF5SyntaxHighlighting)
+find_package(ECM)
 
 if(WIN32)
     set(GUI_TYPE WIN32)

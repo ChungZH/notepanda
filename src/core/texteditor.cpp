@@ -56,10 +56,34 @@ void TextEditor::open()
                          tr("Cannot open file: ") + file.errorString());
     return;
   }
+
+  const auto def = m_repository.definitionForFileName(fileName);
+  m_highlighter->setDefinition(def);
+
   emit changeTitle();
   QTextStream in(&file);
   QString text = in.readAll();
-  TextEditor::setPlainText(text);
+  setPlainText(text);
+  file.close();
+}
+
+void TextEditor::openFile(const QString &fileName)
+{
+  QFile file(fileName);
+  currentFile = fileName;
+  if (!file.open(QIODevice::ReadOnly | QFile::Text)) {
+    QMessageBox::warning(this, tr("Warning"),
+                         tr("Cannot open file: ") + file.errorString());
+    return;
+  }
+
+  const auto def = m_repository.definitionForFileName(fileName);
+  m_highlighter->setDefinition(def);
+
+  emit changeTitle();
+  QTextStream in(&file);
+  QString text = in.readAll();
+  setPlainText(text);
   file.close();
 }
 
@@ -206,9 +230,8 @@ void TextEditor::highlightCurrentLine()
   if (!isReadOnly()) {
     QTextEdit::ExtraSelection selection;
 
-    QColor lineColor = QColor(Qt::yellow).lighter(160);
-
-    selection.format.setBackground(lineColor);
+    selection.format.setBackground(QColor(m_highlighter->theme().editorColor(
+        KSyntaxHighlighting::Theme::CurrentLine)));
     selection.format.setProperty(QTextFormat::FullWidthSelection, true);
     selection.cursor = textCursor();
     selection.cursor.clearSelection();

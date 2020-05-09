@@ -1,9 +1,9 @@
 #ifndef TEXTEDITOR_H
 #define TEXTEDITOR_H
 
-#include <QPlainTextEdit>
-
 #include <repository.h>
+
+#include <QPlainTextEdit>
 
 QT_BEGIN_NAMESPACE
 class QPaintEvent;
@@ -28,6 +28,7 @@ class TextEditor : public QPlainTextEdit
   void lineNumberAreaPaintEvent(QPaintEvent *event);
   int lineNumberAreaWidth();
   QWidget *lineNumberArea;
+  void openFile(const QString &fileName);
 
  protected:
   void resizeEvent(QResizeEvent *event) override;
@@ -47,7 +48,7 @@ class TextEditor : public QPlainTextEdit
   void highlightCurrentLine();
   void updateLineNumberArea(const QRect &rect, int dy);
 
-private:
+ private:
   void setTheme(const KSyntaxHighlighting::Theme &theme);
   KSyntaxHighlighting::Repository m_repository;
   KSyntaxHighlighting::SyntaxHighlighter *m_highlighter;
