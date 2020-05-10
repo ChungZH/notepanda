@@ -49,6 +49,7 @@ message(" ")
 add_subdirectory(src/3rdparty/syntax-highlighting)
 
 find_package(Qt5 COMPONENTS Widgets Svg REQUIRED)
+include(cmake/KF5SyntaxHighlightingConfig.cmake)
 find_package(KF5SyntaxHighlighting)
 find_package(ECM)
 
