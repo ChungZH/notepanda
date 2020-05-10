@@ -106,7 +106,7 @@ jobs:
           cd ../../
           mkdir build
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release -A ${{ matrix.cmakearch }}
+          cmake .. -DCMAKE_BUILD_TYPE=Release -A ${{ matrix.cmakearch }} -DCMAKE_PREFIX_PATH=C:
           cmake --build .
           cmake --install .
           cd Debug
