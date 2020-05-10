@@ -111,7 +111,7 @@ jobs:
           cd extra-cmake-modules
           mkdir build
           cd build
-          cmake .. -GNinja "NMake Makefiles" -DCMAKE_INSTALL_PREFIX=C: 
+          cmake .. -G "NMake Makefiles" -DCMAKE_INSTALL_PREFIX=C: 
           nmake install
           cd ../../
           mkdir build
