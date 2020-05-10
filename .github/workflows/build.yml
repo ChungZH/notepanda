@@ -57,7 +57,7 @@ jobs:
           CC: /usr/bin/gcc-9
           CXX: /usr/bin/g++-9
         run: |
-          sudo apt install libgl-dev libx11-dev libxkbcommon-x11-dev
+          sudo apt install libgl-dev libx11-dev libxkbcommon-x11-dev extra-cmake-modules
           mkdir build
           cd build
           cmake .. -DCMAKE_INSTALL_PREFIX=./AppDir/usr -DCMAKE_BUILD_TYPE=Release
@@ -97,6 +97,11 @@ jobs:
           CC: cl.exe
           CXX: cl.exe
         run: |
+          git clone git://anongit.kde.org/extra-cmake-modules
+          cd extra-cmake-modules
+          mkdir build
+          cd build
+          cmake .. -G "NMake Makefiles" -DCMAKE_INSTALL_PREFIX=C: nmake install
           mkdir build
           cd build
           cmake .. -DCMAKE_BUILD_TYPE=Release -A ${{ matrix.cmakearch }}
