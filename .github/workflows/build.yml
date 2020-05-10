@@ -35,6 +35,12 @@ jobs:
           # 14.1 is for vs2017, 14.2 is vs2019, following the upstream vcpkg build from Qv2ray-deps repo
           toolset: 14.25
           arch: ${{ matrix.arch }}
+      - name: Install Python 3.7 version
+        if: matrix.platform == 'windows-latest'
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.7'
+          architecture: ${{ matrix.arch }}
       # Install & Cache Qt---------------------------------------
       - name: Cache Qt
         id: cache-qt
@@ -57,10 +63,10 @@ jobs:
           CC: /usr/bin/gcc-9
           CXX: /usr/bin/g++-9
         run: |
-          sudo apt install libgl-dev libx11-dev libxkbcommon-x11-dev extra-cmake-modules
+          sudo apt install libgl-dev libx11-dev libxkbcommon-x11-dev extra-cmake-modules ninja-build
           mkdir build
           cd build
-          cmake .. -DCMAKE_INSTALL_PREFIX=./AppDir/usr -DCMAKE_BUILD_TYPE=Release
+          cmake .. -GNinja -DCMAKE_INSTALL_PREFIX=./AppDir/usr -DCMAKE_BUILD_TYPE=Release
           cmake --build .
           cmake --install .
       - name: Linux - ${{ matrix.qt_version }} - Generating AppImage
@@ -90,6 +96,10 @@ jobs:
           name: Notepanda-${{ github.sha }}.linux-${{ matrix.arch }}.qt${{ matrix.qt_version }}.AppImage
           path: build/Notepanda.AppImage
       # Windows----------------------------------------------------------------------
+      - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Build preparation - Download Dependencies
+        shell: bash
+        run: |
+         choco install -y ninja
       - name: Windows - ${{ matrix.qt_version }} - Generate Dependencies and Build
         shell: bash
         if: matrix.platform == 'windows-latest'
@@ -101,12 +111,12 @@ jobs:
           cd extra-cmake-modules
           mkdir build
           cd build
-          cmake .. -G "NMake Makefiles" -DCMAKE_INSTALL_PREFIX=C: 
+          cmake .. -GNinja "NMake Makefiles" -DCMAKE_INSTALL_PREFIX=C: 
           nmake install
           cd ../../
           mkdir build
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release -A ${{ matrix.cmakearch }} -DCMAKE_PREFIX_PATH=C:
+          cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -A ${{ matrix.cmakearch }} -DCMAKE_PREFIX_PATH=C:
           cmake --build .
           cmake --install .
           cd Debug
@@ -116,15 +126,13 @@ jobs:
         shell: bash
         if: matrix.platform == 'macos-latest'
         run: |
+          brew install ninja
           mkdir build
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_DEPLOYMENT_TARGET=10.13 -DDS_STORE_SCRIPT=ON
+          cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_DEPLOYMENT_TARGET=10.13 -DDS_STORE_SCRIPT=ON
           cmake --build . 
           sudo cmake --install .
-          brew install tree
-          tree .
           macdeployqt notepanda.app -dmg
-          tree .
       # --------------------------------------------------------
       - name: macOS - ${{ matrix.qt_version }} - Uploading Artifact
         if: matrix.platform == 'macos-latest'

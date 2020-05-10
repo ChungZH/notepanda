@@ -145,6 +145,6 @@ install(FILES "${CMAKE_CURRENT_BINARY_DIR}/ksyntaxhighlighting_version.h"
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
 # add clang-format target for all our real source files
-file(GLOB ALL_CLANG_FORMAT_TEST_FILES autotests/*.cpp autotests/*.h)
-file(GLOB_RECURSE ALL_CLANG_FORMAT_SOURCE_FILES examples/*.cpp examples/*.h src/*.cpp src/*.h)
-kde_clang_format(${ALL_CLANG_FORMAT_TEST_FILES} ${ALL_CLANG_FORMAT_SOURCE_FILES})
+# file(GLOB ALL_CLANG_FORMAT_TEST_FILES autotests/*.cpp autotests/*.h)
+# file(GLOB_RECURSE ALL_CLANG_FORMAT_SOURCE_FILES examples/*.cpp examples/*.h src/*.cpp src/*.h)
+# kde_clang_format(${ALL_CLANG_FORMAT_TEST_FILES} ${ALL_CLANG_FORMAT_SOURCE_FILES})
