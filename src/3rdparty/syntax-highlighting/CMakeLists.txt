@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
 
-add_subdirectory(extra-cmake-modules)
-
 set(KF5_VERSION "5.70.0")
 project(KSyntaxHighlighting VERSION ${KF5_VERSION})
 
