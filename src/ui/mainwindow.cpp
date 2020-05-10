@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
   ToolBar->addAction(ui->actionQuit);
   ToolBar->addAction(ui->actionAbout);
 
-  ToolBar->setStyleSheet("background-color: #ffffff");
+  // ToolBar->setStyleSheet("background-color: #ffffff");
 
   QSize *qs = new QSize;
   ToolBar->setIconSize(qs->scaled(26, 26, Qt::IgnoreAspectRatio));

@@ -1,17 +1,18 @@
 #include "aboutwindow.h"
-#include "ui_aboutwindow.h"
 
-#include <QApplication>
 #include <QAction>
-#include <QFile>
+#include <QApplication>
 #include <QDebug>
+#include <QFile>
 #include <QTextStream>
 
+#include "ui_aboutwindow.h"
+
 AboutWindow::AboutWindow(QWidget *parent)
-      : QDialog(parent), ui(new Ui::AboutWindow)
+    : QDialog(parent), ui(new Ui::AboutWindow)
 {
   ui->setupUi(this);
-  setWindowTitle("About Notepanda");
+  setWindowTitle("About - Notepanda");
 
   QFile ver(":/asset/makespec/VERSION");
   QFile verSuf(":/asset/makespec/VERSIONSUFFIX");
@@ -24,7 +25,8 @@ AboutWindow::AboutWindow(QWidget *parent)
   QTextStream t_vSf(&verSuf);
   QTextStream t_bVe(&buildVer);
 
-  QString verString = t_ver.readAll() + t_vSf.readAll() + " BV" + t_bVe.readAll();
+  QString verString =
+      t_ver.readAll() + t_vSf.readAll() + " BV" + t_bVe.readAll();
 
   ui->label_5->setText(verString);
 
@@ -36,5 +38,4 @@ AboutWindow::AboutWindow(QWidget *parent)
   ui->AboutQt->setDefaultAction(a_AboutQt);
 
   connect(a_AboutQt, &QAction::triggered, this, &QApplication::aboutQt);
-
 }
