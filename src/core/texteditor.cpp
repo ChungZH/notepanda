@@ -24,7 +24,7 @@ TextEditor::TextEditor(QWidget *parent)
 {
   // TODO: Dark & Light
   setTheme(
-      m_repository.defaultTheme(KSyntaxHighlighting::Repository::DarkTheme));
+      m_repository.defaultTheme(KSyntaxHighlighting::Repository::LightTheme));
   // Line number area
   lineNumberArea = new LineNumberArea(this);
 
@@ -248,7 +248,22 @@ void TextEditor::highlightCurrentLine()
 void TextEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
 {
   QPainter painter(lineNumberArea);
-  // painter.fillRect(event->rect(), Qt::lightGray);
+  QColor lineNumberAreaBackgroundColor;
+  if (QColor(KSyntaxHighlighting::Theme::BackgroundColor).lightness() < 128) {
+    // light
+    lineNumberAreaBackgroundColor = Qt::lightGray;
+    lineNumberAreaBackgroundColor.setAlphaF(0.75);
+    m_lineNumbersColor = Qt::darkGray;
+    m_lineNumbersColor.setAlphaF(0.9);
+  } else {
+    // dark
+    lineNumberAreaBackgroundColor = KSyntaxHighlighting::Theme::BackgroundColor;
+    lineNumberAreaBackgroundColor.setAlphaF(0.8);
+    m_lineNumbersColor = Qt::lightGray;
+    m_lineNumbersColor.setAlphaF(0.3);
+  }
+
+  painter.fillRect(event->rect(), lineNumberAreaBackgroundColor);
 
   //![extraAreaPaintEvent_0]
 
@@ -264,9 +279,9 @@ void TextEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
   while (block.isValid() && top <= event->rect().bottom()) {
     if (block.isVisible() && bottom >= event->rect().top()) {
       QString number = QString::number(blockNumber + 1);
-      painter.setPen(Qt::black);
+      painter.setPen(m_lineNumbersColor);
       painter.drawText(0, top, lineNumberArea->width(), fontMetrics().height(),
-                       Qt::AlignRight, number);
+                       Qt::AlignCenter, number);
     }
 
     block = block.next();
@@ -286,6 +301,7 @@ void TextEditor::setTheme(const KSyntaxHighlighting::Theme &theme)
     pal.setColor(QPalette::Highlight,
                  theme.editorColor(KSyntaxHighlighting::Theme::TextSelection));
   }
+
   setPalette(pal);
 
   m_highlighter->setTheme(theme);

@@ -35,8 +35,6 @@ MainWindow::MainWindow(QWidget *parent)
   this->addToolBar(Qt::LeftToolBarArea, ToolBar);
 
   plainTextEdit = new TextEditor;
-  plainTextEdit->lineNumberArea->setForegroundRole(QPalette::HighlightedText);
-  plainTextEdit->lineNumberArea->setBackgroundRole(QPalette::Base);
   this->setCentralWidget(plainTextEdit);
 
   connect(ui->actionNew, &QAction::triggered, plainTextEdit,

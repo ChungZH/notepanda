@@ -27,7 +27,7 @@ class TextEditor : public QPlainTextEdit
   QString currentFile;
   void lineNumberAreaPaintEvent(QPaintEvent *event);
   int lineNumberAreaWidth();
-  QWidget *lineNumberArea;
+
   void openFile(const QString &fileName);
 
  protected:
@@ -52,6 +52,8 @@ class TextEditor : public QPlainTextEdit
   void setTheme(const KSyntaxHighlighting::Theme &theme);
   KSyntaxHighlighting::Repository m_repository;
   KSyntaxHighlighting::SyntaxHighlighter *m_highlighter;
+  QWidget *lineNumberArea;
+  QColor m_lineNumbersColor;
 
  signals:
   void changeTitle();

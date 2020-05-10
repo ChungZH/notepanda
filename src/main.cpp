@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
 {
   QApplication App(argc, argv);
   QApplication::setStyle(QStyleFactory::create("Fusion"));
+
   App.setOrganizationName("ChungZH");
   App.setApplicationName("Notepanda");
   App.setApplicationVersion("0.0.1-rc.1");
