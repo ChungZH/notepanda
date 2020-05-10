@@ -101,7 +101,9 @@ jobs:
           cd extra-cmake-modules
           mkdir build
           cd build
-          cmake .. -G "NMake Makefiles" -DCMAKE_INSTALL_PREFIX=C: nmake install
+          cmake .. -G "NMake Makefiles" -DCMAKE_INSTALL_PREFIX=C: 
+          nmake install
+          cd ../../
           mkdir build
           cd build
           cmake .. -DCMAKE_BUILD_TYPE=Release -A ${{ matrix.cmakearch }}
