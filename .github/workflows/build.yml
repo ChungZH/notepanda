@@ -12,7 +12,7 @@ jobs:
         include:
           - platform: windows-latest
             arch: x86
-            qtarch: win32_msvc2017
+            qtarch: win32_msvc2015
             cmakearch: Win32
           - platform: windows-latest
             arch: x64
@@ -33,7 +33,7 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
         with:
           # 14.1 is for vs2017, 14.2 is vs2019, following the upstream vcpkg build from Qv2ray-deps repo
-          toolset: 14.2
+          toolset: 14.25
           arch: ${{ matrix.arch }}
       # Install & Cache Qt---------------------------------------
       - name: Cache Qt
