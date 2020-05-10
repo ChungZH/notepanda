@@ -1,1 +1,1 @@
-set(KF5SyntaxHighlighting_DIR ${CMAKE_SOURCE_DIR}/3rdparty/syntax-highlighting)
+set(KF5SyntaxHighlighting_DIR ${CMAKE_SOURCE_DIR}/src/3rdparty/syntax-highlighting)
