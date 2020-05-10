@@ -94,12 +94,15 @@ add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050d00)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 add_subdirectory(data)
 add_subdirectory(src)
-if(TARGET Qt5::Gui)
-    add_subdirectory(examples)
-    if (BUILD_TESTING)
-        add_subdirectory(autotests)
-    endif()
-endif()
+
+# ATTENTION !
+
+#if(TARGET Qt5::Gui)
+    #add_subdirectory(examples)
+    #if (BUILD_TESTING)
+        #add_subdirectory(autotests)
+    #endif()
+#endif()
 
 #
 # CMake package config file generation
