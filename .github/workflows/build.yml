@@ -96,10 +96,6 @@ jobs:
           name: Notepanda-${{ github.sha }}.linux-${{ matrix.arch }}.qt${{ matrix.qt_version }}.AppImage
           path: build/Notepanda.AppImage
       # Windows----------------------------------------------------------------------
-      - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Build preparation - Download Dependencies
-        shell: bash
-        run: |
-         choco install -y ninja
       - name: Windows - ${{ matrix.qt_version }} - Generate Dependencies and Build
         shell: bash
         if: matrix.platform == 'windows-latest'
@@ -116,7 +112,7 @@ jobs:
           cd ../../
           mkdir build
           cd build
-          cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -A ${{ matrix.cmakearch }} -DCMAKE_PREFIX_PATH=C:
+          cmake .. -DCMAKE_BUILD_TYPE=Release -A ${{ matrix.cmakearch }} -DCMAKE_PREFIX_PATH=C:
           cmake --build .
           cmake --install .
           cd Debug
