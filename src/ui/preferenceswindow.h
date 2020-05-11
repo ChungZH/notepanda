@@ -6,16 +6,14 @@
 
 #include "ui_preferenceswindow.h"
 
-class PreferencesWindow
-        : public QDialog
-        , private Ui::PreferencesWindow
+class PreferencesWindow : public QDialog, private Ui::PreferencesWindow
 {
-    Q_OBJECT
-public:
-    PreferencesWindow(QWidget *parent = nullptr);
+  Q_OBJECT
+ public:
+  PreferencesWindow(QWidget *parent = nullptr);
 
-   private:
-    Ui::PreferencesWindow *ui;
+ private:
+  Ui::PreferencesWindow *ui;
 };
 
-#endif // PREFERENCESWINDOW_H
+#endif  // PREFERENCESWINDOW_H
