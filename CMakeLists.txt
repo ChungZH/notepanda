@@ -50,8 +50,7 @@ add_subdirectory(src/3rdparty/syntax-highlighting)
 
 find_package(Qt5 COMPONENTS Widgets Svg REQUIRED)
 include(cmake/KF5SyntaxHighlightingConfig.cmake)
-find_package(KF5SyntaxHighlighting)
-find_package(ECM)
+find_package(KF5SyntaxHighlighting REQUIRED)
 
 if(WIN32)
     set(GUI_TYPE WIN32)

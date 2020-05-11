@@ -12,7 +12,7 @@ endif()
 include(KDEInstallDirs)
 include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
 include(KDECMakeSettings)
-include(KDEClangFormat)
+#include(KDEClangFormat)
 
 include(FeatureSummary)
 include(GenerateExportHeader)
@@ -95,7 +95,7 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 add_subdirectory(data)
 add_subdirectory(src)
 
-# ATTENTION !
+# ATTENTION!
 
 #if(TARGET Qt5::Gui)
     #add_subdirectory(examples)
