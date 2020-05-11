@@ -26,20 +26,18 @@ jobs:
     steps:
       - name: Checking out sources
         uses: actions/checkout@master
-      - name: Install MSVC compiler
-        if: matrix.platform == 'windows-latest'
-        uses: ilammy/msvc-dev-cmd@v1
-        with: 
-          # 14.1 is for vs2017, 14.2 is vs2019, following the upstream vcpkg build from Qv2ray-deps repo
-          toolset: 14.2
-          arch: ${{ matrix.arch }}
       - name: Install Python 3.7 version
         if: matrix.platform == 'windows-latest'
         uses: actions/setup-python@v1
         with:
           python-version: '3.7'
           architecture: ${{ matrix.arch }}
-      # Install & Cache Qt---------------------------------------
+      - name: Install MSVC compiler
+        if: matrix.platform == 'windows-latest'
+        uses: ilammy/msvc-dev-cmd@v1
+        with: 
+          toolset: 14.2
+          arch: ${{ matrix.arch }}
       - name: Cache Qt
         id: cache-qt
         uses: actions/cache@v1
@@ -47,11 +45,11 @@ jobs:
           path: ../Qt
           key: QtCache-${{ matrix.platform }}-${{ matrix.arch }}-${{ matrix.qt_version }}
       - name: Installing Qt - ${{ matrix.arch }}
-        uses: jurplel/install-qt-action@v2.5.0
+        uses: jurplel/install-qt-action@v2
         with:
           version: ${{ matrix.qt_version }}
           arch: ${{ matrix.qtarch }}
-          mirror: "http://mirrors.ocf.berkeley.edu/qt/"
+          mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
           cached: ${{ steps.cache-qt.outputs.cache-hit }}
       # Linux------------------------------------------
       - name: Linux - ${{ matrix.qt_version }} - Generate Dependencies and Build
