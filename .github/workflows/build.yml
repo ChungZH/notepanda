@@ -113,7 +113,7 @@ jobs:
           cd src/3rdparty/syntax-highlighting
           mkdir build
           cd build
-          cmake .. -GNinja
+          cmake ..
           cmake --build .
           cmake --install .
           cd ../../../../
@@ -130,9 +130,16 @@ jobs:
         if: matrix.platform == 'macos-latest'
         run: |
           brew install ninja
+          cd src/3rdparty/syntax-highlighting
           mkdir build
           cd build
-          cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_DEPLOYMENT_TARGET=10.13 -DDS_STORE_SCRIPT=ON
+          cmake .. -GNinja
+          cmake --build .
+          cmake --install .
+          cd ../../../../
+          mkdir build
+          cd build
+          cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_DEPLOYMENT_TARGET=10.13 -DDS_STORE_SCRIPT=ON -DCMAKE_PREFIX_PATH=../src/3rdparty/syntax-highlighting/build
           cmake --build . 
           sudo cmake --install .
           macdeployqt notepanda.app -dmg
