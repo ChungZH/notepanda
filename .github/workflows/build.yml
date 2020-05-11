@@ -105,8 +105,9 @@ jobs:
           cd extra-cmake-modules
           mkdir build
           cd build
-          cmake .. -G "NMake Makefiles"
-          nmake install
+          cmake ..
+          cmake --build .
+          cmake --install .
           cd ../../
           cd src/3rdparty/syntax-highlighting
           mkdir build
