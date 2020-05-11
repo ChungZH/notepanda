@@ -105,13 +105,13 @@ jobs:
           cd extra-cmake-modules
           mkdir build
           cd build
-          cmake .. -G "NMake Makefiles" -DCMAKE_INSTALL_PREFIX=C: 
+          cmake .. -G "NMake Makefiles"
           nmake install
           cd ../../
           cd src/3rdparty/syntax-highlighting
           mkdir build
           cd build
-          cmake .. -DCMAKE_PREFIX_PATH=C:
+          cmake .. -DCMAKE_PREFIX_PATH=../../../extra-cmake-modules/build
           cmake --build .
           cmake --install .
           cd ../../../../
