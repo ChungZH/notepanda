@@ -29,9 +29,9 @@ jobs:
       - name: Install MSVC compiler
         if: matrix.platform == 'windows-latest'
         uses: ilammy/msvc-dev-cmd@v1
-        with:
+        with: 
           # 14.1 is for vs2017, 14.2 is vs2019, following the upstream vcpkg build from Qv2ray-deps repo
-          toolset: 14.25
+          toolset: 14.2
           arch: ${{ matrix.arch }}
       - name: Install Python 3.7 version
         if: matrix.platform == 'windows-latest'
@@ -61,7 +61,7 @@ jobs:
           CC: /usr/bin/gcc-9
           CXX: /usr/bin/g++-9
         run: |
-          sudo apt install libgl-dev libx11-dev libxkbcommon-x11-dev extra-cmake-modules ninja-build
+          sudo apt install libkf5syntaxhighlighting-dev libgl-dev libx11-dev libxkbcommon-x11-dev extra-cmake-modules ninja-build
           mkdir build
           cd build
           cmake .. -GNinja -DCMAKE_INSTALL_PREFIX=./AppDir/usr -DCMAKE_BUILD_TYPE=Release
