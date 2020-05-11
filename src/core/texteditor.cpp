@@ -1,11 +1,12 @@
 #include "texteditor.h"
 
 #include <QDebug>
-#include <QStyle>
 #include <QFile>
 #include <QFileDialog>
+#include <QFont>
 #include <QMessageBox>
 #include <QPainter>
+#include <QStyle>
 #include <QTextBlock>
 #include <QTextStream>
 
@@ -24,6 +25,8 @@ TextEditor::TextEditor(QWidget *parent) : QPlainTextEdit(parent)
 
   updateLineNumberAreaWidth(0);
   highlightCurrentLine();
+
+  TextEditor::setFont(QFontDatabase::systemFont(QFontDatabase::FixedFont));
 }
 
 void TextEditor::newDocument()
@@ -100,11 +103,11 @@ void TextEditor::print()
   QPrinter printDev;
 #if QT_CONFIG(printdialog)
   QPrintDialog dialog(&printDev, this);
-  if (dialog.exec() == QDialog::Rejected)
-    return;
-#endif // QT_CONFIG(printdialog)
-  QPlainTextEdit:print(&printDev);
-#endif // QT_CONFIG(printer)
+  if (dialog.exec() == QDialog::Rejected) return;
+#endif  // QT_CONFIG(printdialog)
+QPlainTextEdit:
+  print(&printDev);
+#endif  // QT_CONFIG(printer)
 }
 
 void TextEditor::undo() { QPlainTextEdit::undo(); }
@@ -164,7 +167,8 @@ void TextEditor::updateLineNumberArea(const QRect &rect, int dy)
   if (dy)
     lineNumberArea->scroll(0, dy);
   else
-    lineNumberArea->update(0, rect.y(), lineNumberArea->sizeHint().width(), rect.height());
+    lineNumberArea->update(0, rect.y(), lineNumberArea->sizeHint().width(),
+                           rect.height());
   if (rect.contains(viewport()->rect())) updateLineNumberAreaWidth(0);
 }
 
