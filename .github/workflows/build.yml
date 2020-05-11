@@ -110,9 +110,16 @@ jobs:
           cmake .. -G "NMake Makefiles" -DCMAKE_INSTALL_PREFIX=C: 
           nmake install
           cd ../../
+          cd src/3rdparty/syntax-highlighting
           mkdir build
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release -A ${{ matrix.cmakearch }} -DCMAKE_PREFIX_PATH=C:
+          cmake .. -GNinja
+          cmake --build .
+          cmake --install .
+          cd ../../../../
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_BUILD_TYPE=Release -A ${{ matrix.cmakearch }} -DCMAKE_PREFIX_PATH=C: -DCMAKE_PREFIX_PATH=../src/3rdparty/syntax-highlighting/build
           cmake --build .
           cmake --install .
           cd Debug
