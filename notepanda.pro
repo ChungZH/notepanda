@@ -16,6 +16,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/core/configmanager.cpp \
+    src/core/settings.cpp \
     src/main.cpp \
     src/ui/aboutwindow.cpp \
     src/ui/mainwindow.cpp \
@@ -23,6 +25,8 @@ SOURCES += \
     src/ui/preferenceswindow.cpp
 
 HEADERS += \
+    src/core/configmanager.h \
+    src/core/settings.h \
     src/ui/aboutwindow.h \
     src/ui/linenumberarea.h \
     src/ui/mainwindow.h \
