@@ -17,7 +17,7 @@ jobs:
             arch: x64
             qtarch: win64_msvc2017_64
         exclude:
-          - platform: ubuntu-16.04
+          - platform: ubuntu-18.04
             arch: x86
           - platform: macos-latest
             arch: x86
@@ -53,7 +53,7 @@ jobs:
           cached: ${{ steps.cache-qt.outputs.cache-hit }}
       # Linux------------------------------------------
       - name: Linux - ${{ matrix.qt_version }} - Generate Dependencies and Build
-        if: matrix.platform == 'ubuntu-16.04'
+        if: matrix.platform == 'ubuntu-18.04'
         shell: bash
         env:
           CC: /usr/bin/gcc-9
@@ -66,7 +66,7 @@ jobs:
           cmake --build .
           cmake --install .
       - name: Linux - ${{ matrix.qt_version }} - Generating AppImage
-        if: matrix.platform == 'ubuntu-16.04'
+        if: matrix.platform == 'ubuntu-18.04'
         run: |
           cd build
           wget https://github.com/probonopd/linuxdeployqt/releases/download/6/linuxdeployqt-6-x86_64.AppImage
@@ -86,7 +86,7 @@ jobs:
           squashfs-root/AppRun AppDir/usr/share/applications/notepanda.desktop -appimage -no-strip -always-overwrite
           mv ./Notepanda*.AppImage ./Notepanda.AppImage
       - name: Linux - ${{ matrix.qt_version }} - Uploading artifact
-        if: matrix.platform == 'ubuntu-16.04'
+        if: matrix.platform == 'ubuntu-18.04'
         uses: actions/upload-artifact@master
         with:
           name: Notepanda-${{ github.sha }}.linux-${{ matrix.arch }}.qt${{ matrix.qt_version }}.AppImage
