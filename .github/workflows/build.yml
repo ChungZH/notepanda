@@ -111,7 +111,7 @@ jobs:
           cd src/3rdparty/syntax-highlighting
           mkdir build
           cd build
-          cmake .. -DCMAKE_PREFIX_PATH=../../../extra-cmake-modules/build
+          cmake .. -DCMAKE_PREFIX_PATH=../../../../extra-cmake-modules/build
           cmake --build .
           cmake --install .
           cd ../../../../
