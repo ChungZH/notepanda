@@ -99,23 +99,22 @@ jobs:
           CC: cl.exe
           CXX: cl.exe
         run: |
-          git clone git://anongit.kde.org/extra-cmake-modules
-          cd extra-cmake-modules
+          cd src/3rdparty/syntax-highlighting/extra-cmake-modules
           mkdir build
           cd build
-          cmake .. -G "NMake Makefiles"
-          nmake install
+          cmake .. 
+          cmake --build .
+          cmake --install .
           cd ../../
-          cd src/3rdparty/syntax-highlighting
           mkdir build
           cd build
-          cmake .. -DCMAKE_PREFIX_PATH=../../../../extra-cmake-modules/build
+          cmake .. -DCMAKE_PREFIX_PATH=../extra-cmake-modules/build
           cmake --build .
           cmake --install .
           cd ../../../../
           mkdir build
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release -A ${{ matrix.cmakearch }} -DCMAKE_PREFIX_PATH=C: -DCMAKE_PREFIX_PATH=../src/3rdparty/syntax-highlighting/build
+          cmake .. -DCMAKE_BUILD_TYPE=Release -A ${{ matrix.cmakearch }} -DCMAKE_PREFIX_PATH=../src/3rdparty/syntax-highlighting/extra-cmake-modules/build -DCMAKE_PREFIX_PATH=../src/3rdparty/syntax-highlighting/build
           cmake --build .
           cmake --install .
           cd Debug
