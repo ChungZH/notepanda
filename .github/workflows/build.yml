@@ -119,6 +119,19 @@ jobs:
           cmake --install .
           cd Debug
           windeployqt notepanda.exe
+      - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - DEBUG
+          if: matrix.platform == 'windows-latest'
+          if: ${{ failure() }}
+          uses: DuckSoft/create-7z-action@v1.0
+          with:
+            pathSource: ./
+            pathTarget: ./BUGBUGBUG.7z
+      - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Uploading DEBUG
+        if: matrix.platform == 'windows-latest'
+        uses: actions/upload-artifact@master
+        with:
+          name: BBUUGG.7z
+          path: BUGBUGBUG.7z
       #---------------------------------------------------------
       - name: macOS - ${{ matrix.qt_version }} - Generate Dependencies and Build
         shell: bash
@@ -158,3 +171,4 @@ jobs:
         with:
           name: Notepanda-${{ github.sha }}.Windows-${{ matrix.arch }}.qt${{ matrix.qt_version }}.7z
           path: release.7z
+
