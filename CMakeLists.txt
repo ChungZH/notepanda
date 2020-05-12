@@ -69,8 +69,6 @@ set(SOURCES
     src/ui/preferenceswindow.ui
     src/core/configmanager.cpp
     src/core/configmanager.h
-    src/core/settings.cpp
-    src/core/settings.h
     src/core/texteditor.cpp
     src/core/texteditor.h
     assets/notepanda.rc

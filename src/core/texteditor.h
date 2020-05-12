@@ -43,7 +43,7 @@ class TextEditor : public QPlainTextEdit
   void updateLineNumberArea(const QRect &rect, int dy);
 
  private:
-  ConfigManager cm;
+  ConfigManager *cm;
 
  signals:
   void changeTitle();

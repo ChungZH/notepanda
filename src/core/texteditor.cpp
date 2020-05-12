@@ -26,7 +26,8 @@ TextEditor::TextEditor(QWidget *parent) : QPlainTextEdit(parent)
   updateLineNumberAreaWidth(0);
   highlightCurrentLine();
 
-  TextEditor::setFont(cm.editorFontFamily);
+  cm = new ConfigManager(this);
+  TextEditor::setFont(cm->getEditorFontFamily());
 }
 
 void TextEditor::newDocument()

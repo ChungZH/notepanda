@@ -17,7 +17,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     src/core/configmanager.cpp \
-    src/core/settings.cpp \
     src/main.cpp \
     src/ui/aboutwindow.cpp \
     src/ui/mainwindow.cpp \
@@ -26,7 +25,6 @@ SOURCES += \
 
 HEADERS += \
     src/core/configmanager.h \
-    src/core/settings.h \
     src/ui/aboutwindow.h \
     src/ui/linenumberarea.h \
     src/ui/mainwindow.h \
