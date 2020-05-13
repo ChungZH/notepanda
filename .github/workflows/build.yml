@@ -54,17 +54,37 @@ jobs:
           python-version: '3.7'
           architecture: ${{ matrix.arch }}
       # Linux------------------------------------------
-      - name: Linux - ${{ matrix.qt_version }} - Generate Dependencies and Build
+      - name: Linux - Install packages
         if: matrix.platform == 'ubuntu-18.04'
         shell: bash
         env:
           CC: /usr/bin/gcc-9
           CXX: /usr/bin/g++-9
         run: |
-          sudo apt install libkf5syntaxhighlighting-dev libgl-dev libx11-dev libxkbcommon-x11-dev extra-cmake-modules ninja-build
+          sudo apt install libgl-dev libx11-dev libxkbcommon-x11-dev ninja-build
+      - name: Linux - Build ecm
+        if: matrix.platform == 'ubuntu-18.04'
+        run: |
+          cd src/3rdparty/extra-cmake-modules
           mkdir build
           cd build
-          cmake .. -GNinja -DCMAKE_INSTALL_PREFIX=./AppDir/usr -DCMAKE_BUILD_TYPE=Release
+          cmake .. -GNinja -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
+          cmake --build .
+          cmake --build . --target install
+      - name: Linux - Build SyntaxHighlighting
+        if: matrix.platform == 'ubuntu-18.04'
+        run: |
+          cd src/3rdparty/syntax-highlighting
+          mkdir build
+          cd build
+          cmake .. -GNinja -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
+          cmake --build .
+          cmake --build . --target install
+      - name: Linux - ${{ matrix.qt_version }} - Generate Dependencies and Build
+        run: | 
+          mkdir build
+          cd build
+          cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release
           cmake --build .
           cmake --install .
       - name: Linux - ${{ matrix.qt_version }} - Generating AppImage
