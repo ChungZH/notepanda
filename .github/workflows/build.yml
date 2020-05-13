@@ -28,21 +28,12 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: 'recursive'
-      - name: Install Python 3.7 version
-        if: matrix.platform == 'windows-latest'
-        uses: actions/setup-python@v1
-        with:
-          python-version: '3.7'
-          architecture: ${{ matrix.arch }}
       - name: Install MSVC compiler
-        if: matrix.platform == 'windows-latest'
         uses: ilammy/msvc-dev-cmd@v1
         with: 
+          # 14.1 is for vs2017, 14.2 is vs2019, following the upstream vcpkg build from Qv2ray-deps repo
           toolset: 14.2
           arch: ${{ matrix.arch }}
-      - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Build preparation - Download Dependencies
-        run: |
-         choco install -y ninja
       - name: Cache Qt
         id: cache-qt
         uses: actions/cache@v1
@@ -56,6 +47,12 @@ jobs:
           arch: ${{ matrix.qtarch }}
           mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
           cached: ${{ steps.cache-qt.outputs.cache-hit }}
+      - name: Install Python 3.7 version
+        if: matrix.platform == 'windows-latest'
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.7'
+          architecture: ${{ matrix.arch }}
       # Linux------------------------------------------
       - name: Linux - ${{ matrix.qt_version }} - Generate Dependencies and Build
         if: matrix.platform == 'ubuntu-18.04'
@@ -97,6 +94,9 @@ jobs:
           name: Notepanda-${{ github.sha }}.linux-${{ matrix.arch }}.qt${{ matrix.qt_version }}.AppImage
           path: build/Notepanda.AppImage
       # Windows----------------------------------------------------------------------
+      - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Build preparation - Download Dependencies
+        run: |
+         choco install -y ninja
       - name: Win - Build ecm
         run: |
           cd src/3rdparty/extra-cmake-modules
