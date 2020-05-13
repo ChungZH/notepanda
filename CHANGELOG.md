@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [UNRELEASED]
+
+### 🌵 Features
+
+- Custom font in Preferences Window
+- Change the default font to `monospace` (Different on different systems)
+
 ## 0.0.1
 
 The following is this version of changelog (including the beta/rc version):

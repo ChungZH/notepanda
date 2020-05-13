@@ -11,7 +11,6 @@ int main(int argc, char *argv[])
   App.setApplicationName("Notepanda");
   App.setApplicationVersion("0.0.1-rc.1");
 
-  QApplication::setStyle(QStyleFactory::create("Fusion"));
   MainWindow notepanda;
   notepanda.show();
   return App.exec();

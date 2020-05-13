@@ -26,8 +26,8 @@ TextEditor::TextEditor(QWidget *parent) : QPlainTextEdit(parent)
   updateLineNumberAreaWidth(0);
   highlightCurrentLine();
 
-  cm = new ConfigManager(this);
-  TextEditor::setFont(cm->getEditorFontFamily());
+  configManager = new ConfigManager(this);
+  TextEditor::setFont(configManager->getEditorFontFamily());
 }
 
 void TextEditor::newDocument()
@@ -242,4 +242,10 @@ void TextEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
     bottom = top + qRound(blockBoundingRect(block).height());
     ++blockNumber;
   }
+}
+
+void TextEditor::setFont(const QFont &font)
+{
+  QPlainTextEdit::setFont(font);
+  configManager->setEditorFontFamily(font.family());
 }

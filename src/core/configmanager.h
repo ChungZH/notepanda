@@ -13,11 +13,14 @@ class ConfigManager : public QObject
   ConfigManager(QObject *parent = nullptr);
   void readGeneralSettings();
   QFont getEditorFontFamily() const;
+  void setEditorFontFamily(const QString &fontname);
+  QString getStyle() const;
 
  private:
   QSettings *settings;
   QString configFile;
   QFont editorFontFamily;
+  QString style;
 };
 
 #endif  // CONFIGMANAGER_H

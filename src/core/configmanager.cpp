@@ -9,8 +9,6 @@ ConfigManager::ConfigManager(QObject *parent) : QObject(parent)
   readGeneralSettings();
 }
 
-QFont ConfigManager::getEditorFontFamily() const { return editorFontFamily; }
-
 void ConfigManager::readGeneralSettings()
 {
   if (settings->contains("EditorFontFamily")) {
@@ -18,4 +16,14 @@ void ConfigManager::readGeneralSettings()
   } else {
     editorFontFamily = QFontDatabase::systemFont(QFontDatabase::FixedFont);
   }
+  style = settings->value("Style", "Fusion").toString();
 }
+
+QFont ConfigManager::getEditorFontFamily() const { return editorFontFamily; }
+
+void ConfigManager::setEditorFontFamily(const QString &fontname)
+{
+  editorFontFamily = QFont(fontname);
+}
+
+QString ConfigManager::getStyle() const { return style; }
