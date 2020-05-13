@@ -81,6 +81,7 @@ jobs:
           cmake --build .
           cmake --build . --target install
       - name: Linux - ${{ matrix.qt_version }} - Generate Dependencies and Build
+        if: matrix.platform == 'ubuntu-18.04'
         run: | 
           mkdir build
           cd build
@@ -115,9 +116,11 @@ jobs:
           path: build/Notepanda.AppImage
       # Windows----------------------------------------------------------------------
       - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Build preparation - Download Dependencies
+        if: matrix.platform == 'windows-latest'
         run: |
          choco install -y ninja
       - name: Win - Build ecm
+        if: matrix.platform == 'windows-latest'
         shell: bash
         env:
           CC: cl.exe
@@ -130,6 +133,7 @@ jobs:
           cmake --build .
           cmake --build . --target install
       - name: Win - Build syntax highlight
+        if: matrix.platform == 'windows-latest'
         run: |
           cd src/3rdparty/syntax-highlighting
           mkdir build
@@ -154,21 +158,32 @@ jobs:
           name: BBUUGG - .${{ matrix.platform }}-${{ matrix.arch }}
           path: ./
       #---------------------------------------------------------
-      - name: macOS - ${{ matrix.qt_version }} - Generate Dependencies and Build
-        shell: bash
+      - name: MacOS - Build ecm
         if: matrix.platform == 'macos-latest'
+        shell: bash
         run: |
           brew install ninja
+          cd src/3rdparty/extra-cmake-modules
+          mkdir build
+          cd build
+          cmake .. -GNinja -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
+          cmake --build .
+          cmake --build . --target install
+      - name: MacOS - Build syntax highlight
+        if: matrix.platform == 'macos-latest'
+        run: |
           cd src/3rdparty/syntax-highlighting
           mkdir build
           cd build
-          cmake .. -GNinja
+          cmake .. -GNinja -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
           cmake --build .
-          cmake --install .
-          cd ../../../../
+          cmake --build . --target install
+      - name: macOS - ${{ matrix.qt_version }} - Generate Dependencies and Build
+        if: matrix.platform == 'macos-latest'
+        run: |
           mkdir build
           cd build
-          cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_DEPLOYMENT_TARGET=10.13 -DDS_STORE_SCRIPT=ON -DCMAKE_PREFIX_PATH=../src/3rdparty/syntax-highlighting/build
+          cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_DEPLOYMENT_TARGET=10.13 -DDS_STORE_SCRIPT=ON
           cmake --build . 
           sudo cmake --install .
           macdeployqt notepanda.app -dmg
