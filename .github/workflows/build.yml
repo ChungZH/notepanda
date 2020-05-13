@@ -64,6 +64,10 @@ jobs:
           sudo apt install libgl-dev libx11-dev libxkbcommon-x11-dev ninja-build
       - name: Linux - Build ecm
         if: matrix.platform == 'ubuntu-18.04'
+        shell: bash
+        env:
+          CC: /usr/bin/gcc-9
+          CXX: /usr/bin/g++-9
         run: |
           cd src/3rdparty/extra-cmake-modules
           mkdir build
@@ -73,6 +77,10 @@ jobs:
           cmake --build . --target install
       - name: Linux - Build SyntaxHighlighting
         if: matrix.platform == 'ubuntu-18.04'
+        shell: bash
+        env:
+          CC: /usr/bin/gcc-9
+          CXX: /usr/bin/g++-9
         run: |
           cd src/3rdparty/syntax-highlighting
           mkdir build
@@ -82,6 +90,10 @@ jobs:
           cmake --build . --target install
       - name: Linux - ${{ matrix.qt_version }} - Generate Dependencies and Build
         if: matrix.platform == 'ubuntu-18.04'
+        shell: bash
+        env:
+          CC: /usr/bin/gcc-9
+          CXX: /usr/bin/g++-9
         run: | 
           mkdir build
           cd build
@@ -90,6 +102,10 @@ jobs:
           cmake --install .
       - name: Linux - ${{ matrix.qt_version }} - Generating AppImage
         if: matrix.platform == 'ubuntu-18.04'
+        shell: bash
+        env:
+          CC: /usr/bin/gcc-9
+          CXX: /usr/bin/g++-9
         run: |
           cd build
           wget https://github.com/probonopd/linuxdeployqt/releases/download/6/linuxdeployqt-6-x86_64.AppImage
@@ -134,6 +150,10 @@ jobs:
           cmake --build . --target install
       - name: Win - Build syntax highlight
         if: matrix.platform == 'windows-latest'
+        shell: bash
+        env:
+          CC: cl.exe
+          CXX: cl.exe
         run: |
           cd src/3rdparty/syntax-highlighting
           mkdir build
@@ -143,6 +163,10 @@ jobs:
           cmake --build . --target install
       - name: Windows - ${{ matrix.qt_version }} - Generate Dependencies and Build
         if: matrix.platform == 'windows-latest'
+        shell: bash
+        env:
+          CC: cl.exe
+          CXX: cl.exe
         run: |
           mkdir build
           cd build
