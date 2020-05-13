@@ -137,7 +137,6 @@ jobs:
          choco install -y ninja
       - name: Win - Build ecm
         if: matrix.platform == 'windows-latest'
-        shell: bash
         env:
           CC: cl.exe
           CXX: cl.exe
@@ -150,7 +149,6 @@ jobs:
           cmake --build . --target install
       - name: Win - Build syntax highlight
         if: matrix.platform == 'windows-latest'
-        shell: bash
         env:
           CC: cl.exe
           CXX: cl.exe
@@ -163,7 +161,6 @@ jobs:
           cmake --build . --target install
       - name: Windows - ${{ matrix.qt_version }} - Generate Dependencies and Build
         if: matrix.platform == 'windows-latest'
-        shell: bash
         env:
           CC: cl.exe
           CXX: cl.exe
