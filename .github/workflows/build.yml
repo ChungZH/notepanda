@@ -118,6 +118,10 @@ jobs:
         run: |
          choco install -y ninja
       - name: Win - Build ecm
+        shell: bash
+        env:
+          CC: cl.exe
+          CXX: cl.exe
         run: |
           cd src/3rdparty/extra-cmake-modules
           mkdir build
@@ -134,11 +138,7 @@ jobs:
           cmake --build .
           cmake --build . --target install
       - name: Windows - ${{ matrix.qt_version }} - Generate Dependencies and Build
-        shell: bash
         if: matrix.platform == 'windows-latest'
-        env:
-          CC: cl.exe
-          CXX: cl.exe
         run: |
           mkdir build
           cd build
