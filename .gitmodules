@@ -1,0 +1,6 @@
+[submodule "src/3rdparty/syntax-highlighting"]
+	path = src/3rdparty/syntax-highlighting
+	url = git@github.com:KDE/syntax-highlighting.git
+[submodule "src/3rdparty/extra-cmake-modules"]
+	path = src/3rdparty/extra-cmake-modules
+	url = git@github.com:KDE/extra-cmake-modules.git
