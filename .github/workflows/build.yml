@@ -144,7 +144,7 @@ jobs:
           cd src/3rdparty/extra-cmake-modules
           mkdir build
           cd build
-          cmake .. -GNinja -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF -DCMAKE_GENERATOR_PLATFORM=${{ matrix.arch }}
+          cmake .. -GNinja -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
           cmake --build .
           cmake --build . --target install
       - name: Win - Build syntax highlight
@@ -156,7 +156,7 @@ jobs:
           cd src/3rdparty/syntax-highlighting
           mkdir build
           cd build
-          cmake .. -GNinja -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF -DCMAKE_GENERATOR_PLATFORM=${{ matrix.arch }}
+          cmake .. -GNinja -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
           cmake --build .
           cmake --build . --target install
       - name: Windows - ${{ matrix.qt_version }} - Generate Dependencies and Build
