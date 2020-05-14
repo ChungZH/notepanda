@@ -49,7 +49,7 @@ class TextEditor : public QPlainTextEdit
   void updateLineNumberAreaWidth(int newBlockCount);
   void highlightCurrentLine();
   void updateLineNumberArea(const QRect &rect, int dy);
-  void setFont(const QFont &font);
+  void setEditorFont(const QFont &font);
 
  private:
   ConfigManager *configManager;

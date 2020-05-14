@@ -6,18 +6,19 @@
 #include <QWidget>
 
 #include "../core/configmanager.h"
+#include "../core/texteditor.h"
 #include "ui_preferenceswindow.h"
 
 class PreferencesWindow : public QDialog, private Ui::PreferencesWindow
 {
   Q_OBJECT
  public:
-  PreferencesWindow(QWidget *parent = nullptr, QPlainTextEdit *pTE = nullptr);
+  PreferencesWindow(QWidget *parent = nullptr, TextEditor *pTE = nullptr);
   Ui::PreferencesWindow *ui;
 
  private:
   ConfigManager *configManager;
-  QPlainTextEdit *plainTextEdit;
+  TextEditor *plainTextEdit;
 };
 
 #endif  // PREFERENCESWINDOW_H

@@ -312,7 +312,7 @@ void TextEditor::setTheme(const KSyntaxHighlighting::Theme &theme)
   m_highlighter->rehighlight();
   highlightCurrentLine();
 }
-void TextEditor::setFont(const QFont &font)
+void TextEditor::setEditorFont(const QFont &font)
 {
   QPlainTextEdit::setFont(font);
   configManager->setEditorFontFamily(font.family());

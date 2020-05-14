@@ -27,3 +27,5 @@ void ConfigManager::setEditorFontFamily(const QString &fontname)
 }
 
 QString ConfigManager::getStyle() const { return style; }
+
+void ConfigManager::setStyle(const QString &stylename) { style = stylename; }
