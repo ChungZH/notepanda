@@ -181,8 +181,7 @@ jobs:
           cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=Release -DKF5SyntaxHighlighting_DIR="C:/Program Files (x86)/ECM/lib/cmake/KF5SyntaxHighlighting" -DCMAKE_GENERATOR_PLATFORM=${{ matrix.cmakearch }}
           cmake --build .
           cmake --install .
-          tree /F
-          cd Release
+          cd Debug
           windeployqt notepanda.exe
       #---------------------------------------------------------
       - name: MacOS - Build ecm
@@ -235,7 +234,7 @@ jobs:
         if: matrix.platform == 'windows-latest'
         uses: DuckSoft/create-7z-action@v1.0
         with:
-          pathSource: ./build/Release/
+          pathSource: ./build/Debug/
           pathTarget: ./release.7z
       - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Uploading artifact
         if: matrix.platform == 'windows-latest'
