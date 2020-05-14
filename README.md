@@ -30,6 +30,14 @@ So enjoy this toy 🍵️
 
 - Basic operation
 - Line numbers
+- Syntax highlight
+
+## Dependencies
+
+- CMake >= 3.1.0
+- Qt >= 5.14 (not sure)
+- KSyntaxHighlighting
+    - Extra CMake Modules
 
 ## Roadmap
 

@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file.
 
 - Custom font in Preferences Window
 - Change the default font to `monospace` (Different on different systems)
+- Syntax Highlighting
+- Custom theme
 
 ## 0.0.1
 
