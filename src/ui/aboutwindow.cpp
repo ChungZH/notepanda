@@ -29,11 +29,6 @@ AboutWindow::AboutWindow(QWidget *parent)
       t_ver.readAll() + t_vSf.readAll() + " BV" + t_bVe.readAll();
 
   ui->label_5->setText(verString);
-
-  ver.close();
-  verSuf.close();
-  buildVer.close();
-
   a_AboutQt = new QAction(tr("About Qt"), this);
   ui->AboutQt->setDefaultAction(a_AboutQt);
 

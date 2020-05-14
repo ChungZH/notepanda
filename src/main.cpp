@@ -2,6 +2,7 @@
 #include <QCommandLineParser>
 #include <QDebug>
 #include <QStyleFactory>
+#include <QDebug>
 
 #include "./ui/mainwindow.h"
 

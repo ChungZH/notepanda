@@ -2,19 +2,21 @@
 
 #include <QDebug>
 #include <QSize>
+#include <QStyle>
+#include <QStyleFactory>
 #include <QTextStream>
 #include <QToolBar>
 
 #include "aboutwindow.h"
-#include "preferenceswindow.h"
 #include "ui_mainwindow.h"
-#include "ui_preferenceswindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
   ui->setupUi(this);
-  ui->setupUi(this);
+
+  configManager = new ConfigManager;
+  QApplication::setStyle(QStyleFactory::create(configManager->getStyle()));
 
   ToolBar = new QToolBar;
   ToolBar->addAction(ui->actionNew);
@@ -27,8 +29,6 @@ MainWindow::MainWindow(QWidget *parent)
   ToolBar->addAction(ui->actionRedo);
   ToolBar->addAction(ui->actionQuit);
   ToolBar->addAction(ui->actionAbout);
-
-  // ToolBar->setStyleSheet("background-color: #ffffff");
 
   QSize *qs = new QSize;
   ToolBar->setIconSize(qs->scaled(26, 26, Qt::IgnoreAspectRatio));
@@ -45,8 +45,10 @@ MainWindow::MainWindow(QWidget *parent)
           &TextEditor::save);
   connect(ui->actionSave_As, &QAction::triggered, plainTextEdit,
           &TextEditor::saveAs);
+
   connect(ui->actionPreferences, &QAction::triggered, this,
-          [&]() { PreferencesWindow(this).exec(); });
+          [&]() { PreferencesWindow(this, plainTextEdit).exec(); });
+
   connect(ui->actionPrint, &QAction::triggered, plainTextEdit,
           &TextEditor::print);
   connect(ui->actionUndo, &QAction::triggered, plainTextEdit,
@@ -68,7 +70,6 @@ MainWindow::MainWindow(QWidget *parent)
           });
   connect(plainTextEdit, &TextEditor::textChanged, this,
           &MainWindow::updateStatusBar);
-
   updateStatusBar();
   changeWindowTitle();
   ui->actionUndo->setDisabled(1);

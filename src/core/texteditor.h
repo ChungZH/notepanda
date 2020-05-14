@@ -5,6 +5,8 @@
 
 #include <QPlainTextEdit>
 
+#include "configmanager.h"
+
 QT_BEGIN_NAMESPACE
 class QPaintEvent;
 class QResizeEvent;
@@ -47,6 +49,10 @@ class TextEditor : public QPlainTextEdit
   void updateLineNumberAreaWidth(int newBlockCount);
   void highlightCurrentLine();
   void updateLineNumberArea(const QRect &rect, int dy);
+  void setFont(const QFont &font);
+
+ private:
+  ConfigManager *configManager;
 
  private:
   void setTheme(const KSyntaxHighlighting::Theme &theme);

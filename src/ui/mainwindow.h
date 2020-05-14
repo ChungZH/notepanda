@@ -5,7 +5,9 @@
 #include <QPlainTextEdit>
 #include <QToolBar>
 
+#include "../core/configmanager.h"
 #include "../core/texteditor.h"
+#include "preferenceswindow.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -32,5 +34,7 @@ class MainWindow : public QMainWindow
  private:
   Ui::MainWindow *ui;
   QToolBar *ToolBar;
+  ConfigManager *configManager;
+  TextEditor *plainTextEdit;
 };
 #endif  // NOTEPANDA_H

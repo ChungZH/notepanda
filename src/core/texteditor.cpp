@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QFileDialog>
+#include <QFont>
 #include <QMessageBox>
 #include <QPainter>
 #include <QStyle>
@@ -37,6 +38,9 @@ TextEditor::TextEditor(QWidget *parent)
 
   updateLineNumberAreaWidth(0);
   highlightCurrentLine();
+
+  configManager = new ConfigManager(this);
+  TextEditor::setFont(configManager->getEditorFontFamily());
 }
 
 void TextEditor::newDocument()
@@ -307,4 +311,9 @@ void TextEditor::setTheme(const KSyntaxHighlighting::Theme &theme)
   m_highlighter->setTheme(theme);
   m_highlighter->rehighlight();
   highlightCurrentLine();
+}
+void TextEditor::setFont(const QFont &font)
+{
+  QPlainTextEdit::setFont(font);
+  configManager->setEditorFontFamily(font.family());
 }
