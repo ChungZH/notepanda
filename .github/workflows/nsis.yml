@@ -6,24 +6,7 @@ on:
     types: [prereleased]
 
 jobs:
-  check_commit_msg:
-    outputs:
-      commit_message: ${{ steps.get_message.outputs.message }}
-    name: Check if the workflow has been disabled.
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checking out sources
-        uses: actions/checkout@v2
-        with:
-          submodules: 'recursive'
-      - name: Get commit message
-        id: get_message
-        run: |
-          echo "::set-output name=message::$(git log --format=%B -n 1 ${{ github.event.after }})"
-          echo "::set-env name=message::$(git log --format=%B -n 1 ${{ github.event.after }})"
   build:
-    needs: check_commit_msg
-    if: ${{ !contains( needs.check_commit_msg.outputs.commit_message, 'NO_NSIS') }}
     strategy:
       matrix:
         qt_version: [5.14.2]
@@ -48,7 +31,9 @@ jobs:
         shell: bash
         run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
       - name: Checking out sources
-        uses: actions/checkout@master
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
       - name: Install Python 3.7 version
         uses: actions/setup-python@v1
         with:
@@ -111,7 +96,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release -DKF5SyntaxHighlighting_DIR="C:/Program Files (x86)/ECM/lib/cmake/KF5SyntaxHighlighting" -DCMAKE_GENERATOR_PLATFORM=${{ matrix.cmakearch }} -DBUILD_NSIS=ON
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DKF5SyntaxHighlighting_DIR="C:/Program Files (x86)/ECM/lib/cmake/KF5SyntaxHighlighting" -DCMAKE_GENERATOR_PLATFORM=${{ matrix.cmakearch }} -DBUILD_NSIS=ON -DCMAKE_INSTALL_PREFIX=Release 
           cmake --build . --target package --parallel $(nproc)
           cmake --install .
       - name: Windows - Get package name
