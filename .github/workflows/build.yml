@@ -7,7 +7,7 @@ jobs:
     strategy:
       matrix:
         qt_version: [5.14.2]
-        platform: [ubuntu-18.04, macos-latest, windows-latest]
+        platform: [ubuntu-16.04, macos-latest, windows-latest]
         arch: [x86, x64]
         include:
           - platform: windows-latest
@@ -57,7 +57,7 @@ jobs:
           architecture: ${{ matrix.arch }}
       # Linux------------------------------------------
       - name: Linux - Install packages
-        if: matrix.platform == 'ubuntu-18.04'
+        if: matrix.platform == 'ubuntu-16.04'
         shell: bash
         env:
           CC: /usr/bin/gcc-9
@@ -65,7 +65,7 @@ jobs:
         run: |
           sudo apt install libgl-dev libx11-dev libxkbcommon-x11-dev ninja-build
       - name: Linux - Build ecm
-        if: matrix.platform == 'ubuntu-18.04'
+        if: matrix.platform == 'ubuntu-16.04'
         shell: bash
         env:
           CC: /usr/bin/gcc-9
@@ -78,7 +78,7 @@ jobs:
           cmake --build .
           sudo cmake --build . --target install
       - name: Linux - Build SyntaxHighlighting
-        if: matrix.platform == 'ubuntu-18.04'
+        if: matrix.platform == 'ubuntu-16.04'
         shell: bash
         env:
           CC: /usr/bin/gcc-9
@@ -91,7 +91,7 @@ jobs:
           cmake --build .
           sudo cmake --build . --target install
       - name: Linux - ${{ matrix.qt_version }} - Generate Dependencies and Build
-        if: matrix.platform == 'ubuntu-18.04'
+        if: matrix.platform == 'ubuntu-16.04'
         shell: bash
         env:
           CC: /usr/bin/gcc-9
@@ -103,7 +103,7 @@ jobs:
           cmake --build .
           cmake --install .
       - name: Linux - ${{ matrix.qt_version }} - Generating AppImage
-        if: matrix.platform == 'ubuntu-18.04'
+        if: matrix.platform == 'ubuntu-16.04'
         shell: bash
         env:
           CC: /usr/bin/gcc-9
@@ -127,7 +127,7 @@ jobs:
           squashfs-root/AppRun AppDir/usr/share/applications/notepanda.desktop -appimage -no-strip -always-overwrite
           mv ./Notepanda*.AppImage ./Notepanda.AppImage
       - name: Linux - ${{ matrix.qt_version }} - Uploading artifact
-        if: matrix.platform == 'ubuntu-18.04'
+        if: matrix.platform == 'ubuntu-16.04'
         uses: actions/upload-artifact@master
         with:
           name: Notepanda-${{ github.sha }}.linux-${{ matrix.arch }}.qt${{ matrix.qt_version }}.AppImage
@@ -172,14 +172,8 @@ jobs:
           cmake .. -DCMAKE_BUILD_TYPE=Release -DKF5SyntaxHighlighting_DIR="C:/Program Files (x86)/ECM/lib/cmake/KF5SyntaxHighlighting" -DCMAKE_GENERATOR_PLATFORM=${{ matrix.cmakearch }}
           cmake --build .
           cmake --install .
-          cd Debug
-          windeployqt notepanda.exe
-      - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Uploading DEBUG
-        if: matrix.platform == 'windows-latest' && ${{ failure() }}
-        uses: actions/upload-artifact@master
-        with:
-          name: BBUUGG - .${{ matrix.platform }}-${{ matrix.arch }}
-          path: ./
+#          cd Debug
+#          windeployqt notepanda.exe
       #---------------------------------------------------------
       - name: MacOS - Build ecm
         if: matrix.platform == 'macos-latest'
