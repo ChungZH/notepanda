@@ -104,7 +104,7 @@ if(WIN32)
         install(DIRECTORY ${CMAKE_BINARY_DIR}/winqt/ DESTINATION .)
     else()
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-            COMMAND windeployqt ${CMAKE_BINARY_DIR}/Debug/${PROJECT_NAME}.exe
+            COMMAND windeployqt ${CMAKE_BINARY_DIR}/Release/${PROJECT_NAME}.exe
             )
     endif()
     
