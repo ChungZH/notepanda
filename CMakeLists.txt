@@ -46,8 +46,8 @@ message("| Welcome to contribute!                          |")
 message("|-------------------------------------------------|")
 message(" ")
 
-
 find_package(Qt5 COMPONENTS Widgets Svg REQUIRED)
+find_package(KF5SyntaxHighlighting REQUIRED)
 
 if(WIN32)
     set(GUI_TYPE WIN32)
@@ -99,15 +99,10 @@ set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE.md")
 if(WIN32)
     if (BUILD_NSIS)
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-            COMMAND windeployqt ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.exe --dir ${CMAKE_BINARY_DIR}/winqt/
+            COMMAND windeployqt ${CMAKE_BINARY_DIR}/Debug/${PROJECT_NAME}.exe --dir ${CMAKE_BINARY_DIR}/winqt/
             )
         install(DIRECTORY ${CMAKE_BINARY_DIR}/winqt/ DESTINATION .)
-    else()
-        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-            COMMAND windeployqt ${CMAKE_BINARY_DIR}/Debug/${PROJECT_NAME}.exe
-            )
     endif()
-    
 endif()
 
 if(MSVC)
@@ -145,6 +140,6 @@ if(MSVC)
     endif()
 endif()
 
-target_link_libraries(notepanda Qt5::Widgets Qt5::Svg)
-
 include(CPack)
+
+target_link_libraries(notepanda Qt5::Widgets Qt5::Svg KF5::SyntaxHighlighting)

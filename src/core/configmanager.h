@@ -15,6 +15,7 @@ class ConfigManager : public QObject
   QFont getEditorFontFamily() const;
   void setEditorFontFamily(const QString &fontname);
   QString getStyle() const;
+  void setStyle(const QString &stylename);
 
  private:
   QSettings *settings;

@@ -19,7 +19,7 @@ jobs:
             qtarch: win64_msvc2017_64
             cmakearch: x64
         exclude:
-          - platform: ubuntu-16.04
+          - platform: ubuntu-18.04
             arch: x86
           - platform: macos-latest
             arch: x86
@@ -27,16 +27,15 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Checking out sources
-        uses: actions/checkout@master
-
-      - name: Install MSVC compiler
-        if: matrix.platform == 'windows-latest'
-        uses: ilammy/msvc-dev-cmd@v1
+        uses: actions/checkout@v2
         with:
+          submodules: 'recursive'
+      - name: Install MSVC compiler
+        uses: ilammy/msvc-dev-cmd@v1
+        with: 
           # 14.1 is for vs2017, 14.2 is vs2019, following the upstream vcpkg build from Qv2ray-deps repo
           toolset: 14.2
           arch: ${{ matrix.arch }}
-      # Install & Cache Qt---------------------------------------
       - name: Cache Qt
         id: cache-qt
         uses: actions/cache@v1
@@ -44,28 +43,71 @@ jobs:
           path: ../Qt
           key: QtCache-${{ matrix.platform }}-${{ matrix.arch }}-${{ matrix.qt_version }}
       - name: Installing Qt - ${{ matrix.arch }}
-        uses: jurplel/install-qt-action@v2.5.0
+        uses: jurplel/install-qt-action@v2
         with:
           version: ${{ matrix.qt_version }}
           arch: ${{ matrix.qtarch }}
-          mirror: "http://mirrors.ocf.berkeley.edu/qt/"
+          mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
           cached: ${{ steps.cache-qt.outputs.cache-hit }}
+      - name: Install Python 3.7 version
+        if: matrix.platform == 'windows-latest'
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.7'
+          architecture: ${{ matrix.arch }}
       # Linux------------------------------------------
-      - name: Linux - ${{ matrix.qt_version }} - Generate Dependencies and Build
+      - name: Linux - Install packages
         if: matrix.platform == 'ubuntu-16.04'
         shell: bash
         env:
           CC: /usr/bin/gcc-9
           CXX: /usr/bin/g++-9
         run: |
-          sudo apt install libgl-dev libx11-dev libxkbcommon-x11-dev
+          sudo apt install libgl-dev libx11-dev libxkbcommon-x11-dev ninja-build
+      - name: Linux - Build ecm
+        if: matrix.platform == 'ubuntu-16.04'
+        shell: bash
+        env:
+          CC: /usr/bin/gcc-9
+          CXX: /usr/bin/g++-9
+        run: |
+          cd src/3rdparty/extra-cmake-modules
           mkdir build
           cd build
-          cmake .. -DCMAKE_INSTALL_PREFIX=./AppDir/usr -DCMAKE_BUILD_TYPE=Release
+          cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=/usr
+          cmake --build .
+          sudo cmake --build . --target install
+      - name: Linux - Build SyntaxHighlighting
+        if: matrix.platform == 'ubuntu-16.04'
+        shell: bash
+        env:
+          CC: /usr/bin/gcc-9
+          CXX: /usr/bin/g++-9
+        run: |
+          cd src/3rdparty/syntax-highlighting
+          mkdir build
+          cd build
+          cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=/usr
+          cmake --build .
+          sudo cmake --build . --target install
+      - name: Linux - ${{ matrix.qt_version }} - Generate Dependencies and Build
+        if: matrix.platform == 'ubuntu-16.04'
+        shell: bash
+        env:
+          CC: /usr/bin/gcc-9
+          CXX: /usr/bin/g++-9
+        run: | 
+          mkdir build
+          cd build
+          cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=./AppDir/usr
           cmake --build .
           cmake --install .
       - name: Linux - ${{ matrix.qt_version }} - Generating AppImage
         if: matrix.platform == 'ubuntu-16.04'
+        shell: bash
+        env:
+          CC: /usr/bin/gcc-9
+          CXX: /usr/bin/g++-9
         run: |
           cd build
           wget https://github.com/probonopd/linuxdeployqt/releases/download/6/linuxdeployqt-6-x86_64.AppImage
@@ -100,8 +142,35 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
       # Windows----------------------------------------------------------------------
+      - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Build preparation - Download Dependencies
+        if: matrix.platform == 'windows-latest'
+        run: |
+         choco install -y ninja
+      - name: Win - Build ecm
+        if: matrix.platform == 'windows-latest'
+        env:
+          CC: cl.exe
+          CXX: cl.exe
+        run: |
+          cd src/3rdparty/extra-cmake-modules
+          mkdir build
+          cd build
+          cmake .. -GNinja -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
+          cmake --build .
+          cmake --build . --target install
+      - name: Win - Build syntax highlight
+        if: matrix.platform == 'windows-latest'
+        env:
+          CC: cl.exe
+          CXX: cl.exe
+        run: |
+          cd src/3rdparty/syntax-highlighting
+          mkdir build
+          cd build
+          cmake .. -GNinja -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
+          cmake --build .
+          cmake --build . --target install
       - name: Windows - ${{ matrix.qt_version }} - Generate Dependencies and Build
-        shell: bash
         if: matrix.platform == 'windows-latest'
         env:
           CC: cl.exe
@@ -109,17 +178,38 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release -A ${{ matrix.cmakearch }}
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=Release -DKF5SyntaxHighlighting_DIR="C:/Program Files (x86)/ECM/lib/cmake/KF5SyntaxHighlighting" -DCMAKE_GENERATOR_PLATFORM=${{ matrix.cmakearch }}
           cmake --build .
           cmake --install .
+          cd Debug
+          windeployqt notepanda.exe
       #---------------------------------------------------------
-      - name: macOS - ${{ matrix.qt_version }} - Generate Dependencies and Build
+      - name: MacOS - Build ecm
+        if: matrix.platform == 'macos-latest'
         shell: bash
+        run: |
+          brew install ninja
+          cd src/3rdparty/extra-cmake-modules
+          mkdir build
+          cd build
+          cmake .. -GNinja -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
+          cmake --build .
+          cmake --build . --target install
+      - name: MacOS - Build syntax highlight
+        if: matrix.platform == 'macos-latest'
+        run: |
+          cd src/3rdparty/syntax-highlighting
+          mkdir build
+          cd build
+          cmake .. -GNinja -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
+          cmake --build .
+          sudo cmake --build . --target install
+      - name: macOS - ${{ matrix.qt_version }} - Generate Dependencies and Build
         if: matrix.platform == 'macos-latest'
         run: |
           mkdir build
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_DEPLOYMENT_TARGET=10.13 -DDS_STORE_SCRIPT=ON
+          cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_DEPLOYMENT_TARGET=10.13 -DDS_STORE_SCRIPT=ON
           cmake --build . 
           sudo cmake --install .
           macdeployqt notepanda.app -dmg
@@ -161,3 +251,4 @@ jobs:
           asset_name: Notepanda.${{ steps.get_version.outputs.VERSION }}.Windows-${{ matrix.arch }}.7z
           tag: ${{ github.ref }}
           overwrite: true
+

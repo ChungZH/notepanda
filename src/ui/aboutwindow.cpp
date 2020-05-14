@@ -12,7 +12,7 @@ AboutWindow::AboutWindow(QWidget *parent)
     : QDialog(parent), ui(new Ui::AboutWindow)
 {
   ui->setupUi(this);
-  setWindowTitle("About Notepanda");
+  setWindowTitle("About - Notepanda");
 
   QFile ver(":/asset/makespec/VERSION");
   QFile verSuf(":/asset/makespec/VERSIONSUFFIX");

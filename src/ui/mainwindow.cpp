@@ -8,7 +8,9 @@
 #include <QToolBar>
 
 #include "aboutwindow.h"
+#include "preferenceswindow.h"
 #include "ui_mainwindow.h"
+#include "ui_preferenceswindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -35,8 +37,6 @@ MainWindow::MainWindow(QWidget *parent)
   this->addToolBar(Qt::LeftToolBarArea, ToolBar);
 
   plainTextEdit = new TextEditor;
-  plainTextEdit->lineNumberArea->setForegroundRole(QPalette::HighlightedText);
-  plainTextEdit->lineNumberArea->setBackgroundRole(QPalette::Base);
   this->setCentralWidget(plainTextEdit);
 
   connect(ui->actionNew, &QAction::triggered, plainTextEdit,

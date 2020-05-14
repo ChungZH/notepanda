@@ -6,21 +6,7 @@ on:
     types: [prereleased]
 
 jobs:
-  check_commit_msg:
-    outputs:
-      commit_message: ${{ steps.get_message.outputs.message }}
-    name: Check if the workflow has been disabled.
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: Get commit message
-        id: get_message
-        run: |
-          echo "::set-output name=message::$(git log --format=%B -n 1 ${{ github.event.after }})"
-          echo "::set-env name=message::$(git log --format=%B -n 1 ${{ github.event.after }})"
   build:
-    needs: check_commit_msg
-    if: ${{ !contains( needs.check_commit_msg.outputs.commit_message, 'NO_NSIS') }}
     strategy:
       matrix:
         qt_version: [5.14.2]
@@ -30,9 +16,11 @@ jobs:
           - platform: windows-latest
             arch: x86
             qtarch: win32_msvc2017
+            cmakearch: Win32
           - platform: windows-latest
             arch: x64
             qtarch: win64_msvc2017_64
+            cmakearch: x64
       fail-fast: false
         
     runs-on: ${{ matrix.platform }}
@@ -43,14 +31,14 @@ jobs:
         shell: bash
         run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
       - name: Checking out sources
-        uses: actions/checkout@master
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
       - name: Install Python 3.7 version
         uses: actions/setup-python@v1
         with:
           python-version: '3.7'
           architecture: ${{ matrix.arch }}
-      - name: Restoring submodules
-        run: git submodule update --init
 # =========================================================================================================
       - name: Install MSVC compiler
         uses: ilammy/msvc-dev-cmd@v1
@@ -71,20 +59,44 @@ jobs:
           mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
           cached: ${{ steps.cache-qt.outputs.cache-hit }}
 # =========================================================================================================
+# Windows----------------------------------------------------------------------
       - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Build preparation - Download Dependencies
-        shell: bash
+        if: matrix.platform == 'windows-latest'
         run: |
          choco install -y ninja
-# ========================================================================================================= Generate MakeFile and Build
-      - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Generate Dependencies and Build
-        shell: bash
+      - name: Win - Build ecm
+        if: matrix.platform == 'windows-latest'
+        env:
+          CC: cl.exe
+          CXX: cl.exe
+        run: |
+          cd src/3rdparty/extra-cmake-modules
+          mkdir build
+          cd build
+          cmake .. -GNinja -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
+          cmake --build .
+          cmake --build . --target install
+      - name: Win - Build syntax highlight
+        if: matrix.platform == 'windows-latest'
+        env:
+          CC: cl.exe
+          CXX: cl.exe
+        run: |
+          cd src/3rdparty/syntax-highlighting
+          mkdir build
+          cd build
+          cmake .. -GNinja -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
+          cmake --build .
+          cmake --build . --target install
+      - name: Windows - ${{ matrix.qt_version }} - Generate Dependencies and Build
+        if: matrix.platform == 'windows-latest'
         env:
           CC: cl.exe
           CXX: cl.exe
         run: |
           mkdir build
           cd build
-          cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DBUILD_NSIS=ON
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DKF5SyntaxHighlighting_DIR="C:/Program Files (x86)/ECM/lib/cmake/KF5SyntaxHighlighting" -DCMAKE_GENERATOR_PLATFORM=${{ matrix.cmakearch }} -DBUILD_NSIS=ON -DCMAKE_INSTALL_PREFIX=Release 
           cmake --build . --target package --parallel $(nproc)
           cmake --install .
       - name: Windows - Get package name

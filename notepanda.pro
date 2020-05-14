@@ -1,4 +1,6 @@
-QT       += core gui
+QT       += core gui KSyntaxHighlighting
+
+INCLUDEPATH += src/3rdparty/syntax-highlighting
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

@@ -24,6 +24,7 @@ class MainWindow : public QMainWindow
  public:
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
+  TextEditor *plainTextEdit;
 
  private slots:
   void changeWindowTitle();
@@ -34,6 +35,5 @@ class MainWindow : public QMainWindow
   Ui::MainWindow *ui;
   QToolBar *ToolBar;
   ConfigManager *configManager;
-  TextEditor *plainTextEdit;
 };
 #endif  // NOTEPANDA_H

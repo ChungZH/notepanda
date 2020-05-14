@@ -1,6 +1,8 @@
 #ifndef TEXTEDITOR_H
 #define TEXTEDITOR_H
 
+#include <repository.h>
+
 #include <QPlainTextEdit>
 
 #include "configmanager.h"
@@ -13,6 +15,11 @@ class QWidget;
 class QFileDialog;
 QT_END_NAMESPACE
 
+namespace KSyntaxHighlighting
+{
+class SyntaxHighlighter;
+}
+
 class TextEditor : public QPlainTextEdit
 {
   Q_OBJECT
@@ -22,7 +29,8 @@ class TextEditor : public QPlainTextEdit
   QString currentFile;
   void lineNumberAreaPaintEvent(QPaintEvent *event);
   int lineNumberAreaWidth();
-  QWidget *lineNumberArea;
+
+  void openFile(const QString &fileName);
 
  protected:
   void resizeEvent(QResizeEvent *event) override;
@@ -41,10 +49,17 @@ class TextEditor : public QPlainTextEdit
   void updateLineNumberAreaWidth(int newBlockCount);
   void highlightCurrentLine();
   void updateLineNumberArea(const QRect &rect, int dy);
-  void setFont(const QFont &font);
+  void setEditorFont(const QFont &font);
 
  private:
   ConfigManager *configManager;
+
+ private:
+  void setTheme(const KSyntaxHighlighting::Theme &theme);
+  KSyntaxHighlighting::Repository m_repository;
+  KSyntaxHighlighting::SyntaxHighlighter *m_highlighter;
+  QWidget *lineNumberArea;
+  QColor m_lineNumbersColor;
 
  signals:
   void changeTitle();
