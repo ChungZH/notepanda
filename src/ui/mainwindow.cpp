@@ -8,7 +8,9 @@
 #include <QToolBar>
 
 #include "aboutwindow.h"
+#include "preferenceswindow.h"
 #include "ui_mainwindow.h"
+#include "ui_preferenceswindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)

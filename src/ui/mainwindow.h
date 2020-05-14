@@ -35,6 +35,5 @@ class MainWindow : public QMainWindow
   Ui::MainWindow *ui;
   QToolBar *ToolBar;
   ConfigManager *configManager;
-  TextEditor *plainTextEdit;
 };
 #endif  // NOTEPANDA_H
