@@ -113,6 +113,8 @@ jobs:
           cd build
           cmake .. -DCMAKE_BUILD_TYPE=Release -DKF5SyntaxHighlighting_DIR="C:/Program Files (x86)/ECM/lib/cmake/KF5SyntaxHighlighting" -DCMAKE_GENERATOR_PLATFORM=${{ matrix.cmakearch }} -DBUILD_NSIS=ON
           cmake --build . --target package --parallel $(nproc)
+          cd Debug
+          windeployqt notepanda.exe
       - name: Windows - Get package name
         shell: bash
         id: get_package
