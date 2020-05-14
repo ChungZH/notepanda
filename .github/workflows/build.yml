@@ -181,8 +181,8 @@ jobs:
           cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DKF5SyntaxHighlighting_DIR="C:/Program Files (x86)/ECM/lib/cmake/KF5SyntaxHighlighting" -DCMAKE_GENERATOR_PLATFORM=${{ matrix.cmakearch }}
           cmake --build .
           cmake --install .
-          windeployqt notepanda.exe
           cd Release
+          windeployqt notepanda.exe
       #---------------------------------------------------------
       - name: MacOS - Build ecm
         if: matrix.platform == 'macos-latest'
