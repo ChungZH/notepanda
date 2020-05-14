@@ -13,9 +13,11 @@ jobs:
           - platform: windows-latest
             arch: x86
             qtarch: win32_msvc2017
+            cmakearch: Win32
           - platform: windows-latest
             arch: x64
             qtarch: win64_msvc2017_64
+            cmakearch: x64
         exclude:
           - platform: ubuntu-18.04
             arch: x86
@@ -74,7 +76,7 @@ jobs:
           cd build
           cmake .. -GNinja -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
           cmake --build .
-          cmake --build . --target install
+          sudo cmake --build . --target install
       - name: Linux - Build SyntaxHighlighting
         if: matrix.platform == 'ubuntu-18.04'
         shell: bash
@@ -87,7 +89,7 @@ jobs:
           cd build
           cmake .. -GNinja -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
           cmake --build .
-          cmake --build . --target install
+          sudo cmake --build . --target install
       - name: Linux - ${{ matrix.qt_version }} - Generate Dependencies and Build
         if: matrix.platform == 'ubuntu-18.04'
         shell: bash
@@ -167,7 +169,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release -DKF5SyntaxHighlighting_DIR="C:/Program Files (x86)/ECM/lib/cmake/KF5SyntaxHighlighting" -DCMAKE_GENERATOR_PLATFORM=${{ matrix.arch }}
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DKF5SyntaxHighlighting_DIR="C:/Program Files (x86)/ECM/lib/cmake/KF5SyntaxHighlighting" -DCMAKE_GENERATOR_PLATFORM=${{ matrix.cmakearch }}
           cmake --build .
           cmake --install .
           cd Debug
@@ -198,7 +200,7 @@ jobs:
           cd build
           cmake .. -GNinja -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
           cmake --build .
-          cmake --build . --target install
+          sudo cmake --build . --target install
       - name: macOS - ${{ matrix.qt_version }} - Generate Dependencies and Build
         if: matrix.platform == 'macos-latest'
         run: |
