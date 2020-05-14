@@ -30,9 +30,11 @@ jobs:
           - platform: windows-latest
             arch: x86
             qtarch: win32_msvc2017
+            cmakearch: Win32
           - platform: windows-latest
             arch: x64
             qtarch: win64_msvc2017_64
+            cmakearch: x64
       fail-fast: false
         
     runs-on: ${{ matrix.platform }}
@@ -69,20 +71,44 @@ jobs:
           mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
           cached: ${{ steps.cache-qt.outputs.cache-hit }}
 # =========================================================================================================
+# Windows----------------------------------------------------------------------
       - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Build preparation - Download Dependencies
-        shell: bash
+        if: matrix.platform == 'windows-latest'
         run: |
          choco install -y ninja
-# ========================================================================================================= Generate MakeFile and Build
-      - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Generate Dependencies and Build
-        shell: bash
+      - name: Win - Build ecm
+        if: matrix.platform == 'windows-latest'
+        env:
+          CC: cl.exe
+          CXX: cl.exe
+        run: |
+          cd src/3rdparty/extra-cmake-modules
+          mkdir build
+          cd build
+          cmake .. -GNinja -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
+          cmake --build .
+          cmake --build . --target install
+      - name: Win - Build syntax highlight
+        if: matrix.platform == 'windows-latest'
+        env:
+          CC: cl.exe
+          CXX: cl.exe
+        run: |
+          cd src/3rdparty/syntax-highlighting
+          mkdir build
+          cd build
+          cmake .. -GNinja -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
+          cmake --build .
+          cmake --build . --target install
+      - name: Windows - ${{ matrix.qt_version }} - Generate Dependencies and Build
+        if: matrix.platform == 'windows-latest'
         env:
           CC: cl.exe
           CXX: cl.exe
         run: |
           mkdir build
           cd build
-          cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DBUILD_NSIS=ON
+          cmake .. -DCMAKE_BUILD_TYPE=Release -DKF5SyntaxHighlighting_DIR="C:/Program Files (x86)/ECM/lib/cmake/KF5SyntaxHighlighting" -DCMAKE_GENERATOR_PLATFORM=${{ matrix.cmakearch }} -DBUILD_NSIS=ON
           cmake --build . --target package --parallel $(nproc)
       - name: Windows - Get package name
         shell: bash
