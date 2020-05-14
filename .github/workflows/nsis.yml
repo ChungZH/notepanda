@@ -12,7 +12,8 @@ jobs:
     name: Check if the workflow has been disabled.
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checking out sources
+        uses: actions/checkout@v2
         with:
           submodules: 'recursive'
       - name: Get commit message

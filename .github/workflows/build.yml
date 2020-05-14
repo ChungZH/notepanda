@@ -74,7 +74,7 @@ jobs:
           cd src/3rdparty/extra-cmake-modules
           mkdir build
           cd build
-          cmake .. -GNinja -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
+          cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
           cmake --build .
           sudo cmake --build . --target install
       - name: Linux - Build SyntaxHighlighting
@@ -87,7 +87,7 @@ jobs:
           cd src/3rdparty/syntax-highlighting
           mkdir build
           cd build
-          cmake .. -GNinja -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
+          cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
           cmake --build .
           sudo cmake --build . --target install
       - name: Linux - ${{ matrix.qt_version }} - Generate Dependencies and Build
