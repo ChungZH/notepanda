@@ -31,6 +31,7 @@ So enjoy this toy 🍵️
 - Basic operation
 - Line numbers
 - Syntax highlight
+- Launch from the shell by typing: `notepanda` or `notepanda CMakeLists.txt`.
 
 ## Dependencies
 
@@ -46,6 +47,14 @@ See [Projects](https://github.com/ChungZH/notepanda/projects/).
 ## Install
 
 Go to [Releases](https://github.com/ChungZH/notepanda/releases) page.
+
+If you are Arch Linux (or Arch-based distros) user, you can get Notepanda from AUR.
+
+You may use an AUR helper such as `yay` to automatically handle the build process of AUR packages:
+
+```sh
+yay -S notepanda
+```
 
 The latest version is `v0.0.1` now.
 

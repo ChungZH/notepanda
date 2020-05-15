@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - Change the default font to `monospace` (Different on different systems)
 - Syntax Highlighting
 - Custom theme
+- Launch from the shell
 
 ## 0.0.1
 
