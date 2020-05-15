@@ -1,3 +1,14 @@
+/**
+ * Copyright (c) 2020 ChungZH. ALl Rights Reserved.
+ * Licensed under the MIT license.
+ * See file LICENSE for detail or copy at <https://opensource.org/licenses/MIT>
+ *
+ * This file is a part of Notepanda.
+ *
+ * @file linenumberarea.h
+ * @brief This file declares the LineNumberArea class.
+ *
+ */
 #ifndef LINENUMBERAREA_H
 #define LINENUMBERAREA_H
 

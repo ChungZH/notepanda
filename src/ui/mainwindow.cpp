@@ -1,3 +1,14 @@
+/**
+ * Copyright (c) 2020 ChungZH. ALl Rights Reserved.
+ * Licensed under the MIT license.
+ * See file LICENSE for detail or copy at <https://opensource.org/licenses/MIT>
+ *
+ * This file is a part of Notepanda.
+ *
+ * @file mainwindow.cpp
+ * @brief This file implements the MainWindow class.
+ *
+ */
 #include "mainwindow.h"
 
 #include <QDebug>

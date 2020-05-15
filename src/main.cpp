@@ -1,8 +1,19 @@
+/**
+ * Copyright (c) 2020 ChungZH. ALl Rights Reserved.
+ * Licensed under the MIT license.
+ * See file LICENSE for detail or copy at <https://opensource.org/licenses/MIT>
+ *
+ * This file is a part of Notepanda.
+ *
+ * @file main.cpp
+ * @brief This file is main of the project.
+ *
+ */
+
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QDebug>
 #include <QStyleFactory>
-#include <QDebug>
 
 #include "./ui/mainwindow.h"
 
@@ -13,7 +24,7 @@ int main(int argc, char *argv[])
 
   App.setOrganizationName("ChungZH");
   App.setApplicationName("Notepanda");
-  App.setApplicationVersion("0.0.1-rc.1");
+  App.setApplicationVersion("0.0.1");
 
   QCommandLineParser parser;
   parser.addHelpOption();

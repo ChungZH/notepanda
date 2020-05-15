@@ -1,3 +1,14 @@
+/**
+ * Copyright (c) 2020 ChungZH. ALl Rights Reserved.
+ * Licensed under the MIT license.
+ * See file LICENSE for detail or copy at <https://opensource.org/licenses/MIT>
+ *
+ * This file is a part of Notepanda.
+ *
+ * @file texteditor.h
+ * @brief This file declares the TextEditor class.
+ *
+ */
 #ifndef TEXTEDITOR_H
 #define TEXTEDITOR_H
 
@@ -50,6 +61,7 @@ class TextEditor : public QPlainTextEdit
   void highlightCurrentLine();
   void updateLineNumberArea(const QRect &rect, int dy);
   void setEditorFont(const QFont &font);
+  void setEditorFontSize(const int &size);
 
  private:
   ConfigManager *configManager;

@@ -1,5 +1,16 @@
-#ifndef NOTEPANDA_H
-#define NOTEPANDA_H
+/**
+ * Copyright (c) 2020 ChungZH. ALl Rights Reserved.
+ * Licensed under the MIT license.
+ * See file LICENSE for detail or copy at <https://opensource.org/licenses/MIT>
+ *
+ * This file is a part of Notepanda.
+ *
+ * @file mainwindow.h
+ * @brief This file declares the MainWindow class.
+ *
+ */
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
 
 #include <QMainWindow>
 #include <QPlainTextEdit>
@@ -36,4 +47,4 @@ class MainWindow : public QMainWindow
   QToolBar *ToolBar;
   ConfigManager *configManager;
 };
-#endif  // NOTEPANDA_H
+#endif  // MAINWINDOW_H
