@@ -1,3 +1,13 @@
+/**
+ * Copyright (c) 2020 ChungZH. ALl Rights Reserved.
+ * Licensed under the MIT license.
+ * See file LICENSE for detail or copy at <https://opensource.org/licenses/MIT>
+ *
+ * This file is a part of Notepanda.
+ *
+ * @file aboutwindow.h
+ * @brief This file declares the AboutWindow class.
+ */
 #ifndef ABOUTWINDOW_H
 #define ABOUTWINDOW_H
 
