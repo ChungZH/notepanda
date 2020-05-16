@@ -97,6 +97,7 @@ set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/images/panda.ico")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE.md")
 
 if(WIN32)
+    install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION .)
     if (BUILD_NSIS)
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
             COMMAND windeployqt ${CMAKE_BINARY_DIR}/Debug/${PROJECT_NAME}.exe --dir ${CMAKE_BINARY_DIR}/winqt/
@@ -112,7 +113,7 @@ if(MSVC)
    endif()
 endif()
 
-if(MSVC)
+if(WIN32)
     if(BUILD_NSIS)
         add_definitions(-DQV2RAY_NO_ASIDECONFIG)
         set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/images\\\\panda.ico")
