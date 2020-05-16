@@ -20,16 +20,16 @@
 #include "../core/texteditor.h"
 #include "ui_preferenceswindow.h"
 
-class PreferencesWindow : public QDialog, private Ui::PreferencesWindow
+class PreferencesWindow : public QDialog, public Ui::PreferencesWindow
 {
   Q_OBJECT
  public:
-  PreferencesWindow(QWidget *parent = nullptr, TextEditor *pTE = nullptr);
+  PreferencesWindow(ConfigManager *cfManager, QWidget *parent = nullptr);
+  void resetAllValues();
   Ui::PreferencesWindow *ui;
 
  private:
   ConfigManager *configManager;
-  TextEditor *plainTextEdit;
 };
 
 #endif  // PREFERENCESWINDOW_H

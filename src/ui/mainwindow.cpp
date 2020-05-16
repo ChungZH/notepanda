@@ -23,12 +23,11 @@
 #include "ui_mainwindow.h"
 #include "ui_preferenceswindow.h"
 
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow)
+MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
+    : QMainWindow(parent), ui(new Ui::MainWindow), configManager(cfManager)
 {
   ui->setupUi(this);
 
-  configManager = new ConfigManager;
   QApplication::setStyle(QStyleFactory::create(configManager->getStyle()));
 
   ToolBar = new QToolBar;
@@ -47,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent)
   ToolBar->setIconSize(qs->scaled(26, 26, Qt::IgnoreAspectRatio));
   this->addToolBar(Qt::LeftToolBarArea, ToolBar);
 
-  plainTextEdit = new TextEditor;
+  plainTextEdit = new TextEditor(configManager);
   this->setCentralWidget(plainTextEdit);
 
   connect(ui->actionNew, &QAction::triggered, plainTextEdit,
@@ -59,8 +58,45 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->actionSave_As, &QAction::triggered, plainTextEdit,
           &TextEditor::saveAs);
 
-  connect(ui->actionPreferences, &QAction::triggered, this,
-          [&]() { PreferencesWindow(this, plainTextEdit).exec(); });
+  // PreferencesWindow START
+
+  pfWindow = new PreferencesWindow(configManager, this);
+
+  connect(ui->actionPreferences, &QAction::triggered,
+          [&]() { pfWindow->exec(); });
+
+  connect(pfWindow->ui->themeCombo, &QComboBox::currentTextChanged,
+          [&](const QString &curTheme) {
+            QApplication::setStyle(QStyleFactory::create(curTheme));
+            configManager->setStyle(curTheme);
+          });
+  connect(pfWindow->ui->fontComboBox, &QFontComboBox::currentFontChanged,
+          [&](const QFont font) { plainTextEdit->setEditorFont(font); });
+  connect(pfWindow->ui->spinBox, QOverload<int>::of(&QSpinBox::valueChanged),
+          [=](const int &value) { plainTextEdit->setEditorFontSize(value); });
+
+  // User accepted, so change the `settings`.
+  connect(pfWindow->ui->buttonBox, &QDialogButtonBox::accepted,
+          [&]() { configManager->save(); });
+
+  // User rejected, so read general settings, do not change the `settings` !!!
+  // Otherwise it will not be restored
+  connect(pfWindow->ui->buttonBox, &QDialogButtonBox::rejected, [&]() {
+    // Restore the variables
+    configManager->readGeneralSettings();
+
+    // Restore TextEditor
+    plainTextEdit->setEditorFont(configManager->getEditorFontFamily());
+    plainTextEdit->setEditorFontSize(configManager->getEditorFontSize());
+
+    // Restore MainWindow
+    QApplication::setStyle(QStyleFactory::create(configManager->getStyle()));
+
+    // Restore PreferencesWindow
+    pfWindow->resetAllValues();
+  });
+
+  // PW END
 
   connect(ui->actionPrint, &QAction::triggered, plainTextEdit,
           &TextEditor::print);
@@ -69,18 +105,16 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->actionRedo, &QAction::triggered, plainTextEdit,
           &TextEditor::redo);
   connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::quit);
-  connect(ui->actionAbout, &QAction::triggered, this,
+  connect(ui->actionAbout, &QAction::triggered,
           [&]() { AboutWindow(this).exec(); });
   connect(plainTextEdit, &TextEditor::changeTitle, this,
           &MainWindow::changeWindowTitle);
-  connect(plainTextEdit, &TextEditor::undoAvailable, this,
-          [=](bool undoIsAvailable) {
-            ui->actionUndo->setDisabled(!undoIsAvailable);
-          });
-  connect(plainTextEdit, &TextEditor::redoAvailable, this,
-          [=](bool redoIsAvailable) {
-            ui->actionRedo->setDisabled(!redoIsAvailable);
-          });
+  connect(plainTextEdit, &TextEditor::undoAvailable, [=](bool undoIsAvailable) {
+    ui->actionUndo->setDisabled(!undoIsAvailable);
+  });
+  connect(plainTextEdit, &TextEditor::redoAvailable, [=](bool redoIsAvailable) {
+    ui->actionRedo->setDisabled(!redoIsAvailable);
+  });
   connect(plainTextEdit, &TextEditor::textChanged, this,
           &MainWindow::updateStatusBar);
   updateStatusBar();
@@ -102,14 +136,12 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->actionPaste, &QAction::triggered, plainTextEdit,
           &TextEditor::paste);
   connect(ui->actionCut, &QAction::triggered, plainTextEdit, &TextEditor::cut);
-  connect(plainTextEdit, &TextEditor::copyAvailable, this,
-          [&](bool isCopyAvailable) {
-            ui->actionCopy->setDisabled(!isCopyAvailable);
-          });
-  connect(plainTextEdit, &TextEditor::copyAvailable, this,
-          [&](bool isCutAvailable) {
-            ui->actionCut->setDisabled(!isCutAvailable);
-          });
+  connect(plainTextEdit, &TextEditor::copyAvailable, [&](bool isCopyAvailable) {
+    ui->actionCopy->setDisabled(!isCopyAvailable);
+  });
+  connect(plainTextEdit, &TextEditor::copyAvailable, [&](bool isCutAvailable) {
+    ui->actionCut->setDisabled(!isCutAvailable);
+  });
   ui->actionCopy->setDisabled(1);
   ui->actionCut->setDisabled(1);
 #endif

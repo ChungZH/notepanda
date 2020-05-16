@@ -53,9 +53,9 @@ See [Projects](https://github.com/ChungZH/notepanda/projects/).
 
 ## Install
 
-Go to [Releases](https://github.com/ChungZH/notepanda/releases) page.
+If you are Windows / MacOS / Linux user, you can go to [Releases](https://github.com/ChungZH/notepanda/releases) page.
 
-If you are Arch Linux (or Arch-based distros) user, you can get Notepanda from AUR.
+If you are Arch Linux (or Arch-based distros) user, you can get Notepanda from AUR. ![AUR Badge](https://img.shields.io/aur/version/notepanda)
 
 You may use an AUR helper such as `yay` to automatically handle the build process of AUR packages:
 

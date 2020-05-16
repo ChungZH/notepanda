@@ -33,7 +33,7 @@ class MainWindow : public QMainWindow
   Q_OBJECT
 
  public:
-  MainWindow(QWidget *parent = nullptr);
+  MainWindow(ConfigManager *confManager, QWidget *parent = nullptr);
   ~MainWindow();
   TextEditor *plainTextEdit;
 
@@ -46,5 +46,6 @@ class MainWindow : public QMainWindow
   Ui::MainWindow *ui;
   QToolBar *ToolBar;
   ConfigManager *configManager;
+  PreferencesWindow *pfWindow;
 };
 #endif  // MAINWINDOW_H

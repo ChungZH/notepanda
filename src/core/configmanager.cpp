@@ -14,9 +14,10 @@
 #include <QDebug>
 #include <QFontDatabase>
 
-ConfigManager::ConfigManager(QObject *parent) : QObject(parent)
+ConfigManager::ConfigManager(const QString &configuration, QObject *parent)
+    : QObject(parent), configFile(configuration)
 {
-  settings = new QSettings;
+  settings = new QSettings(configFile, QSettings::IniFormat, this);
   readGeneralSettings();
 }
 
@@ -26,7 +27,6 @@ ConfigManager::ConfigManager(QObject *parent) : QObject(parent)
 void ConfigManager::save()
 {
   settings->setValue("EditorFontFamily", QVariant(editorFontFamily));
-  qDebug() << editorFontSize;
   settings->setValue("Style", QVariant(style));
   settings->setValue("EditorFontSize", QVariant(editorFontSize));
 }
@@ -59,8 +59,7 @@ void ConfigManager::setStyle(const QString &stylename) { style = stylename; }
 
 int ConfigManager::getEditorFontSize() const { return editorFontSize; }
 
-void ConfigManager::setEditorFontSize(const int &fontsize)
+void ConfigManager::setEditorFontSize(const int fontsize)
 {
   editorFontSize = fontsize;
-  qDebug() << "in ConfigManager::setEditorFontSize:" << editorFontSize;
 }

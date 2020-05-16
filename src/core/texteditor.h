@@ -36,7 +36,7 @@ class TextEditor : public QPlainTextEdit
   Q_OBJECT
 
  public:
-  TextEditor(QWidget *parent = nullptr);
+  TextEditor(ConfigManager *cfManager, QWidget *parent = nullptr);
   QString currentFile;
   void lineNumberAreaPaintEvent(QPaintEvent *event);
   int lineNumberAreaWidth();
@@ -65,8 +65,6 @@ class TextEditor : public QPlainTextEdit
 
  private:
   ConfigManager *configManager;
-
- private:
   void setTheme(const KSyntaxHighlighting::Theme &theme);
   KSyntaxHighlighting::Repository m_repository;
   KSyntaxHighlighting::SyntaxHighlighter *m_highlighter;

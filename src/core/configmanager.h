@@ -24,7 +24,8 @@ class ConfigManager : public QObject
 {
   Q_OBJECT
  public:
-  ConfigManager(QObject *parent = nullptr);
+  explicit ConfigManager(const QString &configuration,
+                         QObject *parent = nullptr);
   void save();
   void readGeneralSettings();
   QFont getEditorFontFamily() const;
@@ -32,7 +33,7 @@ class ConfigManager : public QObject
   QString getStyle() const;
   void setStyle(const QString &stylename);
   int getEditorFontSize() const;
-  void setEditorFontSize(const int &fontsize);
+  void setEditorFontSize(const int fontsize);
 
  private:
   QSettings *settings;

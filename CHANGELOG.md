@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - Syntax Highlighting
 - Custom theme
 - Launch from the shell
+- Persistent application settings
 
 ## 0.0.1
 

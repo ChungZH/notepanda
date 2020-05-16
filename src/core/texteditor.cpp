@@ -30,13 +30,14 @@
 
 #include "../ui/linenumberarea.h"
 
-TextEditor::TextEditor(QWidget *parent)
+TextEditor::TextEditor(ConfigManager *cfManager, QWidget *parent)
     : QPlainTextEdit(parent),
-      m_highlighter(new KSyntaxHighlighting::SyntaxHighlighter(document()))
+      m_highlighter(new KSyntaxHighlighting::SyntaxHighlighter(document())),
+      configManager(cfManager)
 {
   // TODO: Dark & Light
   setTheme(
-      m_repository.defaultTheme(KSyntaxHighlighting::Repository::LightTheme));
+      m_repository.defaultTheme(KSyntaxHighlighting::Repository::DarkTheme));
   // Line number area
   lineNumberArea = new LineNumberArea(this);
 
@@ -50,7 +51,6 @@ TextEditor::TextEditor(QWidget *parent)
   updateLineNumberAreaWidth(0);
   highlightCurrentLine();
 
-  configManager = new ConfigManager(this);
   TextEditor::setFont(configManager->getEditorFontFamily());
 }
 
@@ -335,6 +335,5 @@ void TextEditor::setEditorFontSize(const int &size)
   font.setPointSize(size);
   QPlainTextEdit::setFont(font);
   configManager->setEditorFontSize(size);
-  qDebug() << "in TextEditor::setEditorFontSize"
-           << configManager->getEditorFontSize();
+  configManager->getEditorFontSize();
 }
