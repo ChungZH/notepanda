@@ -26,6 +26,11 @@ I'm not going to use this as a replacement for my other text editors because it'
 
 So enjoy this toy 🍵️
 
+## Screenshots
+
+<img src="./images/notepanda-sc1.png" width="400px"/><img src="./images/notepanda-sc2.png" width="400px"/>
+<img src="./images/notepanda-sc3.png" width="400px"/><img src="./images/notepanda-sc4.png" width="400px"/>
+
 ## Feature
 
 - Basic operation
