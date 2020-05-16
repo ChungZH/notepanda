@@ -63,7 +63,7 @@ You may use an AUR helper such as `yay` to automatically handle the build proces
 yay -S notepanda
 ```
 
-The latest version is `v0.0.1` now.
+The latest version is `v0.0.2` now.
 
 ## Contributions / Bugs
 
