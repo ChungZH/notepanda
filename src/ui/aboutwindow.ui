@@ -19,7 +19,7 @@
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background: rgb(255, 255, 255)</string>
+   <string notr="true"/>
   </property>
   <widget class="QToolButton" name="AboutQt">
    <property name="geometry">

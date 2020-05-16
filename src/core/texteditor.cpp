@@ -1,3 +1,14 @@
+/**
+ * Copyright (c) 2020 ChungZH. ALl Rights Reserved.
+ * Licensed under the MIT license.
+ * See file LICENSE for detail or copy at <https://opensource.org/licenses/MIT>
+ *
+ * This file is a part of Notepanda.
+ *
+ * @file texteditor.cpp
+ * @brief This file implements the TextEditor class.
+ *
+ */
 #include "texteditor.h"
 
 #include <QApplication>
@@ -19,13 +30,14 @@
 
 #include "../ui/linenumberarea.h"
 
-TextEditor::TextEditor(QWidget *parent)
+TextEditor::TextEditor(ConfigManager *cfManager, QWidget *parent)
     : QPlainTextEdit(parent),
-      m_highlighter(new KSyntaxHighlighting::SyntaxHighlighter(document()))
+      m_highlighter(new KSyntaxHighlighting::SyntaxHighlighter(document())),
+      configManager(cfManager)
 {
   // TODO: Dark & Light
   setTheme(
-      m_repository.defaultTheme(KSyntaxHighlighting::Repository::LightTheme));
+      m_repository.defaultTheme(KSyntaxHighlighting::Repository::DarkTheme));
   // Line number area
   lineNumberArea = new LineNumberArea(this);
 
@@ -39,7 +51,6 @@ TextEditor::TextEditor(QWidget *parent)
   updateLineNumberAreaWidth(0);
   highlightCurrentLine();
 
-  configManager = new ConfigManager(this);
   TextEditor::setFont(configManager->getEditorFontFamily());
 }
 
@@ -316,4 +327,13 @@ void TextEditor::setEditorFont(const QFont &font)
 {
   QPlainTextEdit::setFont(font);
   configManager->setEditorFontFamily(font.family());
+}
+
+void TextEditor::setEditorFontSize(const int &size)
+{
+  QFont font = configManager->getEditorFontFamily();
+  font.setPointSize(size);
+  QPlainTextEdit::setFont(font);
+  configManager->setEditorFontSize(size);
+  configManager->getEditorFontSize();
 }

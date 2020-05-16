@@ -18,6 +18,8 @@ Just practice XD
 
 🚧 WIP
 
+BTW you can read this post in my blog: [Notepanda 开发小结](https://chungzh.cn/2020/05/16/notepanda/)
+
 ## Why write this text editor?
 
 I recently started getting started with Qt, this is my first Qt project, the first C++ project, and the first project in my life. I hope to develop my skills through this project.
@@ -25,6 +27,11 @@ I recently started getting started with Qt, this is my first Qt project, the fir
 I'm not going to use this as a replacement for my other text editors because it's too simple and I am too poor :)
 
 So enjoy this toy 🍵️
+
+## Screenshots
+
+<img src="./images/notepanda-sc1.png" width="400px"/><img src="./images/notepanda-sc2.png" width="400px"/>
+<img src="./images/notepanda-sc3.png" width="400px"/><img src="./images/notepanda-sc4.png" width="400px"/>
 
 ## Feature
 
@@ -46,9 +53,9 @@ See [Projects](https://github.com/ChungZH/notepanda/projects/).
 
 ## Install
 
-Go to [Releases](https://github.com/ChungZH/notepanda/releases) page.
+If you are Windows / MacOS / Linux user, you can go to [Releases](https://github.com/ChungZH/notepanda/releases) page.
 
-If you are Arch Linux (or Arch-based distros) user, you can get Notepanda from AUR.
+If you are Arch Linux (or Arch-based distros) user, you can get Notepanda from AUR. ![AUR Badge](https://img.shields.io/aur/version/notepanda)
 
 You may use an AUR helper such as `yay` to automatically handle the build process of AUR packages:
 

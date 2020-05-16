@@ -98,7 +98,6 @@ jobs:
           cd build
           cmake .. -DCMAKE_BUILD_TYPE=Release -DKF5SyntaxHighlighting_DIR="C:/Program Files (x86)/ECM/lib/cmake/KF5SyntaxHighlighting" -DCMAKE_GENERATOR_PLATFORM=${{ matrix.cmakearch }} -DBUILD_NSIS=ON -DCMAKE_INSTALL_PREFIX=Release 
           cmake --build . --target package --parallel $(nproc)
-          cmake --install .
       - name: Windows - Get package name
         shell: bash
         id: get_package
