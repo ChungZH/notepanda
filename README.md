@@ -18,6 +18,8 @@ Just practice XD
 
 🚧 WIP
 
+BTW you can read this post in my blog: [Notepanda 开发小结](https://chungzh.cn/2020/05/16/notepanda/)
+
 ## Why write this text editor?
 
 I recently started getting started with Qt, this is my first Qt project, the first C++ project, and the first project in my life. I hope to develop my skills through this project.
