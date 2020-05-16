@@ -102,6 +102,7 @@ if(WIN32)
             COMMAND windeployqt ${CMAKE_BINARY_DIR}/Debug/${PROJECT_NAME}.exe --dir ${CMAKE_BINARY_DIR}/winqt/
             )
         install(DIRECTORY ${CMAKE_BINARY_DIR}/winqt/ DESTINATION .)
+        set(APPS "\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.exe")
     endif()
 endif()
 
