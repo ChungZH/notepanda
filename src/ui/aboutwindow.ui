@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>752</width>
-    <height>394</height>
+    <width>827</width>
+    <height>472</height>
    </rect>
   </property>
   <property name="font">
@@ -21,182 +21,179 @@
   <property name="styleSheet">
    <string notr="true"/>
   </property>
-  <widget class="QToolButton" name="AboutQt">
-   <property name="geometry">
-    <rect>
-     <x>200</x>
-     <y>350</y>
-     <width>511</width>
-     <height>28</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <family>Arial</family>
-    </font>
-   </property>
-   <property name="text">
-    <string>About Qt</string>
-   </property>
-  </widget>
-  <widget class="QWidget" name="verticalLayoutWidget_5">
-   <property name="geometry">
-    <rect>
-     <x>200</x>
-     <y>10</y>
-     <width>511</width>
-     <height>331</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout_4">
-    <item>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="font">
-         <font>
-          <family>Open Sans</family>
-          <pointsize>26</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>Notepanda</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_7">
-        <item>
-         <layout class="QGridLayout" name="gridLayout">
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_2">
-            <property name="font">
-             <font>
-              <family>Noto Sans CJK SC</family>
-              <pointsize>16</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Version: </string>
-            </property>
-            <property name="textFormat">
-             <enum>Qt::AutoText</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_4">
-            <property name="font">
-             <font>
-              <family>Noto Sans CJK SC</family>
-              <pointsize>16</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>GitHub: </string>
-            </property>
-            <property name="textFormat">
-             <enum>Qt::MarkdownText</enum>
-            </property>
-            <property name="openExternalLinks">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="2">
-           <widget class="QLabel" name="label_7">
-            <property name="font">
-             <font>
-              <family>Noto Sans CJK SC</family>
-              <pointsize>16</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>[ChungZH/Notepanda](https://github.com/ChungZH/notepanda)</string>
-            </property>
-            <property name="textFormat">
-             <enum>Qt::MarkdownText</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="2">
-           <widget class="QLabel" name="label_6">
-            <property name="font">
-             <font>
-              <family>Noto Sans CJK SC</family>
-              <pointsize>16</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>MIT</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QLabel" name="label_5">
-            <property name="font">
-             <font>
-              <family>Noto Sans CJK SC</family>
-              <pointsize>16</pointsize>
-             </font>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_3">
-            <property name="font">
-             <font>
-              <family>Noto Sans CJK SC</family>
-              <pointsize>16</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>License:</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-        <item>
-         <widget class="QTextBrowser" name="textBrowser">
-          <property name="source">
-           <url>
-            <string>qrc:/asset/assets/CREDIT.md</string>
-           </url>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="verticalLayoutWidget_6">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>10</y>
-     <width>160</width>
-     <height>161</height>
-    </rect>
-   </property>
-   <layout class="QVBoxLayout" name="verticalLayout_5">
-    <item>
-     <widget class="QFrame" name="frame">
-      <property name="styleSheet">
-       <string notr="true">image: url(:/asset/images/logo.png)</string>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,3">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_5" stretch="2,3">
+       <item>
+        <widget class="QFrame" name="frame">
+         <property name="styleSheet">
+          <string notr="true">image: url(:/asset/images/logo.png)</string>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_3" stretch="1,7">
+         <item alignment="Qt::AlignLeft">
+          <widget class="QLabel" name="label">
+           <property name="font">
+            <font>
+             <family>Noto Sans CJK SC</family>
+             <pointsize>26</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string>Notepanda</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_7" stretch="1,3,1">
+           <item>
+            <layout class="QGridLayout" name="gridLayout">
+             <item row="1" column="0" alignment="Qt::AlignLeft">
+              <widget class="QLabel" name="label_2">
+               <property name="font">
+                <font>
+                 <family>Noto Sans CJK SC</family>
+                 <pointsize>16</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Version: </string>
+               </property>
+               <property name="textFormat">
+                <enum>Qt::AutoText</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="2" alignment="Qt::AlignLeft">
+              <widget class="QLabel" name="label_7">
+               <property name="font">
+                <font>
+                 <family>Noto Sans CJK SC</family>
+                 <pointsize>16</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>[ChungZH/Notepanda](https://github.com/ChungZH/notepanda)</string>
+               </property>
+               <property name="textFormat">
+                <enum>Qt::MarkdownText</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2" alignment="Qt::AlignLeft">
+              <widget class="QLabel" name="label_6">
+               <property name="font">
+                <font>
+                 <family>Noto Sans CJK SC</family>
+                 <pointsize>16</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>MIT</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0" alignment="Qt::AlignLeft">
+              <widget class="QLabel" name="label_3">
+               <property name="font">
+                <font>
+                 <family>Noto Sans CJK SC</family>
+                 <pointsize>16</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>License:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0" alignment="Qt::AlignLeft">
+              <widget class="QLabel" name="label_4">
+               <property name="font">
+                <font>
+                 <family>Noto Sans CJK SC</family>
+                 <pointsize>16</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>GitHub: </string>
+               </property>
+               <property name="textFormat">
+                <enum>Qt::MarkdownText</enum>
+               </property>
+               <property name="openExternalLinks">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2" alignment="Qt::AlignLeft">
+              <widget class="QLabel" name="label_5">
+               <property name="font">
+                <font>
+                 <family>Noto Sans CJK SC</family>
+                 <pointsize>16</pointsize>
+                </font>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item alignment="Qt::AlignVCenter">
+            <widget class="QTextBrowser" name="textBrowser">
+             <property name="source">
+              <url>
+               <string>qrc:/asset/assets/CREDIT.md</string>
+              </url>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="AboutQt">
+             <property name="font">
+              <font>
+               <family>Arial</family>
+              </font>
+             </property>
+             <property name="text">
+              <string>About Qt</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>
