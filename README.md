@@ -9,6 +9,7 @@
 
 ![LICENSE](https://img.shields.io/github/license/ChungZH/notepanda)
 ![Made with love](https://img.shields.io/badge/Made%20with-love-red?style=flat)
+![Build CI](https://github.com/ChungZH/notepanda/workflows/Build%20CI/badge.svg)
 
 
 > **A simple cross-platform notepad. Based on Qt and C++.**
