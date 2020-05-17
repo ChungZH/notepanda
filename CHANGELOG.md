@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [UNRELEASED]
+## 0.0.2
 
 ### 🌵 Features
 
@@ -12,6 +12,10 @@ All notable changes to this project will be documented in this file.
 - Custom theme
 - Launch from the shell
 - Persistent application settings
+
+### 🦋 Optimization
+
+- Refactor code structure.
 
 ## 0.0.1
 
