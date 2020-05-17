@@ -83,7 +83,7 @@ If you found a bug or have a feature request, you can report it [GitHub Issue](h
 
 Copyright (c) ChungZH. All rights reserved.
 
-**Libraries that have been used in Qv2ray are listed below (Sorted by date added):**
+**Libraries that have been used in Notepanda are listed below (Sorted by date added):**
 
 - Please see: [assets/CREDIT.md](assets/CREDIT.md)
 
