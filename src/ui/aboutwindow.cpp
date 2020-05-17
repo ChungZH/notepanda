@@ -15,6 +15,8 @@
 #include <QApplication>
 #include <QDebug>
 #include <QFile>
+#include <QFont>
+#include <QFontDatabase>
 #include <QTextStream>
 
 #include "ui_aboutwindow.h"
@@ -38,10 +40,23 @@ AboutWindow::AboutWindow(QWidget *parent)
 
   QString verString =
       t_ver.readAll() + t_vSf.readAll() + " BV" + t_bVe.readAll();
+  verString.remove("\n");
 
   ui->label_5->setText(verString);
   a_AboutQt = new QAction(tr("About Qt"), this);
   ui->AboutQt->setDefaultAction(a_AboutQt);
 
+  ui->label_2->setFont(QFont(
+      QFontDatabase::systemFont(QFontDatabase::FixedFont).toString(), 15));
+  ui->label_3->setFont(QFont(
+      QFontDatabase::systemFont(QFontDatabase::FixedFont).toString(), 15));
+  ui->label_4->setFont(QFont(
+      QFontDatabase::systemFont(QFontDatabase::FixedFont).toString(), 15));
+  ui->label_5->setFont(QFont(
+      QFontDatabase::systemFont(QFontDatabase::FixedFont).toString(), 15));
+  ui->label_6->setFont(QFont(
+      QFontDatabase::systemFont(QFontDatabase::FixedFont).toString(), 15));
+  ui->label_7->setFont(QFont(
+      QFontDatabase::systemFont(QFontDatabase::FixedFont).toString(), 15));
   connect(a_AboutQt, &QAction::triggered, this, &QApplication::aboutQt);
 }
