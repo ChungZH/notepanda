@@ -1,6 +1,9 @@
 name: Build CI
 
-on: [push, pull_request]
+on: 
+  push:
+  release:
+    types: [prereleased]
 
 jobs:
   build:
