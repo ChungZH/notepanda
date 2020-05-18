@@ -25,7 +25,7 @@ class PreferencesWindow : public QDialog, public Ui::PreferencesWindow
   Q_OBJECT
  public:
   PreferencesWindow(ConfigManager *cfManager, QWidget *parent = nullptr);
-  void resetAllValues();
+  void resetAllValues(const bool isFirst);
   Ui::PreferencesWindow *ui;
 
  private:

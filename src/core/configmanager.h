@@ -33,7 +33,9 @@ class ConfigManager : public QObject
   QString getStyle() const;
   void setStyle(const QString &stylename);
   int getEditorFontSize() const;
-  void setEditorFontSize(const int fontsize);
+  void setEditorFontSize(const int &fontsize);
+  QString getColorTheme() const;
+  void setColorTheme(const QString &ctname);
 
  private:
   QSettings *settings;
@@ -41,6 +43,7 @@ class ConfigManager : public QObject
   QString editorFontFamily;
   QString style;
   int editorFontSize;
+  QString colorTheme;
 };
 
 #endif  // CONFIGMANAGER_H

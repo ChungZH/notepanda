@@ -62,6 +62,7 @@ class TextEditor : public QPlainTextEdit
   void updateLineNumberArea(const QRect &rect, int dy);
   void setEditorFont(const QFont &font);
   void setEditorFontSize(const int &size);
+  void setEditorColorTheme(const QString &ctname);
 
  private:
   ConfigManager *configManager;

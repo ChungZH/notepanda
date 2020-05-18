@@ -25,13 +25,18 @@ PreferencesWindow::PreferencesWindow(ConfigManager *cfManager, QWidget *parent)
   ui->setupUi(this);
   setWindowTitle(tr("Preferences - Notepanda"));
 
-  resetAllValues();
+  resetAllValues(1);
 }
 
-void PreferencesWindow::resetAllValues()
+void PreferencesWindow::resetAllValues(const bool isFirst)
 {
-  ui->themeCombo->addItems(QStyleFactory::keys());
+  if (isFirst) {
+    ui->themeCombo->addItems(QStyleFactory::keys());
+    ui->colorCombo->addItem("Light");
+    ui->colorCombo->addItem("Dark");
+  }
   ui->themeCombo->setCurrentText(configManager->getStyle());
   ui->fontComboBox->setCurrentFont(QFont(configManager->getEditorFontFamily()));
   ui->spinBox->setValue(configManager->getEditorFontSize());
+  ui->colorCombo->setCurrentText(configManager->getColorTheme());
 }

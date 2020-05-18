@@ -74,6 +74,12 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
           [&](const QFont font) { plainTextEdit->setEditorFont(font); });
   connect(pfWindow->ui->spinBox, QOverload<int>::of(&QSpinBox::valueChanged),
           [=](const int &value) { plainTextEdit->setEditorFontSize(value); });
+  connect(pfWindow->ui->colorCombo, &QComboBox::currentTextChanged,
+          [&](const QString &ctname) {
+            plainTextEdit->setEditorColorTheme(ctname);
+            configManager->setColorTheme(ctname);
+            qDebug() << "D" << configManager->getStyle();
+          });
 
   // User accepted, so change the `settings`.
   connect(pfWindow->ui->buttonBox, &QDialogButtonBox::accepted,
@@ -88,12 +94,13 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
     // Restore TextEditor
     plainTextEdit->setEditorFont(configManager->getEditorFontFamily());
     plainTextEdit->setEditorFontSize(configManager->getEditorFontSize());
+    plainTextEdit->setEditorColorTheme(configManager->getColorTheme());
 
     // Restore MainWindow
     QApplication::setStyle(QStyleFactory::create(configManager->getStyle()));
 
     // Restore PreferencesWindow
-    pfWindow->resetAllValues();
+    pfWindow->resetAllValues(0);
   });
 
   // PW END

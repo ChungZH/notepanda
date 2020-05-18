@@ -35,9 +35,12 @@ TextEditor::TextEditor(ConfigManager *cfManager, QWidget *parent)
       m_highlighter(new KSyntaxHighlighting::SyntaxHighlighter(document())),
       configManager(cfManager)
 {
-  // TODO: Dark & Light
-  setTheme(
-      m_repository.defaultTheme(KSyntaxHighlighting::Repository::DarkTheme));
+  if (configManager->getColorTheme() == "Light")
+    setTheme(m_repository.defaultTheme(
+        (KSyntaxHighlighting::Repository::LightTheme)));
+  else
+    setTheme(
+        m_repository.defaultTheme(KSyntaxHighlighting::Repository::DarkTheme));
   // Line number area
   lineNumberArea = new LineNumberArea(this);
 
@@ -336,4 +339,14 @@ void TextEditor::setEditorFontSize(const int &size)
   QPlainTextEdit::setFont(font);
   configManager->setEditorFontSize(size);
   configManager->getEditorFontSize();
+}
+
+void TextEditor::setEditorColorTheme(const QString &ctname)
+{
+  if (ctname == "Light")
+    setTheme(m_repository.defaultTheme(
+        (KSyntaxHighlighting::Repository::LightTheme)));
+  else
+    setTheme(
+        m_repository.defaultTheme(KSyntaxHighlighting::Repository::DarkTheme));
 }

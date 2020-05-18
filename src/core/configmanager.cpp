@@ -29,6 +29,7 @@ void ConfigManager::save()
   settings->setValue("EditorFontFamily", QVariant(editorFontFamily));
   settings->setValue("Style", QVariant(style));
   settings->setValue("EditorFontSize", QVariant(editorFontSize));
+  settings->setValue("ColorTheme", QVariant(colorTheme));
 }
 
 /**
@@ -44,6 +45,7 @@ void ConfigManager::readGeneralSettings()
   }
   style = settings->value("Style", "Fusion").toString();
   editorFontSize = settings->value("EditorFontSize", 16).toInt();
+  colorTheme = settings->value("ColorTheme", "Light").toString();
 }
 
 QFont ConfigManager::getEditorFontFamily() const { return editorFontFamily; }
@@ -59,7 +61,13 @@ void ConfigManager::setStyle(const QString &stylename) { style = stylename; }
 
 int ConfigManager::getEditorFontSize() const { return editorFontSize; }
 
-void ConfigManager::setEditorFontSize(const int fontsize)
+void ConfigManager::setEditorFontSize(const int &fontsize)
 {
   editorFontSize = fontsize;
 }
+
+QString ConfigManager::getColorTheme() const { return colorTheme; }
+void ConfigManager::setColorTheme(const QString &ctname)
+{
+  colorTheme = ctname;
+};
