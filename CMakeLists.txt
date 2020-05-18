@@ -100,9 +100,9 @@ if(WIN32)
     install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION .)
     if (BUILD_NSIS)
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-            COMMAND windeployqt ${CMAKE_BINARY_DIR}/Debug/${PROJECT_NAME}.exe --dir ${CMAKE_BINARY_DIR}/winqt/
+            COMMAND windeployqt ${CMAKE_BINARY_DIR}/Debug/${PROJECT_NAME}.exe 
             )
-        install(DIRECTORY ${CMAKE_BINARY_DIR}/winqt/ DESTINATION .)
+        install(DIRECTORY ${CMAKE_BINARY_DIR}/Debug/ DESTINATION .)
         set(APPS "\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.exe")
     endif()
 endif()
