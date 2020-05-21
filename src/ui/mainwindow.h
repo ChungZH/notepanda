@@ -41,6 +41,8 @@ class MainWindow : public QMainWindow
   void changeWindowTitle();
   void quit();
   void updateStatusBar();
+  void normalMode();
+  void stickyNoteMode();
 
  private:
   Ui::MainWindow *ui;

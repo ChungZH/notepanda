@@ -55,6 +55,7 @@ TextEditor::TextEditor(ConfigManager *cfManager, QWidget *parent)
   highlightCurrentLine();
 
   TextEditor::setFont(configManager->getEditorFontFamily());
+  lineNumberArea->resize(0, 0);
 }
 
 void TextEditor::newDocument()

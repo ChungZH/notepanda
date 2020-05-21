@@ -28,8 +28,6 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
 {
   ui->setupUi(this);
 
-  QApplication::setStyle(QStyleFactory::create(configManager->getStyle()));
-
   ToolBar = new QToolBar;
   ToolBar->addAction(ui->actionNew);
   ToolBar->addAction(ui->actionOpen);
@@ -41,10 +39,10 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
   ToolBar->addAction(ui->actionRedo);
   ToolBar->addAction(ui->actionQuit);
   ToolBar->addAction(ui->actionAbout);
+  ToolBar->addAction(ui->actionSticky_note_mode);
+  normalMode();
 
-  QSize *qs = new QSize;
-  ToolBar->setIconSize(qs->scaled(26, 26, Qt::IgnoreAspectRatio));
-  this->addToolBar(Qt::LeftToolBarArea, ToolBar);
+  QApplication::setStyle(QStyleFactory::create(configManager->getStyle()));
 
   plainTextEdit = new TextEditor(configManager);
   this->setCentralWidget(plainTextEdit);
@@ -78,7 +76,6 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
           [&](const QString &ctname) {
             plainTextEdit->setEditorColorTheme(ctname);
             configManager->setColorTheme(ctname);
-            qDebug() << "D" << configManager->getStyle();
           });
 
   // User accepted, so change the `settings`.
@@ -114,6 +111,11 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
   connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::quit);
   connect(ui->actionAbout, &QAction::triggered,
           [&]() { AboutWindow(this).exec(); });
+  connect(ui->actionSticky_note_mode, &QAction::triggered, [&]() {
+    stickyNoteMode();
+    ui->actionSticky_note_mode->setEnabled(0);
+  });
+
   connect(plainTextEdit, &TextEditor::changeTitle, this,
           &MainWindow::changeWindowTitle);
   connect(plainTextEdit, &TextEditor::undoAvailable, [=](bool undoIsAvailable) {
@@ -124,6 +126,7 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
   });
   connect(plainTextEdit, &TextEditor::textChanged, this,
           &MainWindow::updateStatusBar);
+
   updateStatusBar();
   changeWindowTitle();
   ui->actionUndo->setDisabled(1);
@@ -178,3 +181,14 @@ void MainWindow::updateStatusBar()
       QString::number(plainTextEdit->document()->characterCount() - 1) +
       " Lines:" + QString::number(plainTextEdit->document()->lineCount()));
 }
+
+void MainWindow::normalMode()
+{
+  this->addToolBar(Qt::LeftToolBarArea, ToolBar);
+}
+
+/**
+ * @brief Sticky Note Mode, like Microsoft Sticky Notes. For more details, see
+ * <https://www.microsoft.com/en-us/p/microsoft-sticky-notes/9nblggh4qghw?activetab=pivot:overviewtab#>
+ */
+void MainWindow::stickyNoteMode() { this->removeToolBar(ToolBar); }

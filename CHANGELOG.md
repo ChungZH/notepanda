@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### 🌵 Features
+
+- Custom syntax highlight theme (light / dark)
+
 ## 0.0.2
 
 ### 🌵 Features
