@@ -88,6 +88,23 @@ endif()
 
 include(InstallRequiredSystemLibraries)
 
+# Directories to look for dependencies
+set(DIRS "${CMAKE_BINARY_DIR}")
+# Path used for searching by FIND_XXX(), with appropriate suffixes added
+if(CMAKE_PREFIX_PATH)
+    foreach(dir ${CMAKE_PREFIX_PATH})
+        list(APPEND DIRS "${dir}/bin" "${dir}/lib")
+    endforeach()
+endif()
+# Append Qt's lib folder which is two levels above Qt5Widgets_DIR
+list(APPEND DIRS "${Qt5Widgets_DIR}/../..")
+list(APPEND DIRS "/usr/local/lib")
+list(APPEND DIRS "/usr/lib")
+
+if(APPLE)
+    set(APPS "\${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.app")
+endif()
+
 # Packaging
 set(CPACK_PACKAGE_VENDOR "ChungZH")
 set(CPACK_PACKAGE_VERSION ${VERSION_STRING})
@@ -103,9 +120,12 @@ if(WIN32)
             COMMAND windeployqt ${CMAKE_BINARY_DIR}/Debug/${PROJECT_NAME}.exe 
             )
         install(DIRECTORY ${CMAKE_BINARY_DIR}/Debug/ DESTINATION .)
-        set(APPS "\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.exe")
     endif()
+    set(APPS "\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.exe")
 endif()
+
+install(CODE "include(BundleUtilities)
+      fixup_bundle(\"${APPS}\" \"${QT_PLUGINS}\" \"${DIRS}\")")
 
 if(MSVC)
    if(NOT BUILD_NSIS)
