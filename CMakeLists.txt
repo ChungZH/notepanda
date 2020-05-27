@@ -128,7 +128,7 @@ if(WIN32)
 endif()
 
 install(CODE "include(BundleUtilities)
-      fixup_bundle(\"${APPS}\" \"${QT_PLUGINS}\" \"${DIRS}\")")
+      fixup_bundle(\"${APPS}\" \"${KF5_PLUGINS}\" \"${DIRS}\")")
 
 if(MSVC)
    if(NOT BUILD_NSIS)
