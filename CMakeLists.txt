@@ -122,7 +122,7 @@ if(WIN32)
     endif()
     set(APPS "\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.exe")
     install(CODE "include(BundleUtilities)
-      fixup_bundle(\"${APPS}\" \"KF5SyntaxHighlighting\" \"${DIRS}\")")
+      fixup_bundle(\"${APPS}\" \"KF5_PLUGINS\" \"${DIRS}\")")
 endif()
 
 if(MSVC)
