@@ -103,11 +103,8 @@ endif()
 
 # Append Qt's lib folder which is two levels above Qt5Widgets_DIR
 list(APPEND DIRS "${Qt5Widgets_DIR}/../..")
-<<<<<<< HEAD
 list(APPEND DIRS "/usr/local/lib")
 list(APPEND DIRS "/usr/lib")
-=======
->>>>>>> d14a60c181a5953d408589ca5bf4916f3c7e1e52
 
 # Packaging
 set(CPACK_PACKAGE_VENDOR "ChungZH")
