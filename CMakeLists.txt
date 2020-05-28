@@ -104,10 +104,6 @@ list(APPEND DIRS "${Qt5Widgets_DIR}/../..")
 list(APPEND DIRS "/usr/local/lib")
 list(APPEND DIRS "/usr/lib")
 
-if(APPLE)
-    set(APPS "\${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.app")
-endif()
-
 # Packaging
 set(CPACK_PACKAGE_VENDOR "ChungZH")
 set(CPACK_PACKAGE_VERSION ${VERSION_STRING})
@@ -125,10 +121,9 @@ if(WIN32)
         install(DIRECTORY ${CMAKE_BINARY_DIR}/Debug/ DESTINATION .)
     endif()
     set(APPS "\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.exe")
+    install(CODE "include(BundleUtilities)
+      fixup_bundle(\"${APPS}\" \"\" \"${DIRS}\")")
 endif()
-
-install(CODE "include(BundleUtilities)
-      fixup_bundle(\"${APPS}\" \"${KF5_PLUGINS}\" \"${DIRS}\")")
 
 if(MSVC)
    if(NOT BUILD_NSIS)
