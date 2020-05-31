@@ -171,4 +171,4 @@ endif()
 
 include(CPack)
 
-target_link_libraries(notepanda Qt5::Widgets Qt5::Svg KF5::SyntaxHighlighting)
+target_link_libraries(notepanda Qt5::Widgets KF5::SyntaxHighlighting)
