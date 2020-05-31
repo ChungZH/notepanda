@@ -94,7 +94,8 @@ endif()
 include(InstallRequiredSystemLibraries)
 
 if(WIN32)
-    add_custom_command(COMMAND tree /F)
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+			COMMAND tree /F)
 endif()
 
 # Directories to look for dependencies
