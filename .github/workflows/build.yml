@@ -185,7 +185,6 @@ jobs:
           cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DKF5SyntaxHighlighting_DIR="C:/Program Files (x86)/ECM/lib/cmake/KF5SyntaxHighlighting"
           cmake --build . --parallel $(nproc)
           cmake --install .
-          tree /F
           windeployqt notepanda.exe
       #---------------------------------------------------------
       - name: MacOS - Build ecm
