@@ -133,7 +133,6 @@ endif()
 
 if(WIN32)
     if(BUILD_NSIS)
-        add_definitions(-DQV2RAY_NO_ASIDECONFIG)
         set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/images\\\\panda.ico")
         set(CPACK_GENERATOR "NSIS")
         set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/images/panda.ico")
