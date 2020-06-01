@@ -105,6 +105,7 @@ endif()
 list(APPEND DIRS "${Qt5Widgets_DIR}/../..")
 list(APPEND DIRS "/usr/local/lib")
 list(APPEND DIRS "/usr/lib")
+list(APPEND DIRS "${KF5SyntaxHighlighting_DIR}/../../../bin/")
 
 # Packaging
 set(CPACK_PACKAGE_VENDOR "ChungZH")
