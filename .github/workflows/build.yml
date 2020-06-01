@@ -186,7 +186,6 @@ jobs:
           cmake --build . --parallel $(nproc)
           cmake --install .
           tree /F
-          cd Release
           windeployqt notepanda.exe
       #---------------------------------------------------------
       - name: MacOS - Build ecm
@@ -239,7 +238,7 @@ jobs:
         if: matrix.platform == 'windows-latest'
         uses: DuckSoft/create-7z-action@v1.0
         with:
-          pathSource: ./build/Debug/
+          pathSource: ./build/
           pathTarget: ./release.7z
       - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Uploading artifact
         if: matrix.platform == 'windows-latest'
