@@ -18,6 +18,7 @@
 #include <QFont>
 #include <QMessageBox>
 #include <QPainter>
+#include <QString>
 #include <QStyle>
 #include <QTextBlock>
 #include <QTextStream>
@@ -94,13 +95,15 @@ void TextEditor::open()
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open the file"));
     QFile file(fileName);
     currentFile = fileName;
-    if (!file.open(QIODevice::ReadOnly | QFile::Text)) {
+    if (!file.open(QFile::ReadOnly | QFile::Text)) {
       QMessageBox::warning(this, tr("Warning"),
                            tr("Cannot open file: ") + file.errorString());
       qWarning() << "[WARN 1] Failed to open" << fileName << ":"
                  << file.errorString();
       return;
     }
+
+    clear();
 
     const auto def = m_repository.definitionForFileName(fileName);
     m_highlighter->setDefinition(def);
