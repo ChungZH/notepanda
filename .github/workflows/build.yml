@@ -11,7 +11,7 @@ jobs:
       matrix:
         qt_version: [5.14.2]
         # platform: [ubuntu-16.04, macos-latest, windows-latest]
-        platform: windows-latest
+        platform: [windows-latest]
         arch: [x86, x64]
         include:
           - platform: windows-latest
