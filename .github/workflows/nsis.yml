@@ -97,7 +97,7 @@ jobs:
           mkdir build
           cd build
           tree /F
-          cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DKF5SyntaxHighlighting_DIR="C:/Program Files (x86)/ECM/lib/cmake/KF5SyntaxHighlighting" -DBUILD_NSIS=ON -DCMAKE_INSTALL_PREFIX=Release 
+          cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DKF5SyntaxHighlighting_DIR="C:/Program Files (x86)/ECM/lib/cmake/KF5SyntaxHighlighting" -DBUILD_NSIS=ON
           tree /F
           cmake --build . --target package --parallel $(nproc)
       - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Uploading DEBUG
