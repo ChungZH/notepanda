@@ -47,6 +47,7 @@ class TextEditor : public QPlainTextEdit
   void resizeEvent(QResizeEvent *event) override;
 
  public slots:
+  bool maybeSave();
   void newDocument();
   void open();
   void save();

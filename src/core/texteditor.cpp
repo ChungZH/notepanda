@@ -41,6 +41,7 @@ TextEditor::TextEditor(ConfigManager *cfManager, QWidget *parent)
   else
     setTheme(
         m_repository.defaultTheme(KSyntaxHighlighting::Repository::DarkTheme));
+
   // Line number area
   lineNumberArea = new LineNumberArea(this);
 
@@ -58,34 +59,65 @@ TextEditor::TextEditor(ConfigManager *cfManager, QWidget *parent)
   lineNumberArea->resize(0, 0);
 }
 
+bool TextEditor::maybeSave()
+{
+  if (!QPlainTextEdit::document()->isModified()) return true;
+  const QMessageBox::StandardButton ret = QMessageBox::warning(
+      this, tr("Application"),
+      tr("The document has been modified.\n"
+         "Do you want to save your changes?"),
+      QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+  switch (ret) {
+    case QMessageBox::Save:
+      save();
+      return 1;
+    case QMessageBox::Cancel:
+      return false;
+    default:
+      break;
+  }
+  return true;
+}
+
 void TextEditor::newDocument()
 {
-  currentFile.clear();
-  TextEditor::setPlainText(QString());
-  emit changeTitle();
+  if (maybeSave()) {
+    currentFile.clear();
+    TextEditor::setPlainText(QString());
+    emit changeTitle();
+  }
 }
 
 void TextEditor::open()
 {
-  QString fileName = QFileDialog::getOpenFileName(this, tr("Open the file"));
-  QFile file(fileName);
-  currentFile = fileName;
-  if (!file.open(QIODevice::ReadOnly | QFile::Text)) {
-    QMessageBox::warning(this, tr("Warning"),
-                         tr("Cannot open file: ") + file.errorString());
-    return;
+  if (maybeSave()) {
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open the file"));
+    QFile file(fileName);
+    currentFile = fileName;
+    if (!file.open(QIODevice::ReadOnly | QFile::Text)) {
+      QMessageBox::warning(this, tr("Warning"),
+                           tr("Cannot open file: ") + file.errorString());
+      qWarning() << "[WARN 1] Failed to open" << fileName << ":"
+                 << file.errorString();
+      return;
+    }
+
+    const auto def = m_repository.definitionForFileName(fileName);
+    m_highlighter->setDefinition(def);
+
+    emit changeTitle();
+    QTextStream in(&file);
+    QString text = in.readAll();
+    setPlainText(text);
+    file.close();
   }
-
-  const auto def = m_repository.definitionForFileName(fileName);
-  m_highlighter->setDefinition(def);
-
-  emit changeTitle();
-  QTextStream in(&file);
-  QString text = in.readAll();
-  setPlainText(text);
-  file.close();
 }
 
+/**
+ * @brief Open from command line like `notepanda texteditor.cpp`.
+ *        It doesn't need `maybeSave()` because at this time notepanda opens for
+ * the first time.
+ */
 void TextEditor::openFile(const QString &fileName)
 {
   QFile file(fileName);
@@ -93,6 +125,8 @@ void TextEditor::openFile(const QString &fileName)
   if (!file.open(QIODevice::ReadOnly | QFile::Text)) {
     QMessageBox::warning(this, tr("Warning"),
                          tr("Cannot open file: ") + file.errorString());
+    qWarning() << "[WARN 2] Failed to open" << fileName << ":"
+               << file.errorString();
     return;
   }
 
@@ -101,15 +135,14 @@ void TextEditor::openFile(const QString &fileName)
 
   emit changeTitle();
   QTextStream in(&file);
+  file.close();
   QString text = in.readAll();
   setPlainText(text);
-  file.close();
 }
 
 void TextEditor::save()
 {
   QString fileName;
-  qDebug() << TextEditor::document()->characterCount();
   if (currentFile.isEmpty()) {
     fileName = QFileDialog::getSaveFileName(this, tr("Save"));
     currentFile = fileName;
@@ -121,31 +154,35 @@ void TextEditor::save()
   if (!file.open(QIODevice::WriteOnly | QFile::Text)) {
     QMessageBox::warning(this, tr("Warning"),
                          tr("Cannot save file: ") + file.errorString());
+    qWarning() << "[WARN 3] Failed to save" << fileName << ":"
+               << file.errorString();
     return;
   }
 
   emit changeTitle();
   QTextStream out(&file);
-  QString text = TextEditor::toPlainText();
-  out << text;
   file.close();
+  QString text = QPlainTextEdit::toPlainText();
+  out << text;
 }
 
 void TextEditor::saveAs()
 {
-  QString flieName = QFileDialog::getSaveFileName(this, tr("Save as"));
-  QFile file(flieName);
+  QString fileName = QFileDialog::getSaveFileName(this, tr("Save as"));
+  QFile file(fileName);
 
   if (!file.open(QFile::WriteOnly | QFile::Text)) {
     QMessageBox::warning(this, tr("Warning"),
                          tr("Cannot save file: ") + file.errorString());
+    qWarning() << "[WARN 4] Failed to save" << fileName << ":"
+               << file.errorString();
     return;
   }
 
-  currentFile = flieName;
+  currentFile = fileName;
   emit changeTitle();
   QTextStream out(&file);
-  QString text = TextEditor::toPlainText();
+  QString text = QPlainTextEdit::toPlainText();
   out << text;
   file.close();
 }
@@ -268,7 +305,7 @@ void TextEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
 {
   QPainter painter(lineNumberArea);
   QColor lineNumberAreaBackgroundColor;
-  if (QColor(KSyntaxHighlighting::Theme::BackgroundColor).lightness() < 128) {
+  if (configManager->getColorTheme() == "Light") {
     // light
     lineNumberAreaBackgroundColor = Qt::lightGray;
     lineNumberAreaBackgroundColor.setAlphaF(0.75);
@@ -277,9 +314,9 @@ void TextEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
   } else {
     // dark
     lineNumberAreaBackgroundColor = KSyntaxHighlighting::Theme::BackgroundColor;
-    lineNumberAreaBackgroundColor.setAlphaF(0.8);
+    lineNumberAreaBackgroundColor.setAlphaF(0.7);
     m_lineNumbersColor = Qt::lightGray;
-    m_lineNumbersColor.setAlphaF(0.3);
+    m_lineNumbersColor.setAlphaF(0.4);
   }
 
   painter.fillRect(event->rect(), lineNumberAreaBackgroundColor);

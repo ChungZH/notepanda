@@ -27,7 +27,7 @@
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tab_1">
       <attribute name="title">
@@ -100,7 +100,7 @@
           </property>
           <layout class="QGridLayout" name="gridLayout_7">
            <item row="0" column="0">
-            <layout class="QGridLayout" name="gridLayout_4" rowstretch="0,0">
+            <layout class="QGridLayout" name="gridLayout_4" rowstretch="0">
              <item row="0" column="0">
               <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0">
                <property name="spacing">
