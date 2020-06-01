@@ -1,12 +1,6 @@
 # CMakeLists.txt
 cmake_minimum_required(VERSION 3.1.0)
 
-if(CMAKE_BUILD_TYPE STREQUAL "Release")
-    set(CMAKE_BUILD_TYPE Release)
-    message("${CMAKE_BUILD_TYPE}")
-endif()
-
-
 file(STRINGS "${CMAKE_SOURCE_DIR}/makespec/VERSION" VERSION)
 file(STRINGS "${CMAKE_SOURCE_DIR}/makespec/BUILDVERSION" BUILD_VERSION)
 file(STRINGS "${CMAKE_SOURCE_DIR}/makespec/VERSIONSUFFIX" VERSION_SUFFIX)
@@ -36,6 +30,7 @@ endif()
 message(" ")
 message("Notepanda Version: ${VERSION_STRING}")
 message("Notepanda Build Version: ${BUILD_VERSION}")
+message("Notepanda Build Type: ${CMAKE_BUILD_TYPE}")
 message("|-------------------------------------------------|")
 message("| Notepanda, A Cross Platform Notepad.            |")
 message("| Based on C++ & Qt.                              |")
