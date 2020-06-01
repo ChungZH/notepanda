@@ -1,6 +1,6 @@
 name: Build CI
 
-on: 
+on:
   push:
   release:
     types: [prereleased]
@@ -32,10 +32,10 @@ jobs:
       - name: Checking out sources
         uses: actions/checkout@v2
         with:
-          submodules: 'recursive'
+          submodules: "recursive"
       - name: Install MSVC compiler
         uses: ilammy/msvc-dev-cmd@v1
-        with: 
+        with:
           # 14.1 is for vs2017, 14.2 is vs2019, following the upstream vcpkg build from Qv2ray-deps repo
           toolset: 14.2
           arch: ${{ matrix.arch }}
@@ -50,13 +50,13 @@ jobs:
         with:
           version: ${{ matrix.qt_version }}
           arch: ${{ matrix.qtarch }}
-          mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
+          mirror: "http://mirrors.ocf.berkeley.edu/qt/"
           cached: ${{ steps.cache-qt.outputs.cache-hit }}
       - name: Install Python 3.7 version
         if: matrix.platform == 'windows-latest'
         uses: actions/setup-python@v1
         with:
-          python-version: '3.7'
+          python-version: "3.7"
           architecture: ${{ matrix.arch }}
       # Linux------------------------------------------
       - name: Linux - Install packages
@@ -78,7 +78,7 @@ jobs:
           mkdir build
           cd build
           cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=/usr
-          cmake --build .
+          cmake --build . --parallel $(nproc)
           sudo cmake --build . --target install
       - name: Linux - Build SyntaxHighlighting
         if: matrix.platform == 'ubuntu-16.04'
@@ -91,7 +91,7 @@ jobs:
           mkdir build
           cd build
           cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF -DCMAKE_INSTALL_PREFIX=/usr
-          cmake --build .
+          cmake --build . --parallel $(nproc)
           sudo cmake --build . --target install
       - name: Linux - ${{ matrix.qt_version }} - Generate Dependencies and Build
         if: matrix.platform == 'ubuntu-16.04'
@@ -99,11 +99,11 @@ jobs:
         env:
           CC: /usr/bin/gcc-9
           CXX: /usr/bin/g++-9
-        run: | 
+        run: |
           mkdir build
           cd build
           cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=./AppDir/usr
-          cmake --build .
+          cmake --build . --parallel $(nproc)
           cmake --install .
       - name: Linux - ${{ matrix.qt_version }} - Generating AppImage
         if: matrix.platform == 'ubuntu-16.04'
@@ -148,7 +148,7 @@ jobs:
       - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Build preparation - Download Dependencies
         if: matrix.platform == 'windows-latest'
         run: |
-         choco install -y ninja
+          choco install -y ninja
       - name: Win - Build ecm
         if: matrix.platform == 'windows-latest'
         env:
@@ -159,7 +159,7 @@ jobs:
           mkdir build
           cd build
           cmake .. -GNinja -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
-          cmake --build .
+          cmake --build . --parallel $(nproc)
           cmake --build . --target install
       - name: Win - Build syntax highlight
         if: matrix.platform == 'windows-latest'
@@ -171,7 +171,7 @@ jobs:
           mkdir build
           cd build
           cmake .. -GNinja -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
-          cmake --build .
+          cmake --build . --parallel $(nproc)
           cmake --build . --target install
       - name: Windows - ${{ matrix.qt_version }} - Generate Dependencies and Build
         if: matrix.platform == 'windows-latest'
@@ -181,10 +181,10 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=Release -DKF5SyntaxHighlighting_DIR="C:/Program Files (x86)/ECM/lib/cmake/KF5SyntaxHighlighting" -DCMAKE_GENERATOR_PLATFORM=${{ matrix.cmakearch }}
-          cmake --build .
+          cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=Release -DKF5SyntaxHighlighting_DIR="C:/Program Files (x86)/ECM/lib/cmake/KF5SyntaxHighlighting"
+          cmake --build . --parallel $(nproc)
           cmake --install .
-          cd Debug
+          cd Release
           windeployqt notepanda.exe
       #---------------------------------------------------------
       - name: MacOS - Build ecm
@@ -237,7 +237,7 @@ jobs:
         if: matrix.platform == 'windows-latest'
         uses: DuckSoft/create-7z-action@v1.0
         with:
-          pathSource: ./build/Debug/
+          pathSource: ./build/Release
           pathTarget: ./release.7z
       - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Uploading artifact
         if: matrix.platform == 'windows-latest'
@@ -254,4 +254,3 @@ jobs:
           asset_name: Notepanda.${{ steps.get_version.outputs.VERSION }}.Windows-${{ matrix.arch }}.7z
           tag: ${{ github.ref }}
           overwrite: true
-

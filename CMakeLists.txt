@@ -16,7 +16,6 @@ list(GET VERSION_LIST 0 CMAKE_PROJECT_VERSION_MAJOR)
 list(GET VERSION_LIST 1 CMAKE_PROJECT_VERSION_MINOR)
 list(GET VERSION_LIST 2 CPACK_PACKAGE_VERSION_PATCH)
 
-
 add_definitions(-DVERSION_STRING="${VERSION_STRING}")
 add_definitions(-DXTOSTRUCT_QT)
 
@@ -31,6 +30,7 @@ endif()
 message(" ")
 message("Notepanda Version: ${VERSION_STRING}")
 message("Notepanda Build Version: ${BUILD_VERSION}")
+message("Notepanda Build Type: ${CMAKE_BUILD_TYPE}")
 message("|-------------------------------------------------|")
 message("| Notepanda, A Cross Platform Notepad.            |")
 message("| Based on C++ & Qt.                              |")
@@ -46,7 +46,7 @@ message("| Welcome to contribute!                          |")
 message("|-------------------------------------------------|")
 message(" ")
 
-find_package(Qt5 COMPONENTS Widgets Svg REQUIRED)
+find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
 find_package(KF5SyntaxHighlighting REQUIRED)
 
 if(WIN32)
@@ -86,7 +86,21 @@ if(UNIX AND NOT APPLE AND NOT WIN32)
     install(FILES images/notepanda.png DESTINATION share/icons/hicolor/256x256/apps)
 endif()
 
-include(InstallRequiredSystemLibraries)
+# Directories to look for dependencies
+set(DIRS "${CMAKE_BINARY_DIR}")
+
+# Path used for searching by FIND_XXX(), with appropriate suffixes added
+if(CMAKE_PREFIX_PATH)
+    foreach(dir ${CMAKE_PREFIX_PATH})
+        list(APPEND DIRS "${dir}/bin" "${dir}/lib")
+    endforeach()
+endif()
+
+# Append Qt's lib folder which is two levels above Qt5Widgets_DIR
+list(APPEND DIRS "${Qt5Widgets_DIR}/../..")
+list(APPEND DIRS "/usr/local/lib")
+list(APPEND DIRS "/usr/lib")
+list(APPEND DIRS "${KF5SyntaxHighlighting_DIR}/../../../bin/")
 
 # Packaging
 set(CPACK_PACKAGE_VENDOR "ChungZH")
@@ -96,15 +110,19 @@ set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/ChungZH/notepanda")
 set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/images/panda.ico")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE.md")
 
+include(InstallRequiredSystemLibraries)
+
 if(WIN32)
     install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION .)
     if (BUILD_NSIS)
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-            COMMAND windeployqt ${CMAKE_BINARY_DIR}/Debug/${PROJECT_NAME}.exe 
+            COMMAND windeployqt ${CMAKE_BINARY_DIR}/Release/${PROJECT_NAME}.exe 
             )
-        install(DIRECTORY ${CMAKE_BINARY_DIR}/Debug/ DESTINATION .)
-        set(APPS "\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.exe")
+        install(DIRECTORY ${CMAKE_BINARY_DIR}/Release/ DESTINATION .)
     endif()
+    set(APPS "\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.exe")
+    install(CODE "include(BundleUtilities)
+      fixup_bundle(\"${APPS}\" \"\" \"${DIRS}\")")
 endif()
 
 if(MSVC)
@@ -144,4 +162,4 @@ endif()
 
 include(CPack)
 
-target_link_libraries(notepanda Qt5::Widgets Qt5::Svg KF5::SyntaxHighlighting)
+target_link_libraries(notepanda Qt5::Core Qt5::Gui Qt5::Widgets KF5::SyntaxHighlighting)
