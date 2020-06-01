@@ -120,9 +120,9 @@ if(WIN32)
     install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION .)
     if (BUILD_NSIS)
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-            COMMAND windeployqt ${CMAKE_BINARY_DIR}/Debug/${PROJECT_NAME}.exe 
+            COMMAND windeployqt ${CMAKE_BINARY_DIR}/Release/${PROJECT_NAME}.exe 
             )
-        install(DIRECTORY ${CMAKE_BINARY_DIR}/Debug/ DESTINATION .)
+        install(DIRECTORY ${CMAKE_BINARY_DIR}/Release/ DESTINATION .)
     endif()
     set(APPS "\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.exe")
     install(CODE "include(BundleUtilities)
