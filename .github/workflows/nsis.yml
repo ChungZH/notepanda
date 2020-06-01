@@ -97,7 +97,7 @@ jobs:
           mkdir build
           cd build
           tree /F
-          cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DKF5SyntaxHighlighting_DIR="C:/Program Files (x86)/ECM/lib/cmake/KF5SyntaxHighlighting" -DCMAKE_GENERATOR_PLATFORM=${{ matrix.cmakearch }} -DBUILD_NSIS=ON -DCMAKE_INSTALL_PREFIX=Release 
+          cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DKF5SyntaxHighlighting_DIR="C:/Program Files (x86)/ECM/lib/cmake/KF5SyntaxHighlighting" -DBUILD_NSIS=ON -DCMAKE_INSTALL_PREFIX=Release 
           tree /F
           cmake --build . --target package --parallel $(nproc)
       - name: Windows - Get package name
