@@ -100,7 +100,10 @@ endif()
 list(APPEND DIRS "${Qt5Widgets_DIR}/../..")
 list(APPEND DIRS "/usr/local/lib")
 list(APPEND DIRS "/usr/lib")
-list(APPEND DIRS "${KF5SyntaxHighlighting_DIR}/../../../bin/")
+
+if(WIN32)
+    list(APPEND DIRS "${KF5SyntaxHighlighting_DIR}/../../../bin/")
+endif()
 
 include(InstallRequiredSystemLibraries)
 
