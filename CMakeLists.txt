@@ -95,16 +95,6 @@ if(CMAKE_PREFIX_PATH)
         list(APPEND DIRS "${dir}/bin" "${dir}/lib")
     endforeach()
 endif()
-
-# Append Qt's lib folder which is two levels above Qt5Widgets_DIR
-list(APPEND DIRS "${Qt5Widgets_DIR}/../..")
-list(APPEND DIRS "/usr/local/lib")
-list(APPEND DIRS "/usr/lib")
-
-if(WIN32)
-    list(APPEND DIRS "${KF5SyntaxHighlighting_DIR}/../../../bin/")
-endif()
-
 include(InstallRequiredSystemLibraries)
 
 # Packaging
@@ -160,8 +150,11 @@ if(WIN32)
     endif()
 endif()
 
-install(CODE "include(BundleUtilities)
-      fixup_bundle(\"${APPS}\" \"\" \"${DIRS}\")")
+if(WIN32)
+    list(APPEND DIRS "${KF5SyntaxHighlighting_DIR}/../../../bin/")
+    install(CODE "include(BundleUtilities)
+          fixup_bundle(\"${APPS}\" \"\" \"${DIRS}\")")
+endif()
 
 include(CPack)
 
