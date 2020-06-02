@@ -102,6 +102,8 @@ list(APPEND DIRS "/usr/local/lib")
 list(APPEND DIRS "/usr/lib")
 list(APPEND DIRS "${KF5SyntaxHighlighting_DIR}/../../../bin/")
 
+include(InstallRequiredSystemLibraries)
+
 # Packaging
 set(CPACK_PACKAGE_VENDOR "ChungZH")
 set(CPACK_PACKAGE_VERSION ${VERSION_STRING})
@@ -110,25 +112,21 @@ set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/ChungZH/notepanda")
 set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/images/panda.ico")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE.md")
 
-include(InstallRequiredSystemLibraries)
+if(MSVC)
+   if(NOT BUILD_NSIS)
+    set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION .)
+   endif()
+endif()
 
 if(WIN32)
     install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION .)
     if (BUILD_NSIS)
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-            COMMAND windeployqt ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.exe 
+            COMMAND windeployqt ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.exe --compiler-runtime --verbose 2 --dir ${CMAKE_BINARY_DIR}/winqt/
             )
-        install(DIRECTORY ${CMAKE_BINARY_DIR}/ DESTINATION .)
+        install(DIRECTORY ${CMAKE_BINARY_DIR}/winqt/ DESTINATION .)
     endif()
     set(APPS "\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.exe")
-    install(CODE "include(BundleUtilities)
-      fixup_bundle(\"${APPS}\" \"\" \"${DIRS}\")")
-endif()
-
-if(MSVC)
-   if(NOT BUILD_NSIS)
-    set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION .)
-   endif()
 endif()
 
 if(WIN32)
@@ -158,6 +156,9 @@ if(WIN32)
         set(CPACK_PACKAGE_INSTALL_DIRECTORY "notepanda")
     endif()
 endif()
+
+install(CODE "include(BundleUtilities)
+      fixup_bundle(\"${APPS}\" \"\" \"${DIRS}\")")
 
 include(CPack)
 
