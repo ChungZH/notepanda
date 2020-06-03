@@ -118,6 +118,10 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
 
   connect(plainTextEdit, &TextEditor::changeTitle, this,
           &MainWindow::changeWindowTitle);
+  connect(plainTextEdit->document(), &QTextDocument::contentsChanged, this,
+          &MainWindow::documentWasModified);
+  connect(plainTextEdit, &TextEditor::modifiedFalse,
+          [=]() { setWindowModified(false); });
   connect(plainTextEdit, &TextEditor::undoAvailable, [=](bool undoIsAvailable) {
     ui->actionUndo->setDisabled(!undoIsAvailable);
   });
@@ -163,6 +167,15 @@ MainWindow::~MainWindow()
   delete plainTextEdit;
 }
 
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+  if (plainTextEdit->maybeSave()) {
+    event->accept();
+  } else {
+    event->ignore();
+  }
+}
+
 void MainWindow::changeWindowTitle()
 {
   if (!plainTextEdit->currentFile.isEmpty())
@@ -192,3 +205,8 @@ void MainWindow::normalMode()
  * <https://www.microsoft.com/en-us/p/microsoft-sticky-notes/9nblggh4qghw?activetab=pivot:overviewtab#>
  */
 void MainWindow::stickyNoteMode() { this->removeToolBar(ToolBar); }
+
+void MainWindow::documentWasModified()
+{
+  setWindowModified(plainTextEdit->document()->isModified());
+}

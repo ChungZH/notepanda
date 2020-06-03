@@ -76,6 +76,7 @@ class TextEditor : public QPlainTextEdit
 
  signals:
   void changeTitle();
+  void modifiedFalse();
 };
 
 #endif  // TEXTEDITOR_H

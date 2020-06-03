@@ -43,9 +43,6 @@ TextEditor::TextEditor(ConfigManager *cfManager, QWidget *parent)
     setTheme(
         m_repository.defaultTheme(KSyntaxHighlighting::Repository::DarkTheme));
 
-  connect(document(), &QTextDocument::contentsChanged,
-          [=]() { setWindowModified(document()->isModified()); });
-
   // Line number area
   lineNumberArea = new LineNumberArea(this);
 
@@ -60,6 +57,7 @@ TextEditor::TextEditor(ConfigManager *cfManager, QWidget *parent)
   highlightCurrentLine();
 
   TextEditor::setFont(configManager->getEditorFontFamily());
+  setCurrentFile(QString());
   lineNumberArea->resize(0, 0);
 }
 
@@ -86,8 +84,7 @@ bool TextEditor::maybeSave()
 void TextEditor::newDocument()
 {
   if (maybeSave()) {
-    QPlainTextEdit::clear();
-    TextEditor::setPlainText(QString());
+    clear();
     setCurrentFile(QString());
     emit changeTitle();
   }
@@ -108,15 +105,11 @@ void TextEditor::open()
 
     QPlainTextEdit::clear();
 
-    setCurrentFile(fileName);
-
     const auto def = m_repository.definitionForFileName(fileName);
     m_highlighter->setDefinition(def);
 
-    emit changeTitle();
     QTextStream in(&file);
 
-    emit changeTitle();
 #ifndef QT_NO_CURSOR
     QGuiApplication::setOverrideCursor(Qt::WaitCursor);
 #endif
@@ -125,6 +118,9 @@ void TextEditor::open()
     QGuiApplication::restoreOverrideCursor();
 #endif
     file.close();
+
+    setCurrentFile(fileName);
+    emit changeTitle();
   }
 }
 
@@ -144,14 +140,11 @@ void TextEditor::openFile(const QString &fileName)
     return;
   }
 
-  setCurrentFile(fileName);
-
   const auto def = m_repository.definitionForFileName(fileName);
   m_highlighter->setDefinition(def);
 
   QTextStream in(&file);
 
-  emit changeTitle();
 #ifndef QT_NO_CURSOR
   QGuiApplication::setOverrideCursor(Qt::WaitCursor);
 #endif
@@ -159,6 +152,8 @@ void TextEditor::openFile(const QString &fileName)
 #ifndef QT_NO_CURSOR
   QGuiApplication::restoreOverrideCursor();
 #endif
+  setCurrentFile(fileName);
+  emit changeTitle();
 }
 
 void TextEditor::save()
@@ -417,4 +412,5 @@ void TextEditor::setCurrentFile(const QString &fileName)
   currentFile = fileName;
   document()->setModified(false);
   setWindowModified(false);
+  emit modifiedFalse();
 }

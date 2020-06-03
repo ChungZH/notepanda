@@ -37,12 +37,16 @@ class MainWindow : public QMainWindow
   ~MainWindow();
   TextEditor *plainTextEdit;
 
+ protected:
+  void closeEvent(QCloseEvent *event) override;
+
  private slots:
   void changeWindowTitle();
   void quit();
   void updateStatusBar();
   void normalMode();
   void stickyNoteMode();
+  void documentWasModified();
 
  private:
   Ui::MainWindow *ui;
