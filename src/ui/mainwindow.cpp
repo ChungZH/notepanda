@@ -118,6 +118,10 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
 
   connect(plainTextEdit, &TextEditor::changeTitle, this,
           &MainWindow::changeWindowTitle);
+  connect(plainTextEdit->document(), &QTextDocument::contentsChanged, [=]() {
+    setWindowModified(plainTextEdit->document()->isModified());
+    qDebug() << plainTextEdit->document()->isModified();
+  });
   connect(plainTextEdit, &TextEditor::undoAvailable, [=](bool undoIsAvailable) {
     ui->actionUndo->setDisabled(!undoIsAvailable);
   });
@@ -167,9 +171,9 @@ void MainWindow::changeWindowTitle()
 {
   if (!plainTextEdit->currentFile.isEmpty())
     setWindowTitle(plainTextEdit->currentFile.split("/").last() +
-                   " - Notepanda");
+                   "[*] - Notepanda");
   else
-    setWindowTitle(tr("Untitled") + " - Notepanda");
+    setWindowTitle(tr("Untitled") + "[*] - Notepanda");
 }
 
 void MainWindow::quit() { QCoreApplication::quit(); }

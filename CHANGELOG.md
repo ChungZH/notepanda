@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### 🌵 Features
 
 - Custom syntax highlight theme (light / dark)
+- Set window modified
 
 ## 0.0.2
 

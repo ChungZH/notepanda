@@ -71,7 +71,7 @@ bool TextEditor::maybeSave()
   switch (ret) {
     case QMessageBox::Save:
       save();
-      return 1;
+      return true;
     case QMessageBox::Cancel:
       return false;
     default:
@@ -84,6 +84,7 @@ void TextEditor::newDocument()
 {
   if (maybeSave()) {
     currentFile.clear();
+    QPlainTextEdit::clear();
     TextEditor::setPlainText(QString());
     emit changeTitle();
   }
@@ -103,7 +104,7 @@ void TextEditor::open()
       return;
     }
 
-    clear();
+    QPlainTextEdit::clear();
 
     const auto def = m_repository.definitionForFileName(fileName);
     m_highlighter->setDefinition(def);
