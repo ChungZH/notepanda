@@ -64,6 +64,7 @@ class TextEditor : public QPlainTextEdit
   void setEditorFont(const QFont &font);
   void setEditorFontSize(const int &size);
   void setEditorColorTheme(const QString &ctname);
+  void setCurrentFile(const QString &fileName);
 
  private:
   ConfigManager *configManager;

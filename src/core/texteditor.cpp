@@ -43,6 +43,9 @@ TextEditor::TextEditor(ConfigManager *cfManager, QWidget *parent)
     setTheme(
         m_repository.defaultTheme(KSyntaxHighlighting::Repository::DarkTheme));
 
+  connect(document(), &QTextDocument::contentsChanged,
+          [=]() { setWindowModified(document()->isModified()); });
+
   // Line number area
   lineNumberArea = new LineNumberArea(this);
 
@@ -83,9 +86,9 @@ bool TextEditor::maybeSave()
 void TextEditor::newDocument()
 {
   if (maybeSave()) {
-    currentFile.clear();
     QPlainTextEdit::clear();
     TextEditor::setPlainText(QString());
+    setCurrentFile(QString());
     emit changeTitle();
   }
 }
@@ -95,7 +98,6 @@ void TextEditor::open()
   if (maybeSave()) {
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open the file"));
     QFile file(fileName);
-    currentFile = fileName;
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
       QMessageBox::warning(this, tr("Warning"),
                            tr("Cannot open file: ") + file.errorString());
@@ -106,13 +108,22 @@ void TextEditor::open()
 
     QPlainTextEdit::clear();
 
+    setCurrentFile(fileName);
+
     const auto def = m_repository.definitionForFileName(fileName);
     m_highlighter->setDefinition(def);
 
     emit changeTitle();
     QTextStream in(&file);
-    QString text = in.readAll();
-    setPlainText(text);
+
+    emit changeTitle();
+#ifndef QT_NO_CURSOR
+    QGuiApplication::setOverrideCursor(Qt::WaitCursor);
+#endif
+    setPlainText(in.readAll());
+#ifndef QT_NO_CURSOR
+    QGuiApplication::restoreOverrideCursor();
+#endif
     file.close();
   }
 }
@@ -125,7 +136,6 @@ void TextEditor::open()
 void TextEditor::openFile(const QString &fileName)
 {
   QFile file(fileName);
-  currentFile = fileName;
   if (!file.open(QIODevice::ReadOnly | QFile::Text)) {
     QMessageBox::warning(this, tr("Warning"),
                          tr("Cannot open file: ") + file.errorString());
@@ -134,14 +144,21 @@ void TextEditor::openFile(const QString &fileName)
     return;
   }
 
+  setCurrentFile(fileName);
+
   const auto def = m_repository.definitionForFileName(fileName);
   m_highlighter->setDefinition(def);
 
-  emit changeTitle();
   QTextStream in(&file);
-  file.close();
-  QString text = in.readAll();
-  setPlainText(text);
+
+  emit changeTitle();
+#ifndef QT_NO_CURSOR
+  QGuiApplication::setOverrideCursor(Qt::WaitCursor);
+#endif
+  setPlainText(in.readAll());
+#ifndef QT_NO_CURSOR
+  QGuiApplication::restoreOverrideCursor();
+#endif
 }
 
 void TextEditor::save()
@@ -149,7 +166,6 @@ void TextEditor::save()
   QString fileName;
   if (currentFile.isEmpty()) {
     fileName = QFileDialog::getSaveFileName(this, tr("Save"));
-    currentFile = fileName;
   } else {
     fileName = currentFile;
   }
@@ -162,6 +178,8 @@ void TextEditor::save()
                << file.errorString();
     return;
   }
+
+  setCurrentFile(fileName);
 
   emit changeTitle();
   QTextStream out(&file);
@@ -183,7 +201,8 @@ void TextEditor::saveAs()
     return;
   }
 
-  currentFile = fileName;
+  setCurrentFile(fileName);
+
   emit changeTitle();
   QTextStream out(&file);
   QString text = QPlainTextEdit::toPlainText();
@@ -391,4 +410,11 @@ void TextEditor::setEditorColorTheme(const QString &ctname)
   else
     setTheme(
         m_repository.defaultTheme(KSyntaxHighlighting::Repository::DarkTheme));
+}
+
+void TextEditor::setCurrentFile(const QString &fileName)
+{
+  currentFile = fileName;
+  document()->setModified(false);
+  setWindowModified(false);
 }

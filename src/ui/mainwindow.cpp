@@ -118,10 +118,6 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
 
   connect(plainTextEdit, &TextEditor::changeTitle, this,
           &MainWindow::changeWindowTitle);
-  connect(plainTextEdit->document(), &QTextDocument::contentsChanged, [=]() {
-    setWindowModified(plainTextEdit->document()->isModified());
-    qDebug() << plainTextEdit->document()->isModified();
-  });
   connect(plainTextEdit, &TextEditor::undoAvailable, [=](bool undoIsAvailable) {
     ui->actionUndo->setDisabled(!undoIsAvailable);
   });
