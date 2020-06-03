@@ -48,7 +48,7 @@ void ConfigManager::readGeneralSettings()
   colorTheme = settings->value("ColorTheme", "Light").toString();
 }
 
-QFont ConfigManager::getEditorFontFamily() const { return editorFontFamily; }
+QString ConfigManager::getEditorFontFamily() const { return editorFontFamily; }
 
 void ConfigManager::setEditorFontFamily(const QString &fontname)
 {

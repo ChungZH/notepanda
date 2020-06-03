@@ -28,7 +28,7 @@ class ConfigManager : public QObject
                          QObject *parent = nullptr);
   void save();
   void readGeneralSettings();
-  QFont getEditorFontFamily() const;
+  QString getEditorFontFamily() const;
   void setEditorFontFamily(const QString &fontname);
   QString getStyle() const;
   void setStyle(const QString &stylename);

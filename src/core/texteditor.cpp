@@ -56,7 +56,8 @@ TextEditor::TextEditor(ConfigManager *cfManager, QWidget *parent)
   updateLineNumberAreaWidth(0);
   highlightCurrentLine();
 
-  TextEditor::setFont(configManager->getEditorFontFamily());
+  TextEditor::setFont(QFont(configManager->getEditorFontFamily(),
+                            configManager->getEditorFontSize()));
   setCurrentFile(QString());
   lineNumberArea->resize(0, 0);
 }
@@ -384,7 +385,8 @@ void TextEditor::setTheme(const KSyntaxHighlighting::Theme &theme)
 }
 void TextEditor::setEditorFont(const QFont &font)
 {
-  QPlainTextEdit::setFont(font);
+  QPlainTextEdit::setFont(
+      QFont(font.family(), configManager->getEditorFontSize()));
   configManager->setEditorFontFamily(font.family());
 }
 
@@ -394,7 +396,6 @@ void TextEditor::setEditorFontSize(const int &size)
   font.setPointSize(size);
   QPlainTextEdit::setFont(font);
   configManager->setEditorFontSize(size);
-  configManager->getEditorFontSize();
 }
 
 void TextEditor::setEditorColorTheme(const QString &ctname)

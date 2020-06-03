@@ -9,6 +9,10 @@ All notable changes to this project will be documented in this file.
 - Custom syntax highlight theme (light / dark)
 - Set window modified
 
+### 🐞 Bug fix
+
+- Fix font settings cannot take effect
+
 ## 0.0.2
 
 ### 🌵 Features
