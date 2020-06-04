@@ -31,8 +31,10 @@ So enjoy this toy 🍵️
 
 ## Screenshots
 
-<img src="./images/notepanda-sc1.png" width="400px"/><img src="./images/notepanda-sc2.png" width="400px"/>
-<img src="./images/notepanda-sc3.png" width="400px"/><img src="./images/notepanda-sc4.png" width="400px"/>
+| Light  | Dark |
+|:--------:|:-------:|
+| ![Light](./images/notepanda-sc1.png) | ![Dark](./images/notepanda-sc3.png) |
+| ![Light](./images/notepanda-sc2.png) | ![Dark](/images/notepanda-sc4.png)|
 
 ## Feature
 
