@@ -16,11 +16,11 @@
         <file>images/remixicons/sticky-note-line.svg</file>
     </qresource>
     <qresource prefix="/asset">
-        <file>images/logo.png</file>
         <file>assets/CREDIT.md</file>
         <file>makespec/VERSION</file>
         <file>makespec/VERSIONSUFFIX</file>
         <file>makespec/BUILDVERSION</file>
         <file>images/panda.ico</file>
+        <file>images/notepanda.png</file>
     </qresource>
 </RCC>

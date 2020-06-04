@@ -1,6 +1,6 @@
 <div align="center"><img src="./images/banner.png" width="400px"/></div>
 
-<h6>Notepanda's icon is owned by [ChungZH](https://github.com/ChungZH), any unanthorized usage will be blamed.</h6>
+###### Notepanda's icon is owned by ChungZH, any unanthorized usage will be blamed.
 
 # Notepanda
 

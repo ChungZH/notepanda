@@ -29,7 +29,7 @@
        <item>
         <widget class="QFrame" name="frame">
          <property name="styleSheet">
-          <string notr="true">image: url(:/asset/images/logo.png)</string>
+          <string notr="true">image: url(:/asset/images/notepanda.png)</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
