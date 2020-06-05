@@ -72,7 +72,7 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
           [&](const QFont font) { plainTextEdit->setEditorFont(font); });
   connect(pfWindow->ui->spinBox, QOverload<int>::of(&QSpinBox::valueChanged),
           [=](const int &value) { plainTextEdit->setEditorFontSize(value); });
-  connect(pfWindow->ui->colorCombo, &QComboBox::currentTextChanged,
+  connect(pfWindow->ui->highlightThemeCombo, &QComboBox::currentTextChanged,
           [&](const QString &ctname) {
             plainTextEdit->setEditorColorTheme(ctname);
             configManager->setColorTheme(ctname);

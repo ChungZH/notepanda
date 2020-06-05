@@ -33,15 +33,12 @@
 
 TextEditor::TextEditor(ConfigManager *cfManager, QWidget *parent)
     : QPlainTextEdit(parent),
-      m_highlighter(new KSyntaxHighlighting::SyntaxHighlighter(document())),
-      configManager(cfManager)
+      configManager(cfManager),
+      m_highlighter(new KSyntaxHighlighting::SyntaxHighlighter(document()))
+
 {
-  if (configManager->getColorTheme() == "Light")
-    setTheme(m_repository.defaultTheme(
-        (KSyntaxHighlighting::Repository::LightTheme)));
-  else
-    setTheme(
-        m_repository.defaultTheme(KSyntaxHighlighting::Repository::DarkTheme));
+  const auto theme = m_repository.theme(configManager->getColorTheme());
+  setTheme(theme);
 
   // Line number area
   lineNumberArea = new LineNumberArea(this);
@@ -258,18 +255,10 @@ int TextEditor::lineNumberAreaWidth()
   return space;
 }
 
-//![extraAreaWidth]
-
-//![slotUpdateExtraAreaWidth]
-
 void TextEditor::updateLineNumberAreaWidth(int /* newBlockCount */)
 {
   setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
 }
-
-//![slotUpdateExtraAreaWidth]
-
-//![slotUpdateRequest]
 
 void TextEditor::updateLineNumberArea(const QRect &rect, int dy)
 {
@@ -281,10 +270,6 @@ void TextEditor::updateLineNumberArea(const QRect &rect, int dy)
   if (rect.contains(viewport()->rect())) updateLineNumberAreaWidth(0);
 }
 
-//![slotUpdateRequest]
-
-//![resizeEvent]
-
 void TextEditor::resizeEvent(QResizeEvent *e)
 {
   QPlainTextEdit::resizeEvent(e);
@@ -293,10 +278,6 @@ void TextEditor::resizeEvent(QResizeEvent *e)
   lineNumberArea->setGeometry(
       QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
 }
-
-//![resizeEvent]
-
-//![cursorPositionChanged]
 
 void TextEditor::highlightCurrentLine()
 {
@@ -316,45 +297,26 @@ void TextEditor::highlightCurrentLine()
   setExtraSelections(extraSelections);
 }
 
-//![cursorPositionChanged]
-
-//![extraAreaPaintEvent_0]
-
 void TextEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
 {
   QPainter painter(lineNumberArea);
-  QColor lineNumberAreaBackgroundColor;
-  if (configManager->getColorTheme() == "Light") {
-    // light
-    lineNumberAreaBackgroundColor = Qt::lightGray;
-    lineNumberAreaBackgroundColor.setAlphaF(0.75);
-    m_lineNumbersColor = Qt::darkGray;
-    m_lineNumbersColor.setAlphaF(0.9);
-  } else {
-    // dark
-    lineNumberAreaBackgroundColor = KSyntaxHighlighting::Theme::BackgroundColor;
-    lineNumberAreaBackgroundColor.setAlphaF(0.7);
-    m_lineNumbersColor = Qt::lightGray;
-    m_lineNumbersColor.setAlphaF(0.4);
-  }
+  painter.fillRect(event->rect(), m_highlighter->theme().editorColor(
+                                      KSyntaxHighlighting::Theme::IconBorder));
 
-  painter.fillRect(event->rect(), lineNumberAreaBackgroundColor);
-
-  //![extraAreaPaintEvent_0]
-
-  //![extraAreaPaintEvent_1]
   QTextBlock block = firstVisibleBlock();
   int blockNumber = block.blockNumber();
+  const int currentBlockNumber = textCursor().blockNumber();
   int top =
       qRound(blockBoundingGeometry(block).translated(contentOffset()).top());
   int bottom = top + qRound(blockBoundingRect(block).height());
-  //![extraAreaPaintEvent_1]
 
-  //![extraAreaPaintEvent_2]
   while (block.isValid() && top <= event->rect().bottom()) {
     if (block.isVisible() && bottom >= event->rect().top()) {
       QString number = QString::number(blockNumber + 1);
-      painter.setPen(m_lineNumbersColor);
+      painter.setPen(m_highlighter->theme().editorColor(
+          (blockNumber == currentBlockNumber)
+              ? KSyntaxHighlighting::Theme::CurrentLineNumber
+              : KSyntaxHighlighting::Theme::LineNumbers));
       painter.drawText(0, top, lineNumberArea->width(), fontMetrics().height(),
                        Qt::AlignCenter, number);
     }
@@ -400,12 +362,8 @@ void TextEditor::setEditorFontSize(const int &size)
 
 void TextEditor::setEditorColorTheme(const QString &ctname)
 {
-  if (ctname == "Light")
-    setTheme(m_repository.defaultTheme(
-        (KSyntaxHighlighting::Repository::LightTheme)));
-  else
-    setTheme(
-        m_repository.defaultTheme(KSyntaxHighlighting::Repository::DarkTheme));
+  const auto theme = m_repository.theme(ctname);
+  setTheme(theme);
 }
 
 void TextEditor::setCurrentFile(const QString &fileName)

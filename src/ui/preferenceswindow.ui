@@ -88,7 +88,7 @@
         <rect>
          <x>10</x>
          <y>10</y>
-         <width>578</width>
+         <width>580</width>
          <height>129</height>
         </rect>
        </property>
@@ -159,12 +159,12 @@
                   </size>
                  </property>
                  <property name="text">
-                  <string>Color Theme</string>
+                  <string>Theme</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="QComboBox" name="colorCombo"/>
+                <widget class="QComboBox" name="highlightThemeCombo"/>
                </item>
               </layout>
              </item>

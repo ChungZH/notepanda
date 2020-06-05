@@ -45,7 +45,7 @@ void ConfigManager::readGeneralSettings()
   }
   style = settings->value("Style", "Fusion").toString();
   editorFontSize = settings->value("EditorFontSize", 16).toInt();
-  colorTheme = settings->value("ColorTheme", "Light").toString();
+  colorTheme = settings->value("ColorTheme", "Default").toString();
 }
 
 QString ConfigManager::getEditorFontFamily() const { return editorFontFamily; }

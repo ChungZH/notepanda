@@ -6,9 +6,9 @@ All notable changes to this project will be documented in this file.
 
 ### 🌵 Features
 
-- Custom syntax highlight theme (light / dark)
 - Set window modified
 - New logo
+- More available syntax highlight themes: `Breeze Dark`, `Default`, `Printing`, `Solarized Dark` and `Solarized  Light`
 
 ### 🐞 Bug fix
 
