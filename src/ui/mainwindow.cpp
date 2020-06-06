@@ -201,6 +201,7 @@ void MainWindow::normalMode()
 {
   this->addToolBar(Qt::LeftToolBarArea, ToolBar);
   plainTextEdit->switchMode(0);
+  ui->actionPreferences->setEnabled(1);
   currentMode = 0;
 }
 
@@ -213,6 +214,7 @@ void MainWindow::stickyNoteMode()
   this->removeToolBar(ToolBar);
   plainTextEdit->switchMode(1);
   statusBar()->clearMessage();
+  ui->actionPreferences->setDisabled(1);
   currentMode = 1;
 }
 
