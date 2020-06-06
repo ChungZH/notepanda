@@ -1,4 +1,4 @@
-<div align="center"><img src="./images/banner.png" width="400px"/></div>
+![banner](./images/banner.png)
 
 ###### Notepanda's icon is owned by ChungZH, any unanthorized usage will be blamed.
 
