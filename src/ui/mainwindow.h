@@ -53,5 +53,12 @@ class MainWindow : public QMainWindow
   QToolBar *ToolBar;
   ConfigManager *configManager;
   PreferencesWindow *pfWindow;
+
+  /**
+   * @brief currentMode
+   *    0: normal mode
+   *    1: sticky mode
+   */
+  int currentMode;
 };
 #endif  // MAINWINDOW_H

@@ -40,6 +40,7 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
   ToolBar->addAction(ui->actionAbout);
   ToolBar->addAction(ui->actionSticky_note_mode);
   this->addToolBar(Qt::LeftToolBarArea, ToolBar);
+  currentMode = 0;
 
   QApplication::setStyle(QStyleFactory::create(configManager->getStyle()));
 
@@ -127,6 +128,7 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
   connect(plainTextEdit, &TextEditor::redoAvailable, [=](bool redoIsAvailable) {
     ui->actionRedo->setDisabled(!redoIsAvailable);
   });
+
   connect(plainTextEdit, &TextEditor::textChanged, this,
           &MainWindow::updateStatusBar);
 
@@ -188,16 +190,18 @@ void MainWindow::quit() { QCoreApplication::quit(); }
 
 void MainWindow::updateStatusBar()
 {
-  statusBar()->showMessage(
-      tr("Characters:") +
-      QString::number(plainTextEdit->document()->characterCount() - 1) +
-      " Lines:" + QString::number(plainTextEdit->document()->lineCount()));
+  if (currentMode != 1)
+    statusBar()->showMessage(
+        tr("Characters:") +
+        QString::number(plainTextEdit->document()->characterCount() - 1) +
+        " Lines:" + QString::number(plainTextEdit->document()->lineCount()));
 }
 
 void MainWindow::normalMode()
 {
   this->addToolBar(Qt::LeftToolBarArea, ToolBar);
   plainTextEdit->switchMode(0);
+  currentMode = 0;
 }
 
 /**
@@ -208,6 +212,8 @@ void MainWindow::stickyNoteMode()
 {
   this->removeToolBar(ToolBar);
   plainTextEdit->switchMode(1);
+  statusBar()->clearMessage();
+  currentMode = 1;
 }
 
 void MainWindow::documentWasModified()

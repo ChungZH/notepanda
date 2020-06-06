@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - Sticky mode
     - Hide sidebar
     - Hide line number area
+    - Hide statusbar
 
 ### 🐞 Bug fix
 
