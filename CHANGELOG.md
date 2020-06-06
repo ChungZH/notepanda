@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
     - Hide line number area
     - Hide statusbar
     - Use general font (not monospace)
+    - Smaller window
 
 ### 🐞 Bug fix
 

@@ -299,6 +299,8 @@ void TextEditor::highlightCurrentLine()
     extraSelections.append(selection);
   }
 
+  if (currentMode == 1) extraSelections.clear();
+
   setExtraSelections(extraSelections);
 }
 

@@ -218,6 +218,7 @@ void MainWindow::normalMode()
  */
 void MainWindow::stickyNoteMode()
 {
+  resize(450, 450);
   ToolBar->setVisible(0);
   plainTextEdit->switchMode(1);
   statusBar()->clearMessage();
