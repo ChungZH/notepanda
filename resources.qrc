@@ -14,6 +14,7 @@
         <file>images/remixicons/printer-line.svg</file>
         <file>images/remixicons/settings-4-line.svg</file>
         <file>images/remixicons/sticky-note-line.svg</file>
+        <file>images/remixicons/file-edit-line.svg</file>
     </qresource>
     <qresource prefix="/asset">
         <file>assets/CREDIT.md</file>

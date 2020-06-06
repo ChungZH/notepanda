@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - Set window modified
 - New logo
 - More available syntax highlight themes: `Breeze Dark`, `Default`, `Printing`, `Solarized Dark` and `Solarized  Light`
+- Add normal mode icon
 - Sticky mode
     - Hide sidebar
     - Hide line number area

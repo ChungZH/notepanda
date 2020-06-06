@@ -40,6 +40,7 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
   ToolBar->addAction(ui->actionAbout);
   ToolBar->addAction(ui->actionSticky_note_mode);
   this->addToolBar(Qt::LeftToolBarArea, ToolBar);
+  ui->actionNormalmode->setDisabled(1);
   currentMode = 0;
 
   QApplication::setStyle(QStyleFactory::create(configManager->getStyle()));
@@ -111,9 +112,15 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
   connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::quit);
   connect(ui->actionAbout, &QAction::triggered,
           [&]() { AboutWindow(this).exec(); });
+  connect(ui->actionNormalmode, &QAction::triggered, [&]() {
+    normalMode();
+    ui->actionNormalmode->setDisabled(1);
+    ui->actionSticky_note_mode->setEnabled(1);
+  });
   connect(ui->actionSticky_note_mode, &QAction::triggered, [&]() {
     stickyNoteMode();
-    ui->actionSticky_note_mode->setEnabled(0);
+    ui->actionSticky_note_mode->setDisabled(1);
+    ui->actionNormalmode->setEnabled(1);
   });
 
   connect(plainTextEdit, &TextEditor::changeTitle, this,
@@ -199,7 +206,7 @@ void MainWindow::updateStatusBar()
 
 void MainWindow::normalMode()
 {
-  this->addToolBar(Qt::LeftToolBarArea, ToolBar);
+  ToolBar->setVisible(1);
   plainTextEdit->switchMode(0);
   ui->actionPreferences->setEnabled(1);
   currentMode = 0;
@@ -211,7 +218,7 @@ void MainWindow::normalMode()
  */
 void MainWindow::stickyNoteMode()
 {
-  this->removeToolBar(ToolBar);
+  ToolBar->setVisible(0);
   plainTextEdit->switchMode(1);
   statusBar()->clearMessage();
   ui->actionPreferences->setDisabled(1);
