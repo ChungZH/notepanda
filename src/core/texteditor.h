@@ -65,12 +65,21 @@ class TextEditor : public QPlainTextEdit
   void setEditorColorTheme(const QString &ctname);
   void setCurrentFile(const QString &fileName);
 
+  /**
+   * @brief switchMode
+   * @param mode
+   *    0: normal mode
+   *    1: sticky mode
+   */
+  void switchMode(const int &mode);
+
  private:
   ConfigManager *configManager;
-  void setTheme(const KSyntaxHighlighting::Theme &theme);
   KSyntaxHighlighting::Repository m_repository;
   KSyntaxHighlighting::SyntaxHighlighter *m_highlighter;
+  void setTheme(const KSyntaxHighlighting::Theme &theme);
   QWidget *lineNumberArea;
+  int currentMode;
 
  signals:
   void changeTitle();

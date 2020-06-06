@@ -53,6 +53,8 @@ TextEditor::TextEditor(ConfigManager *cfManager, QWidget *parent)
   updateLineNumberAreaWidth(0);
   highlightCurrentLine();
 
+  currentMode = 0;
+
   TextEditor::setFont(QFont(configManager->getEditorFontFamily(),
                             configManager->getEditorFontSize()));
   setCurrentFile(QString());
@@ -257,7 +259,10 @@ int TextEditor::lineNumberAreaWidth()
 
 void TextEditor::updateLineNumberAreaWidth(int /* newBlockCount */)
 {
-  setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
+  if (currentMode == 1)
+    setViewportMargins(0, 0, 0, 0);
+  else
+    setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
 }
 
 void TextEditor::updateLineNumberArea(const QRect &rect, int dy)
@@ -372,4 +377,16 @@ void TextEditor::setCurrentFile(const QString &fileName)
   document()->setModified(false);
   setWindowModified(false);
   emit modifiedFalse();
+}
+
+void TextEditor::switchMode(const int &mode)
+{
+  if (mode == 0) {
+    lineNumberArea->show();
+    currentMode = mode;
+  } else {
+    lineNumberArea->hide();
+    setViewportMargins(0, 0, 0, 0);
+    currentMode = mode;
+  }
 }

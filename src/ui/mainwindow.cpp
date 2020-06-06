@@ -34,13 +34,12 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
   ToolBar->addAction(ui->actionSave);
   ToolBar->addAction(ui->actionSave_As);
   ToolBar->addAction(ui->actionPreferences);
-  ToolBar->addAction(ui->actionPrint);
   ToolBar->addAction(ui->actionUndo);
   ToolBar->addAction(ui->actionRedo);
   ToolBar->addAction(ui->actionQuit);
   ToolBar->addAction(ui->actionAbout);
   ToolBar->addAction(ui->actionSticky_note_mode);
-  normalMode();
+  this->addToolBar(Qt::LeftToolBarArea, ToolBar);
 
   QApplication::setStyle(QStyleFactory::create(configManager->getStyle()));
 
@@ -198,13 +197,18 @@ void MainWindow::updateStatusBar()
 void MainWindow::normalMode()
 {
   this->addToolBar(Qt::LeftToolBarArea, ToolBar);
+  plainTextEdit->switchMode(0);
 }
 
 /**
  * @brief Sticky Note Mode, like Microsoft Sticky Notes. For more details, see
  * <https://www.microsoft.com/en-us/p/microsoft-sticky-notes/9nblggh4qghw?activetab=pivot:overviewtab#>
  */
-void MainWindow::stickyNoteMode() { this->removeToolBar(ToolBar); }
+void MainWindow::stickyNoteMode()
+{
+  this->removeToolBar(ToolBar);
+  plainTextEdit->switchMode(1);
+}
 
 void MainWindow::documentWasModified()
 {
