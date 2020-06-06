@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
     - Hide sidebar
     - Hide line number area
     - Hide statusbar
+    - Use general font (not monospace)
 
 ### 🐞 Bug fix
 

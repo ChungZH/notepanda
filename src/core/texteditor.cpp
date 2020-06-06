@@ -384,9 +384,14 @@ void TextEditor::switchMode(const int &mode)
   if (mode == 0) {
     lineNumberArea->show();
     currentMode = mode;
-  } else {
+    QPlainTextEdit::setFont(QFont(configManager->getEditorFontFamily(),
+                                  configManager->getEditorFontSize()));
+  } else if (mode == 1) {
     lineNumberArea->hide();
     setViewportMargins(0, 0, 0, 0);
     currentMode = mode;
+    setFont(
+        QFont(QFontDatabase::systemFont(QFontDatabase::GeneralFont).toString(),
+              configManager->getEditorFontSize()));
   }
 }
