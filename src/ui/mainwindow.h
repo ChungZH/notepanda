@@ -44,7 +44,7 @@ class MainWindow : public QMainWindow
   void changeWindowTitle();
   void quit();
   void updateStatusBar();
-  void normalMode();
+  void normalMode(bool first);
   void stickyNoteMode();
   void documentWasModified();
 
@@ -53,6 +53,8 @@ class MainWindow : public QMainWindow
   QToolBar *ToolBar;
   ConfigManager *configManager;
   PreferencesWindow *pfWindow;
+  QWidget *stickyBGColorSelector;
+  QColor currentBGColor;  // only in sticky mode
 
   /**
    * @brief currentMode

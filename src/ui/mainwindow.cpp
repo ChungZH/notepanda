@@ -12,6 +12,7 @@
 #include "mainwindow.h"
 
 #include <QDebug>
+#include <QPainter>
 #include <QSize>
 #include <QStyle>
 #include <QStyleFactory>
@@ -28,22 +29,13 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
 {
   ui->setupUi(this);
 
+  setBaseSize(size());
   ToolBar = new QToolBar;
-  ToolBar->addAction(ui->actionNew);
-  ToolBar->addAction(ui->actionOpen);
-  ToolBar->addAction(ui->actionSave);
-  ToolBar->addAction(ui->actionSave_As);
-  ToolBar->addAction(ui->actionPreferences);
-  ToolBar->addAction(ui->actionUndo);
-  ToolBar->addAction(ui->actionRedo);
-  ToolBar->addAction(ui->actionQuit);
-  ToolBar->addAction(ui->actionAbout);
-  ToolBar->addAction(ui->actionSticky_note_mode);
-  this->addToolBar(Qt::LeftToolBarArea, ToolBar);
-  ui->actionNormalmode->setDisabled(1);
-  currentMode = 0;
 
-  QApplication::setStyle(QStyleFactory::create(configManager->getStyle()));
+  currentBGColor = QColor("#537EFF");
+
+  this->addToolBar(Qt::LeftToolBarArea, ToolBar);
+  normalMode(1);
 
   plainTextEdit = new TextEditor(configManager);
   this->setCentralWidget(plainTextEdit);
@@ -113,7 +105,7 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
   connect(ui->actionAbout, &QAction::triggered,
           [&]() { AboutWindow(this).exec(); });
   connect(ui->actionNormalmode, &QAction::triggered, [&]() {
-    normalMode();
+    normalMode(0);
     ui->actionNormalmode->setDisabled(1);
     ui->actionSticky_note_mode->setEnabled(1);
   });
@@ -204,10 +196,22 @@ void MainWindow::updateStatusBar()
         " Lines:" + QString::number(plainTextEdit->document()->lineCount()));
 }
 
-void MainWindow::normalMode()
+void MainWindow::normalMode(bool first)
 {
-  ToolBar->setVisible(1);
-  plainTextEdit->switchMode(0);
+  if (!first) {
+    resize(baseSize());
+    plainTextEdit->switchMode(0);
+  }
+  ToolBar->addAction(ui->actionNew);
+  ToolBar->addAction(ui->actionOpen);
+  ToolBar->addAction(ui->actionSave);
+  ToolBar->addAction(ui->actionSave_As);
+  ToolBar->addAction(ui->actionPreferences);
+  ToolBar->addAction(ui->actionUndo);
+  ToolBar->addAction(ui->actionRedo);
+  ToolBar->addAction(ui->actionQuit);
+  ToolBar->addAction(ui->actionAbout);
+  ToolBar->addAction(ui->actionSticky_note_mode);
   ui->actionPreferences->setEnabled(1);
   currentMode = 0;
 }
@@ -218,11 +222,22 @@ void MainWindow::normalMode()
  */
 void MainWindow::stickyNoteMode()
 {
-  resize(450, 450);
-  ToolBar->setVisible(0);
+  resize(baseSize() * 0.7);
   plainTextEdit->switchMode(1);
   statusBar()->clearMessage();
   ui->actionPreferences->setDisabled(1);
+
+  ToolBar->removeAction(ui->actionNew);
+  ToolBar->removeAction(ui->actionOpen);
+  ToolBar->removeAction(ui->actionSave);
+  ToolBar->removeAction(ui->actionSave_As);
+  ToolBar->removeAction(ui->actionPreferences);
+  ToolBar->removeAction(ui->actionUndo);
+  ToolBar->removeAction(ui->actionRedo);
+  ToolBar->removeAction(ui->actionQuit);
+  ToolBar->removeAction(ui->actionAbout);
+  ToolBar->removeAction(ui->actionSticky_note_mode);
+
   currentMode = 1;
 }
 

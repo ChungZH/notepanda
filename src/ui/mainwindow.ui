@@ -82,6 +82,7 @@
     </property>
     <addaction name="actionNormalmode"/>
     <addaction name="actionSticky_note_mode"/>
+    <addaction name="separator"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
