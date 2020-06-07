@@ -25,13 +25,29 @@ PreferencesWindow::PreferencesWindow(ConfigManager *cfManager, QWidget *parent)
   ui->setupUi(this);
   setWindowTitle(tr("Preferences - Notepanda"));
 
-  resetAllValues();
+  resetAllValues(1);
 }
 
-void PreferencesWindow::resetAllValues()
+void PreferencesWindow::resetAllValues(const bool isFirst)
 {
-  ui->themeCombo->addItems(QStyleFactory::keys());
+  if (isFirst) {
+    ui->themeCombo->addItems(QStyleFactory::keys());
+
+    /*
+     * Another implementation (better but harder) :
+     for (const auto &theme : m_repository.themes()) addItem(...);
+     * There is currently no plan to customize the theme of highlighting
+     * So this implementation is temporarily used
+    */
+
+    ui->highlightThemeCombo->addItem("Breeze Dark");
+    ui->highlightThemeCombo->addItem("Default");
+    ui->highlightThemeCombo->addItem("Printing");
+    ui->highlightThemeCombo->addItem("Solarized Dark");
+    ui->highlightThemeCombo->addItem("Solarized Light");
+  }
   ui->themeCombo->setCurrentText(configManager->getStyle());
   ui->fontComboBox->setCurrentFont(QFont(configManager->getEditorFontFamily()));
   ui->spinBox->setValue(configManager->getEditorFontSize());
+  ui->highlightThemeCombo->setCurrentText(configManager->getColorTheme());
 }

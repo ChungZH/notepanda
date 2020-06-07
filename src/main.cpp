@@ -22,11 +22,10 @@
 int main(int argc, char *argv[])
 {
   QApplication App(argc, argv);
-  QApplication::setStyle(QStyleFactory::create("Fusion"));
 
   App.setOrganizationName("ChungZH");
   App.setApplicationName("Notepanda");
-  App.setApplicationVersion("0.0.2");
+  App.setApplicationVersion("0.0.3");
 
   QCommandLineParser parser;
   parser.addHelpOption();
@@ -51,6 +50,9 @@ int main(int argc, char *argv[])
   }
   ConfigManager *configManager;
   configManager = new ConfigManager(configFile);
+
+  App.setStyle(QStyleFactory::create(configManager->getStyle()));
+
   MainWindow notepanda(configManager);
   notepanda.show();
   if (parser.positionalArguments().size() == 1)

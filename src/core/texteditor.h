@@ -40,13 +40,13 @@ class TextEditor : public QPlainTextEdit
   QString currentFile;
   void lineNumberAreaPaintEvent(QPaintEvent *event);
   int lineNumberAreaWidth();
-
   void openFile(const QString &fileName);
 
  protected:
   void resizeEvent(QResizeEvent *event) override;
 
  public slots:
+  bool maybeSave();
   void newDocument();
   void open();
   void save();
@@ -62,17 +62,28 @@ class TextEditor : public QPlainTextEdit
   void updateLineNumberArea(const QRect &rect, int dy);
   void setEditorFont(const QFont &font);
   void setEditorFontSize(const int &size);
+  void setEditorColorTheme(const QString &ctname);
+  void setCurrentFile(const QString &fileName);
+
+  /**
+   * @brief switchMode
+   * @param mode
+   *    0: normal mode
+   *    1: sticky mode
+   */
+  void switchMode(const int &mode);
 
  private:
   ConfigManager *configManager;
-  void setTheme(const KSyntaxHighlighting::Theme &theme);
   KSyntaxHighlighting::Repository m_repository;
   KSyntaxHighlighting::SyntaxHighlighter *m_highlighter;
+  void setTheme(const KSyntaxHighlighting::Theme &theme);
   QWidget *lineNumberArea;
-  QColor m_lineNumbersColor;
+  int currentMode;
 
  signals:
   void changeTitle();
+  void modifiedFalse();
 };
 
 #endif  // TEXTEDITOR_H

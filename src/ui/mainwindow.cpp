@@ -12,6 +12,7 @@
 #include "mainwindow.h"
 
 #include <QDebug>
+#include <QPainter>
 #include <QSize>
 #include <QStyle>
 #include <QStyleFactory>
@@ -28,23 +29,38 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
 {
   ui->setupUi(this);
 
-  QApplication::setStyle(QStyleFactory::create(configManager->getStyle()));
-
+  setBaseSize(size());
   ToolBar = new QToolBar;
-  ToolBar->addAction(ui->actionNew);
-  ToolBar->addAction(ui->actionOpen);
-  ToolBar->addAction(ui->actionSave);
-  ToolBar->addAction(ui->actionSave_As);
-  ToolBar->addAction(ui->actionPreferences);
-  ToolBar->addAction(ui->actionPrint);
-  ToolBar->addAction(ui->actionUndo);
-  ToolBar->addAction(ui->actionRedo);
-  ToolBar->addAction(ui->actionQuit);
-  ToolBar->addAction(ui->actionAbout);
 
-  QSize *qs = new QSize;
-  ToolBar->setIconSize(qs->scaled(26, 26, Qt::IgnoreAspectRatio));
+  // Sticky note mode
+
+  SToolBar = new QToolBar;
+  changeBgColor = new QAction;
+  changeBgColor->setToolTip(tr("Change background color"));
+  changeBgColor->setIconText("BG Color");
+  currentColor = "#AAFFFF";
+
+  SToolBar->addAction(changeBgColor);
+  SToolBar->addAction(ui->actionNormalmode);
+
+  this->addToolBar(Qt::ToolBarArea::BottomToolBarArea, SToolBar);
+  SToolBar->setVisible(0);
+
+  ColorDialog = new QColorDialog;
+
+  connect(changeBgColor, &QAction::triggered, [&]() { ColorDialog->open(); });
+  connect(ColorDialog, &QColorDialog::currentColorChanged,
+          [&](const QColor &color) {
+            currentColor = color;
+            plainTextEdit->setStyleSheet("background-color: " +
+                                         currentColor.name());
+          });
+
+  //
+
   this->addToolBar(Qt::LeftToolBarArea, ToolBar);
+
+  normalMode(1);
 
   plainTextEdit = new TextEditor(configManager);
   this->setCentralWidget(plainTextEdit);
@@ -74,6 +90,11 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
           [&](const QFont font) { plainTextEdit->setEditorFont(font); });
   connect(pfWindow->ui->spinBox, QOverload<int>::of(&QSpinBox::valueChanged),
           [=](const int &value) { plainTextEdit->setEditorFontSize(value); });
+  connect(pfWindow->ui->highlightThemeCombo, &QComboBox::currentTextChanged,
+          [&](const QString &ctname) {
+            plainTextEdit->setEditorColorTheme(ctname);
+            configManager->setColorTheme(ctname);
+          });
 
   // User accepted, so change the `settings`.
   connect(pfWindow->ui->buttonBox, &QDialogButtonBox::accepted,
@@ -88,12 +109,13 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
     // Restore TextEditor
     plainTextEdit->setEditorFont(configManager->getEditorFontFamily());
     plainTextEdit->setEditorFontSize(configManager->getEditorFontSize());
+    plainTextEdit->setEditorColorTheme(configManager->getColorTheme());
 
     // Restore MainWindow
     QApplication::setStyle(QStyleFactory::create(configManager->getStyle()));
 
     // Restore PreferencesWindow
-    pfWindow->resetAllValues();
+    pfWindow->resetAllValues(0);
   });
 
   // PW END
@@ -107,16 +129,33 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
   connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::quit);
   connect(ui->actionAbout, &QAction::triggered,
           [&]() { AboutWindow(this).exec(); });
+  connect(ui->actionNormalmode, &QAction::triggered, [&]() {
+    normalMode(0);
+    ui->actionNormalmode->setDisabled(1);
+    ui->actionSticky_note_mode->setEnabled(1);
+  });
+  connect(ui->actionSticky_note_mode, &QAction::triggered, [&]() {
+    stickyNoteMode();
+    ui->actionSticky_note_mode->setDisabled(1);
+    ui->actionNormalmode->setEnabled(1);
+  });
+
   connect(plainTextEdit, &TextEditor::changeTitle, this,
           &MainWindow::changeWindowTitle);
+  connect(plainTextEdit->document(), &QTextDocument::contentsChanged, this,
+          &MainWindow::documentWasModified);
+  connect(plainTextEdit, &TextEditor::modifiedFalse,
+          [=]() { setWindowModified(false); });
   connect(plainTextEdit, &TextEditor::undoAvailable, [=](bool undoIsAvailable) {
     ui->actionUndo->setDisabled(!undoIsAvailable);
   });
   connect(plainTextEdit, &TextEditor::redoAvailable, [=](bool redoIsAvailable) {
     ui->actionRedo->setDisabled(!redoIsAvailable);
   });
+
   connect(plainTextEdit, &TextEditor::textChanged, this,
           &MainWindow::updateStatusBar);
+
   updateStatusBar();
   changeWindowTitle();
   ui->actionUndo->setDisabled(1);
@@ -153,21 +192,77 @@ MainWindow::~MainWindow()
   delete plainTextEdit;
 }
 
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+  if (plainTextEdit->maybeSave()) {
+    event->accept();
+  } else {
+    event->ignore();
+  }
+}
+
 void MainWindow::changeWindowTitle()
 {
   if (!plainTextEdit->currentFile.isEmpty())
     setWindowTitle(plainTextEdit->currentFile.split("/").last() +
-                   " - Notepanda");
+                   "[*] - Notepanda");
   else
-    setWindowTitle(tr("Untitled") + " - Notepanda");
+    setWindowTitle(tr("Untitled") + "[*] - Notepanda");
 }
 
 void MainWindow::quit() { QCoreApplication::quit(); }
 
 void MainWindow::updateStatusBar()
 {
-  statusBar()->showMessage(
-      tr("Characters:") +
-      QString::number(plainTextEdit->document()->characterCount() - 1) +
-      " Lines:" + QString::number(plainTextEdit->document()->lineCount()));
+  if (currentMode != 1)
+    statusBar()->showMessage(
+        tr("Characters:") +
+        QString::number(plainTextEdit->document()->characterCount() - 1) +
+        " Lines:" + QString::number(plainTextEdit->document()->lineCount()));
+}
+
+void MainWindow::normalMode(bool first)
+{
+  if (!first) {
+    resize(baseSize());
+    plainTextEdit->switchMode(0);
+    ToolBar->setVisible(1);
+    SToolBar->setVisible(0);
+  } else {
+    ToolBar->addAction(ui->actionNew);
+    ToolBar->addAction(ui->actionOpen);
+    ToolBar->addAction(ui->actionSave);
+    ToolBar->addAction(ui->actionSave_As);
+    ToolBar->addAction(ui->actionPreferences);
+    ToolBar->addAction(ui->actionUndo);
+    ToolBar->addAction(ui->actionRedo);
+    ToolBar->addAction(ui->actionQuit);
+    ToolBar->addAction(ui->actionAbout);
+    ToolBar->addAction(ui->actionSticky_note_mode);
+  }
+  ui->actionPreferences->setEnabled(1);
+  currentMode = 0;
+}
+
+/**
+ * @brief Sticky Note Mode, like Microsoft Sticky Notes. For more details, see
+ * <https://www.microsoft.com/en-us/p/microsoft-sticky-notes/9nblggh4qghw?activetab=pivot:overviewtab#>
+ */
+void MainWindow::stickyNoteMode()
+{
+  resize(baseSize() * 0.7);
+  plainTextEdit->switchMode(1);
+  plainTextEdit->setStyleSheet("background: " + currentColor.name());
+  statusBar()->clearMessage();
+  ui->actionPreferences->setDisabled(1);
+
+  ToolBar->setVisible(0);
+  SToolBar->setVisible(1);
+
+  currentMode = 1;
+}
+
+void MainWindow::documentWasModified()
+{
+  setWindowModified(plainTextEdit->document()->isModified());
 }

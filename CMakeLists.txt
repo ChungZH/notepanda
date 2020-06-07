@@ -16,7 +16,6 @@ list(GET VERSION_LIST 0 CMAKE_PROJECT_VERSION_MAJOR)
 list(GET VERSION_LIST 1 CMAKE_PROJECT_VERSION_MINOR)
 list(GET VERSION_LIST 2 CPACK_PACKAGE_VERSION_PATCH)
 
-
 add_definitions(-DVERSION_STRING="${VERSION_STRING}")
 add_definitions(-DXTOSTRUCT_QT)
 
@@ -31,6 +30,7 @@ endif()
 message(" ")
 message("Notepanda Version: ${VERSION_STRING}")
 message("Notepanda Build Version: ${BUILD_VERSION}")
+message("Notepanda Build Type: ${CMAKE_BUILD_TYPE}")
 message("|-------------------------------------------------|")
 message("| Notepanda, A Cross Platform Notepad.            |")
 message("| Based on C++ & Qt.                              |")
@@ -46,7 +46,7 @@ message("| Welcome to contribute!                          |")
 message("|-------------------------------------------------|")
 message(" ")
 
-find_package(Qt5 COMPONENTS Widgets Svg REQUIRED)
+find_package(Qt5 COMPONENTS Core Gui Widgets Svg REQUIRED)
 find_package(KF5SyntaxHighlighting REQUIRED)
 
 if(WIN32)
@@ -86,6 +86,15 @@ if(UNIX AND NOT APPLE AND NOT WIN32)
     install(FILES images/notepanda.png DESTINATION share/icons/hicolor/256x256/apps)
 endif()
 
+# Directories to look for dependencies
+set(DIRS "${CMAKE_BINARY_DIR}")
+
+# Path used for searching by FIND_XXX(), with appropriate suffixes added
+if(CMAKE_PREFIX_PATH)
+    foreach(dir ${CMAKE_PREFIX_PATH})
+        list(APPEND DIRS "${dir}/bin" "${dir}/lib")
+    endforeach()
+endif()
 include(InstallRequiredSystemLibraries)
 
 # Packaging
@@ -96,17 +105,6 @@ set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/ChungZH/notepanda")
 set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/images/panda.ico")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE.md")
 
-if(WIN32)
-    install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION .)
-    if (BUILD_NSIS)
-        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-            COMMAND windeployqt ${CMAKE_BINARY_DIR}/Debug/${PROJECT_NAME}.exe --dir ${CMAKE_BINARY_DIR}/winqt/
-            )
-        install(DIRECTORY ${CMAKE_BINARY_DIR}/winqt/ DESTINATION .)
-        set(APPS "\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.exe")
-    endif()
-endif()
-
 if(MSVC)
    if(NOT BUILD_NSIS)
     set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION .)
@@ -114,8 +112,18 @@ if(MSVC)
 endif()
 
 if(WIN32)
+    install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION .)
+    if (BUILD_NSIS)
+        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND windeployqt ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.exe --compiler-runtime --verbose 2 --dir ${CMAKE_BINARY_DIR}/winqt/
+            )
+        install(DIRECTORY ${CMAKE_BINARY_DIR}/winqt/ DESTINATION .)
+    endif()
+    set(APPS "\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.exe")
+endif()
+
+if(WIN32)
     if(BUILD_NSIS)
-        add_definitions(-DQV2RAY_NO_ASIDECONFIG)
         set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/images\\\\panda.ico")
         set(CPACK_GENERATOR "NSIS")
         set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/images/panda.ico")
@@ -142,6 +150,12 @@ if(WIN32)
     endif()
 endif()
 
+if(WIN32)
+    list(APPEND DIRS "${KF5SyntaxHighlighting_DIR}/../../../bin/")
+    install(CODE "include(BundleUtilities)
+          fixup_bundle(\"${APPS}\" \"\" \"${DIRS}\")")
+endif()
+
 include(CPack)
 
-target_link_libraries(notepanda Qt5::Widgets Qt5::Svg KF5::SyntaxHighlighting)
+target_link_libraries(notepanda Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Svg KF5::SyntaxHighlighting)

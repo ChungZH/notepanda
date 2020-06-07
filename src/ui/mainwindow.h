@@ -12,6 +12,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QAction>
+#include <QColorDialog>
 #include <QMainWindow>
 #include <QPlainTextEdit>
 #include <QToolBar>
@@ -37,15 +39,36 @@ class MainWindow : public QMainWindow
   ~MainWindow();
   TextEditor *plainTextEdit;
 
+ protected:
+  void closeEvent(QCloseEvent *event) override;
+
  private slots:
   void changeWindowTitle();
   void quit();
   void updateStatusBar();
+  void normalMode(bool first);
+  void stickyNoteMode();
+  void documentWasModified();
 
  private:
   Ui::MainWindow *ui;
   QToolBar *ToolBar;
   ConfigManager *configManager;
   PreferencesWindow *pfWindow;
+  /**
+   * @brief currentMode
+   *    0: normal mode
+   *    1: sticky mode
+   */
+  int currentMode;
+
+  // Sticky note mode
+
+  QToolBar *SToolBar;
+  QAction *changeBgColor;
+  QColorDialog *ColorDialog;
+  QColor currentColor;
+
+  //
 };
 #endif  // MAINWINDOW_H

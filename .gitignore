@@ -33,7 +33,7 @@
 
 # Some files 
 .DS_Store
-*.pro.user
+*.autosave
 *.user
 .vs/
 *.qm

@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.0.3-alpha1
+
+### 🌵 Features
+
+- Set window modified
+- New logo
+- More available syntax highlight themes: `Breeze Dark`, `Default`, `Printing`, `Solarized Dark` and `Solarized  Light`
+- Add normal mode icon
+- Sticky mode
+    - Hide sidebar
+    - Hide line number area
+    - Hide statusbar
+    - Use general font (not monospace)
+    - Smaller window
+    - Custom background color
+
+### 🐞 Bug fix
+
+- Fix font settings cannot take effect
+
 ## 0.0.2
 
 ### 🌵 Features

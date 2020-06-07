@@ -1,6 +1,6 @@
-<div align="center"><img src="./images/banner.png" width="400px"/></div>
+![banner](./images/banner.png)
 
-<h6>Notepanda's icon is owned by [ChungZH](https://github.com/ChungZH), any unanthorized usage will be blamed.</h6>
+###### Notepanda's icon is owned by ChungZH, any unanthorized usage will be blamed.
 
 # Notepanda
 
@@ -9,6 +9,7 @@
 
 ![LICENSE](https://img.shields.io/github/license/ChungZH/notepanda)
 ![Made with love](https://img.shields.io/badge/Made%20with-love-red?style=flat)
+![Build CI](https://github.com/ChungZH/notepanda/workflows/Build%20CI/badge.svg)
 
 
 > **A simple cross-platform notepad. Based on Qt and C++.**
@@ -30,8 +31,10 @@ So enjoy this toy 🍵️
 
 ## Screenshots
 
-<img src="./images/notepanda-sc1.png" width="400px"/><img src="./images/notepanda-sc2.png" width="400px"/>
-<img src="./images/notepanda-sc3.png" width="400px"/><img src="./images/notepanda-sc4.png" width="400px"/>
+| Light  | Dark |
+|:--------:|:-------:|
+| ![Light](./images/notepanda-sc1.png) | ![Dark](./images/notepanda-sc3.png) |
+| ![Light](./images/notepanda-sc2.png) | ![Dark](/images/notepanda-sc4.png)|
 
 ## Feature
 
@@ -63,7 +66,7 @@ You may use an AUR helper such as `yay` to automatically handle the build proces
 yay -S notepanda
 ```
 
-The latest version is `v0.0.2` now.
+The latest version is `v0.0.3-alpha1` now.
 
 ## Contributions / Bugs
 

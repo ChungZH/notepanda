@@ -18,6 +18,7 @@
 #include <QFont>
 #include <QMessageBox>
 #include <QPainter>
+#include <QString>
 #include <QStyle>
 #include <QTextBlock>
 #include <QTextStream>
@@ -32,12 +33,13 @@
 
 TextEditor::TextEditor(ConfigManager *cfManager, QWidget *parent)
     : QPlainTextEdit(parent),
-      m_highlighter(new KSyntaxHighlighting::SyntaxHighlighter(document())),
-      configManager(cfManager)
+      configManager(cfManager),
+      m_highlighter(new KSyntaxHighlighting::SyntaxHighlighter(document()))
+
 {
-  // TODO: Dark & Light
-  setTheme(
-      m_repository.defaultTheme(KSyntaxHighlighting::Repository::DarkTheme));
+  const auto theme = m_repository.theme(configManager->getColorTheme());
+  setTheme(theme);
+
   // Line number area
   lineNumberArea = new LineNumberArea(this);
 
@@ -51,64 +53,115 @@ TextEditor::TextEditor(ConfigManager *cfManager, QWidget *parent)
   updateLineNumberAreaWidth(0);
   highlightCurrentLine();
 
-  TextEditor::setFont(configManager->getEditorFontFamily());
+  currentMode = 0;
+
+  TextEditor::setFont(QFont(configManager->getEditorFontFamily(),
+                            configManager->getEditorFontSize()));
+  setCurrentFile(QString());
+  lineNumberArea->resize(0, 0);
+}
+
+bool TextEditor::maybeSave()
+{
+  if (!QPlainTextEdit::document()->isModified()) return true;
+  const QMessageBox::StandardButton ret = QMessageBox::warning(
+      this, tr("Application"),
+      tr("The document has been modified.\n"
+         "Do you want to save your changes?"),
+      QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+  switch (ret) {
+    case QMessageBox::Save:
+      save();
+      return true;
+    case QMessageBox::Cancel:
+      return false;
+    default:
+      break;
+  }
+  return true;
 }
 
 void TextEditor::newDocument()
 {
-  currentFile.clear();
-  TextEditor::setPlainText(QString());
-  emit changeTitle();
+  if (maybeSave()) {
+    clear();
+    setCurrentFile(QString());
+    emit changeTitle();
+  }
 }
 
 void TextEditor::open()
 {
-  QString fileName = QFileDialog::getOpenFileName(this, tr("Open the file"));
-  QFile file(fileName);
-  currentFile = fileName;
-  if (!file.open(QIODevice::ReadOnly | QFile::Text)) {
-    QMessageBox::warning(this, tr("Warning"),
-                         tr("Cannot open file: ") + file.errorString());
-    return;
+  if (maybeSave()) {
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open the file"));
+    QFile file(fileName);
+    if (!file.open(QFile::ReadOnly | QFile::Text)) {
+      QMessageBox::warning(this, tr("Warning"),
+                           tr("Cannot open file: ") + file.errorString());
+      qWarning() << "[WARN 1] Failed to open" << fileName << ":"
+                 << file.errorString();
+      return;
+    }
+
+    QPlainTextEdit::clear();
+
+    auto def = m_repository.definitionForFileName(fileName);
+    if (currentMode == 1) def = m_repository.definitionForName("Markdown");
+    m_highlighter->setDefinition(def);
+
+    QTextStream in(&file);
+
+#ifndef QT_NO_CURSOR
+    QGuiApplication::setOverrideCursor(Qt::WaitCursor);
+#endif
+    setPlainText(in.readAll());
+#ifndef QT_NO_CURSOR
+    QGuiApplication::restoreOverrideCursor();
+#endif
+    file.close();
+
+    setCurrentFile(fileName);
+    emit changeTitle();
   }
-
-  const auto def = m_repository.definitionForFileName(fileName);
-  m_highlighter->setDefinition(def);
-
-  emit changeTitle();
-  QTextStream in(&file);
-  QString text = in.readAll();
-  setPlainText(text);
-  file.close();
 }
 
+/**
+ * @brief Open from command line like `notepanda texteditor.cpp`.
+ *        It doesn't need `maybeSave()` because at this time notepanda opens for
+ * the first time.
+ */
 void TextEditor::openFile(const QString &fileName)
 {
   QFile file(fileName);
-  currentFile = fileName;
   if (!file.open(QIODevice::ReadOnly | QFile::Text)) {
     QMessageBox::warning(this, tr("Warning"),
                          tr("Cannot open file: ") + file.errorString());
+    qWarning() << "[WARN 2] Failed to open" << fileName << ":"
+               << file.errorString();
     return;
   }
 
   const auto def = m_repository.definitionForFileName(fileName);
   m_highlighter->setDefinition(def);
 
-  emit changeTitle();
   QTextStream in(&file);
-  QString text = in.readAll();
-  setPlainText(text);
-  file.close();
+
+#ifndef QT_NO_CURSOR
+  QGuiApplication::setOverrideCursor(Qt::WaitCursor);
+#endif
+  setPlainText(in.readAll());
+#ifndef QT_NO_CURSOR
+  QGuiApplication::restoreOverrideCursor();
+#endif
+  setCurrentFile(fileName);
+  emit changeTitle();
 }
 
 void TextEditor::save()
 {
   QString fileName;
-  qDebug() << TextEditor::document()->characterCount();
   if (currentFile.isEmpty()) {
     fileName = QFileDialog::getSaveFileName(this, tr("Save"));
-    currentFile = fileName;
   } else {
     fileName = currentFile;
   }
@@ -117,31 +170,38 @@ void TextEditor::save()
   if (!file.open(QIODevice::WriteOnly | QFile::Text)) {
     QMessageBox::warning(this, tr("Warning"),
                          tr("Cannot save file: ") + file.errorString());
+    qWarning() << "[WARN 3] Failed to save" << fileName << ":"
+               << file.errorString();
     return;
   }
 
+  setCurrentFile(fileName);
+
   emit changeTitle();
   QTextStream out(&file);
-  QString text = TextEditor::toPlainText();
-  out << text;
   file.close();
+  QString text = QPlainTextEdit::toPlainText();
+  out << text;
 }
 
 void TextEditor::saveAs()
 {
-  QString flieName = QFileDialog::getSaveFileName(this, tr("Save as"));
-  QFile file(flieName);
+  QString fileName = QFileDialog::getSaveFileName(this, tr("Save as"));
+  QFile file(fileName);
 
   if (!file.open(QFile::WriteOnly | QFile::Text)) {
     QMessageBox::warning(this, tr("Warning"),
                          tr("Cannot save file: ") + file.errorString());
+    qWarning() << "[WARN 4] Failed to save" << fileName << ":"
+               << file.errorString();
     return;
   }
 
-  currentFile = flieName;
+  setCurrentFile(fileName);
+
   emit changeTitle();
   QTextStream out(&file);
-  QString text = TextEditor::toPlainText();
+  QString text = QPlainTextEdit::toPlainText();
   out << text;
   file.close();
 }
@@ -198,18 +258,13 @@ int TextEditor::lineNumberAreaWidth()
   return space;
 }
 
-//![extraAreaWidth]
-
-//![slotUpdateExtraAreaWidth]
-
 void TextEditor::updateLineNumberAreaWidth(int /* newBlockCount */)
 {
-  setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
+  if (currentMode == 1)
+    setViewportMargins(0, 0, 0, 0);
+  else
+    setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
 }
-
-//![slotUpdateExtraAreaWidth]
-
-//![slotUpdateRequest]
 
 void TextEditor::updateLineNumberArea(const QRect &rect, int dy)
 {
@@ -221,10 +276,6 @@ void TextEditor::updateLineNumberArea(const QRect &rect, int dy)
   if (rect.contains(viewport()->rect())) updateLineNumberAreaWidth(0);
 }
 
-//![slotUpdateRequest]
-
-//![resizeEvent]
-
 void TextEditor::resizeEvent(QResizeEvent *e)
 {
   QPlainTextEdit::resizeEvent(e);
@@ -233,10 +284,6 @@ void TextEditor::resizeEvent(QResizeEvent *e)
   lineNumberArea->setGeometry(
       QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
 }
-
-//![resizeEvent]
-
-//![cursorPositionChanged]
 
 void TextEditor::highlightCurrentLine()
 {
@@ -253,48 +300,31 @@ void TextEditor::highlightCurrentLine()
     extraSelections.append(selection);
   }
 
+  if (currentMode == 1) extraSelections.clear();
+
   setExtraSelections(extraSelections);
 }
-
-//![cursorPositionChanged]
-
-//![extraAreaPaintEvent_0]
 
 void TextEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
 {
   QPainter painter(lineNumberArea);
-  QColor lineNumberAreaBackgroundColor;
-  if (QColor(KSyntaxHighlighting::Theme::BackgroundColor).lightness() < 128) {
-    // light
-    lineNumberAreaBackgroundColor = Qt::lightGray;
-    lineNumberAreaBackgroundColor.setAlphaF(0.75);
-    m_lineNumbersColor = Qt::darkGray;
-    m_lineNumbersColor.setAlphaF(0.9);
-  } else {
-    // dark
-    lineNumberAreaBackgroundColor = KSyntaxHighlighting::Theme::BackgroundColor;
-    lineNumberAreaBackgroundColor.setAlphaF(0.8);
-    m_lineNumbersColor = Qt::lightGray;
-    m_lineNumbersColor.setAlphaF(0.3);
-  }
+  painter.fillRect(event->rect(), m_highlighter->theme().editorColor(
+                                      KSyntaxHighlighting::Theme::IconBorder));
 
-  painter.fillRect(event->rect(), lineNumberAreaBackgroundColor);
-
-  //![extraAreaPaintEvent_0]
-
-  //![extraAreaPaintEvent_1]
   QTextBlock block = firstVisibleBlock();
   int blockNumber = block.blockNumber();
+  const int currentBlockNumber = textCursor().blockNumber();
   int top =
       qRound(blockBoundingGeometry(block).translated(contentOffset()).top());
   int bottom = top + qRound(blockBoundingRect(block).height());
-  //![extraAreaPaintEvent_1]
 
-  //![extraAreaPaintEvent_2]
   while (block.isValid() && top <= event->rect().bottom()) {
     if (block.isVisible() && bottom >= event->rect().top()) {
       QString number = QString::number(blockNumber + 1);
-      painter.setPen(m_lineNumbersColor);
+      painter.setPen(m_highlighter->theme().editorColor(
+          (blockNumber == currentBlockNumber)
+              ? KSyntaxHighlighting::Theme::CurrentLineNumber
+              : KSyntaxHighlighting::Theme::LineNumbers));
       painter.drawText(0, top, lineNumberArea->width(), fontMetrics().height(),
                        Qt::AlignCenter, number);
     }
@@ -325,8 +355,10 @@ void TextEditor::setTheme(const KSyntaxHighlighting::Theme &theme)
 }
 void TextEditor::setEditorFont(const QFont &font)
 {
-  QPlainTextEdit::setFont(font);
+  QFont f = QFont(font.family(), configManager->getEditorFontSize());
+  QPlainTextEdit::setFont(f);
   configManager->setEditorFontFamily(font.family());
+  lineNumberArea->setFont(f);
 }
 
 void TextEditor::setEditorFontSize(const int &size)
@@ -335,5 +367,41 @@ void TextEditor::setEditorFontSize(const int &size)
   font.setPointSize(size);
   QPlainTextEdit::setFont(font);
   configManager->setEditorFontSize(size);
-  configManager->getEditorFontSize();
+}
+
+void TextEditor::setEditorColorTheme(const QString &ctname)
+{
+  const auto theme = m_repository.theme(ctname);
+  setTheme(theme);
+}
+
+void TextEditor::setCurrentFile(const QString &fileName)
+{
+  currentFile = fileName;
+  document()->setModified(false);
+  setWindowModified(false);
+  emit modifiedFalse();
+}
+
+void TextEditor::switchMode(const int &mode)
+{
+  if (mode == 0) {
+    lineNumberArea->show();
+    currentMode = mode;
+    QPlainTextEdit::setFont(QFont(configManager->getEditorFontFamily(),
+                                  configManager->getEditorFontSize()));
+    setStyleSheet("background: " +
+                  QString::number(m_highlighter->theme().editorColor(
+                      KSyntaxHighlighting::Theme::BackgroundColor)));
+    setEditorFont(configManager->getEditorFontFamily());
+  } else if (mode == 1) {
+    lineNumberArea->hide();
+    setViewportMargins(0, 0, 0, 0);
+    currentMode = mode;
+    setFont(
+        QFont(QFontDatabase::systemFont(QFontDatabase::GeneralFont).toString(),
+              configManager->getEditorFontSize()));
+    auto def = m_repository.definitionForName("Markdown");
+    m_highlighter->setDefinition(def);
+  }
 }

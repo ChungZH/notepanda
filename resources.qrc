@@ -13,13 +13,15 @@
         <file>images/remixicons/scissors-cut-line.svg</file>
         <file>images/remixicons/printer-line.svg</file>
         <file>images/remixicons/settings-4-line.svg</file>
+        <file>images/remixicons/sticky-note-line.svg</file>
+        <file>images/remixicons/file-edit-line.svg</file>
     </qresource>
     <qresource prefix="/asset">
-        <file>images/logo.png</file>
         <file>assets/CREDIT.md</file>
         <file>makespec/VERSION</file>
         <file>makespec/VERSIONSUFFIX</file>
         <file>makespec/BUILDVERSION</file>
         <file>images/panda.ico</file>
+        <file>images/notepanda.png</file>
     </qresource>
 </RCC>
