@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
     - Hide statusbar
     - Use general font (not monospace)
     - Smaller window
+    - Custom background color
 
 ### 🐞 Bug fix
 

@@ -32,9 +32,34 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
   setBaseSize(size());
   ToolBar = new QToolBar;
 
-  currentBGColor = QColor("#537EFF");
+  // Sticky note mode
+
+  SToolBar = new QToolBar;
+  changeBgColor = new QAction;
+  changeBgColor->setToolTip(tr("Change background color"));
+  changeBgColor->setIconText("BG Color");
+  currentColor = "#AAFFFF";
+
+  SToolBar->addAction(changeBgColor);
+  SToolBar->addAction(ui->actionNormalmode);
+
+  this->addToolBar(Qt::ToolBarArea::BottomToolBarArea, SToolBar);
+  SToolBar->setVisible(0);
+
+  ColorDialog = new QColorDialog;
+
+  connect(changeBgColor, &QAction::triggered, [&]() { ColorDialog->open(); });
+  connect(ColorDialog, &QColorDialog::currentColorChanged,
+          [&](const QColor &color) {
+            currentColor = color;
+            plainTextEdit->setStyleSheet("background-color: " +
+                                         currentColor.name());
+          });
+
+  //
 
   this->addToolBar(Qt::LeftToolBarArea, ToolBar);
+
   normalMode(1);
 
   plainTextEdit = new TextEditor(configManager);
@@ -201,17 +226,20 @@ void MainWindow::normalMode(bool first)
   if (!first) {
     resize(baseSize());
     plainTextEdit->switchMode(0);
+    ToolBar->setVisible(1);
+    SToolBar->setVisible(0);
+  } else {
+    ToolBar->addAction(ui->actionNew);
+    ToolBar->addAction(ui->actionOpen);
+    ToolBar->addAction(ui->actionSave);
+    ToolBar->addAction(ui->actionSave_As);
+    ToolBar->addAction(ui->actionPreferences);
+    ToolBar->addAction(ui->actionUndo);
+    ToolBar->addAction(ui->actionRedo);
+    ToolBar->addAction(ui->actionQuit);
+    ToolBar->addAction(ui->actionAbout);
+    ToolBar->addAction(ui->actionSticky_note_mode);
   }
-  ToolBar->addAction(ui->actionNew);
-  ToolBar->addAction(ui->actionOpen);
-  ToolBar->addAction(ui->actionSave);
-  ToolBar->addAction(ui->actionSave_As);
-  ToolBar->addAction(ui->actionPreferences);
-  ToolBar->addAction(ui->actionUndo);
-  ToolBar->addAction(ui->actionRedo);
-  ToolBar->addAction(ui->actionQuit);
-  ToolBar->addAction(ui->actionAbout);
-  ToolBar->addAction(ui->actionSticky_note_mode);
   ui->actionPreferences->setEnabled(1);
   currentMode = 0;
 }
@@ -224,19 +252,12 @@ void MainWindow::stickyNoteMode()
 {
   resize(baseSize() * 0.7);
   plainTextEdit->switchMode(1);
+  plainTextEdit->setStyleSheet("background: " + currentColor.name());
   statusBar()->clearMessage();
   ui->actionPreferences->setDisabled(1);
 
-  ToolBar->removeAction(ui->actionNew);
-  ToolBar->removeAction(ui->actionOpen);
-  ToolBar->removeAction(ui->actionSave);
-  ToolBar->removeAction(ui->actionSave_As);
-  ToolBar->removeAction(ui->actionPreferences);
-  ToolBar->removeAction(ui->actionUndo);
-  ToolBar->removeAction(ui->actionRedo);
-  ToolBar->removeAction(ui->actionQuit);
-  ToolBar->removeAction(ui->actionAbout);
-  ToolBar->removeAction(ui->actionSticky_note_mode);
+  ToolBar->setVisible(0);
+  SToolBar->setVisible(1);
 
   currentMode = 1;
 }

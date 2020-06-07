@@ -105,7 +105,8 @@ void TextEditor::open()
 
     QPlainTextEdit::clear();
 
-    const auto def = m_repository.definitionForFileName(fileName);
+    auto def = m_repository.definitionForFileName(fileName);
+    if (currentMode == 1) def = m_repository.definitionForName("Markdown");
     m_highlighter->setDefinition(def);
 
     QTextStream in(&file);
@@ -354,9 +355,10 @@ void TextEditor::setTheme(const KSyntaxHighlighting::Theme &theme)
 }
 void TextEditor::setEditorFont(const QFont &font)
 {
-  QPlainTextEdit::setFont(
-      QFont(font.family(), configManager->getEditorFontSize()));
+  QFont f = QFont(font.family(), configManager->getEditorFontSize());
+  QPlainTextEdit::setFont(f);
   configManager->setEditorFontFamily(font.family());
+  lineNumberArea->setFont(f);
 }
 
 void TextEditor::setEditorFontSize(const int &size)
@@ -388,6 +390,10 @@ void TextEditor::switchMode(const int &mode)
     currentMode = mode;
     QPlainTextEdit::setFont(QFont(configManager->getEditorFontFamily(),
                                   configManager->getEditorFontSize()));
+    setStyleSheet("background: " +
+                  QString::number(m_highlighter->theme().editorColor(
+                      KSyntaxHighlighting::Theme::BackgroundColor)));
+    setEditorFont(configManager->getEditorFontFamily());
   } else if (mode == 1) {
     lineNumberArea->hide();
     setViewportMargins(0, 0, 0, 0);
@@ -395,5 +401,7 @@ void TextEditor::switchMode(const int &mode)
     setFont(
         QFont(QFontDatabase::systemFont(QFontDatabase::GeneralFont).toString(),
               configManager->getEditorFontSize()));
+    auto def = m_repository.definitionForName("Markdown");
+    m_highlighter->setDefinition(def);
   }
 }

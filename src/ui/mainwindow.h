@@ -12,6 +12,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QAction>
+#include <QColorDialog>
 #include <QMainWindow>
 #include <QPlainTextEdit>
 #include <QToolBar>
@@ -53,14 +55,20 @@ class MainWindow : public QMainWindow
   QToolBar *ToolBar;
   ConfigManager *configManager;
   PreferencesWindow *pfWindow;
-  QWidget *stickyBGColorSelector;
-  QColor currentBGColor;  // only in sticky mode
-
   /**
    * @brief currentMode
    *    0: normal mode
    *    1: sticky mode
    */
   int currentMode;
+
+  // Sticky note mode
+
+  QToolBar *SToolBar;
+  QAction *changeBgColor;
+  QColorDialog *ColorDialog;
+  QColor currentColor;
+
+  //
 };
 #endif  // MAINWINDOW_H
