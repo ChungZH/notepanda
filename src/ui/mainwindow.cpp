@@ -32,6 +32,8 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
   setBaseSize(size());
   ToolBar = new QToolBar;
 
+  isPintotop = 0;
+
   // Sticky note mode
 
   SToolBar = new QToolBar;
@@ -42,6 +44,7 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
 
   SToolBar->addAction(changeBgColor);
   SToolBar->addAction(ui->actionNormalmode);
+  SToolBar->addAction(ui->actionPin_to_top);
 
   this->addToolBar(Qt::ToolBarArea::BottomToolBarArea, SToolBar);
   SToolBar->setVisible(0);
@@ -138,6 +141,20 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
     stickyNoteMode();
     ui->actionSticky_note_mode->setDisabled(1);
     ui->actionNormalmode->setEnabled(1);
+  });
+  connect(ui->actionPin_to_top, &QAction::triggered, [&]() {
+    Qt::WindowFlags flags = this->windowFlags();
+    if (!isPintotop) {
+      this->setWindowFlags(flags | Qt::CustomizeWindowHint |
+                           Qt::WindowStaysOnTopHint);
+      this->show();
+    } else {
+      this->setWindowFlags(
+          flags ^ (Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint));
+      this->show();
+    }
+    qDebug() << this->windowFlags();
+    isPintotop = !isPintotop;
   });
 
   connect(plainTextEdit, &TextEditor::changeTitle, this,

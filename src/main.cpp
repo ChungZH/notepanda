@@ -15,6 +15,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QStyleFactory>
+#include <string>
 
 #include "./core/configmanager.h"
 #include "./ui/mainwindow.h"
@@ -57,5 +58,8 @@ int main(int argc, char *argv[])
   notepanda.show();
   if (parser.positionalArguments().size() == 1)
     notepanda.plainTextEdit->openFile(parser.positionalArguments().at(0));
+
+  qInfo() << QStringLiteral("Welcome to Notepanda!");
+
   return App.exec();
 }

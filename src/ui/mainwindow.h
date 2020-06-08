@@ -61,6 +61,7 @@ class MainWindow : public QMainWindow
    *    1: sticky mode
    */
   int currentMode;
+  bool isPintotop;
 
   // Sticky note mode
 

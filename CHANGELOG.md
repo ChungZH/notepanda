@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [UNRELEASED]
+
+### 🌵 Features
+
+- Pin to top
+
 ## 0.0.3-alpha1
 
 ### 🌵 Features
