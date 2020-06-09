@@ -14,10 +14,7 @@
 
 > **A simple cross-platform notepad. Based on Qt and C++.**
 
-
-Just practice XD
-
-🚧 WIP
+If you want to track the latest news of Notepanda, welcome to our [📰 Telegram channel](https://t.me/notepanda)!
 
 BTW you can read this post in my blog: [Notepanda 开发小结](https://chungzh.cn/2020/05/16/notepanda/)
 
