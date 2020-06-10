@@ -7,6 +7,7 @@
  *
  * @file mainwindow.h
  * @brief This file declares the MainWindow class.
+ *        It is the main window of notepanda.
  *
  */
 #ifndef MAINWINDOW_H
@@ -14,6 +15,7 @@
 
 #include <QAction>
 #include <QColorDialog>
+#include <QDockWidget>
 #include <QMainWindow>
 #include <QPlainTextEdit>
 #include <QToolBar>
@@ -21,6 +23,7 @@
 #include "../core/configmanager.h"
 #include "../core/texteditor.h"
 #include "preferenceswindow.h"
+#include "previewpanel.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -55,6 +58,8 @@ class MainWindow : public QMainWindow
   QToolBar *ToolBar;
   ConfigManager *configManager;
   PreferencesWindow *pfWindow;
+  PreviewPanel *previewPanel;
+  QDockWidget *DockWidget;  // Preview panel
   /**
    * @brief currentMode
    *    0: normal mode

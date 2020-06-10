@@ -7,6 +7,7 @@
  *
  * @file mainwindow.cpp
  * @brief This file implements the MainWindow class.
+ *        It is the main window of notepanda.
  *
  */
 #include "mainwindow.h"
@@ -28,9 +29,12 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), configManager(cfManager)
 {
   ui->setupUi(this);
-
   setBaseSize(size());
+
   ToolBar = new QToolBar;
+  DockWidget = new QDockWidget("Preview panel", this, this->windowFlags());
+  previewPanel = new PreviewPanel;
+  DockWidget->setWidget(previewPanel);
 
   isPintotop = 0;
 
