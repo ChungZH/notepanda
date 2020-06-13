@@ -157,7 +157,6 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
           flags ^ (Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint));
       this->show();
     }
-    qDebug() << this->windowFlags();
     isPintotop = !isPintotop;
   });
 
