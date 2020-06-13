@@ -47,9 +47,7 @@ jobs:
           cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=./AppDir/usr -DBUILD_DEB=ON
           cmake --build . --target package --parallel $(nproc)
           tree .
-      - name: Copy binary
-        run: |
-          cp __w/qv2ray_*.deb ./
+          echo ::set-output name=NAME::$(basename Notepanda_*.deb)
       - name: Get package name
         shell: bash
         id: get_package
