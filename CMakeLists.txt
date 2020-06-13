@@ -49,7 +49,7 @@ message("| Welcome to contribute!                          |")
 message("|-------------------------------------------------|")
 message(" ")
 
-find_package(Qt5 COMPONENTS Core Gui Widgets Svg REQUIRED)
+find_package(Qt5 COMPONENTS Core Gui Widgets REQUIRED)
 find_package(KF5SyntaxHighlighting REQUIRED)
 
 if(WIN32)
@@ -162,7 +162,7 @@ if(UNIX)
         set(CPACK_DEBIAN_PACKAGE_NAME "Notepanda")
         set(CPACK_PACKAGE_CONTACT "chungzh07@gmail.com")
         set(CPACK_DEBIAN_PACKAGE_MAINTAINER "ChungZH")
-        set(CPACK_DEBIAN_PACKAGE_DEPENDS "qtbase5-dev qttools5-dev")
+        set(CPACK_DEBIAN_PACKAGE_DEPENDS "qtbase5-dev qttools5-dev libkf5syntaxhighlighting-dev")
     endif()
 
     #if(BUILD_RPM)
@@ -179,4 +179,4 @@ endif()
 
 include(CPack)
 
-target_link_libraries(notepanda Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Svg KF5::SyntaxHighlighting)
+target_link_libraries(notepanda Qt5::Core Qt5::Gui Qt5::Widgets KF5::SyntaxHighlighting)
