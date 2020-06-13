@@ -39,13 +39,14 @@ jobs:
           submodules: 'recursive'
       - name: Install build dependencies
         run: |
-          apt-get install -y build-essential ninja-build qtbase5-dev qttools5-dev cmake libkf5syntaxhighlighting-dev
+          apt-get install -y build-essential ninja-build qtbase5-dev qttools5-dev cmake libkf5syntaxhighlighting-dev tree
       - name: Build
         run: |
           mkdir build
           cd build
           cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=./AppDir/usr -DBUILD_DEB=ON
           cmake --build . --target package --parallel $(nproc)
+          tree /F
       - name: Get package name
         shell: bash
         id: get_package
