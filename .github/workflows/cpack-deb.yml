@@ -51,7 +51,7 @@ jobs:
       - name: Get package name
         shell: bash
         id: get_package
-        run: echo ::set-output name=NAME::$(basename Notepanda_*.deb)
+        run: echo ::set-output name=NAME::$(basename Notepanda-*.deb)
       - name: Upload artifact
         uses: actions/upload-artifact@v2-preview
         with:
