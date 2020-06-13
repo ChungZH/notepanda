@@ -148,7 +148,7 @@
                 <string>GitHub: </string>
                </property>
                <property name="textFormat">
-                <enum>Qt::MarkdownText</enum>
+                <enum>Qt::AutoText</enum>
                </property>
                <property name="openExternalLinks">
                 <bool>true</bool>
