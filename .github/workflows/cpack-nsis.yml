@@ -1,4 +1,4 @@
-name: Windows Installer
+name: CPack - NSIS
 
 on: 
   push:
