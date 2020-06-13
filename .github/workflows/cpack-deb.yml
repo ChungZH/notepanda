@@ -45,7 +45,6 @@ jobs:
           mkdir build
           cd build
           cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=./AppDir/usr -DBUILD_DEB=ON
-          sed -i 's/Qt::MarkdownText/Qt::PlainText/g' notepanda_autogen/include/ui_aboutwindow.h
           cmake --build . --target package --parallel $(nproc)
       - name: Copy binary
         run: |

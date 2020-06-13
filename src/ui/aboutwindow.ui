@@ -100,10 +100,13 @@
                 </font>
                </property>
                <property name="text">
-                <string>[ChungZH/Notepanda](https://github.com/ChungZH/notepanda)</string>
+                <string>&lt;a href=&quot;https://github.com/ChungZH/notepanda&quot;&gt;ChungZH/notepanda&lt;/a&gt;</string>
                </property>
                <property name="textFormat">
-                <enum>Qt::MarkdownText</enum>
+                <enum>Qt::AutoText</enum>
+               </property>
+               <property name="openExternalLinks">
+                <bool>true</bool>
                </property>
               </widget>
              </item>
