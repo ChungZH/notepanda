@@ -47,7 +47,7 @@ jobs:
           cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=./AppDir/usr -DBUILD_DEB=ON
           cmake --build . --target package --parallel $(nproc)
           tree .
-          echo ::set-output name=NAME::$(basename Notepanda_*.deb)
+          echo ::set-output name=NAME::$(basename Notepanda-*.deb)
       - name: Get package name
         shell: bash
         id: get_package
