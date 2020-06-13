@@ -39,7 +39,7 @@ jobs:
           submodules: 'recursive'
       - name: Install build dependencies
         run: |
-          apt-get install -y build-essential ninja-build qtbase5 qttools5 cmake libkf5syntaxhighlighting-dev
+          apt-get install -y build-essential ninja-build qtbase5-dev qttools5-dev cmake libkf5syntaxhighlighting-dev
       - name: Build
         run: |
           mkdir build
