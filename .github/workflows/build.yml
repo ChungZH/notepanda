@@ -22,7 +22,7 @@ jobs:
             qtarch: win64_msvc2017_64
             cmakearch: x64
         exclude:
-          - platform: ubuntu-18.04
+          - platform: ubuntu-16.04
             arch: x86
           - platform: macos-latest
             arch: x86
