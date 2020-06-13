@@ -47,6 +47,7 @@ jobs:
           cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=./AppDir/usr -DBUILD_DEB=ON
           cmake --build . --target package --parallel $(nproc)
       - name: Copy binary
+        shell: bash
         run: |
           cp ../Notepanda_*.deb ./
       - name: Get package name
