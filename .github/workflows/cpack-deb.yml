@@ -47,11 +47,10 @@ jobs:
           cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=./AppDir/usr -DBUILD_DEB=ON
           cmake --build . --target package --parallel $(nproc)
           tree .
-          echo ::set-output name=NAME::$(basename Notepanda-*.deb)
       - name: Get package name
         shell: bash
         id: get_package
-        run: echo ::set-output name=NAME::$(basename Notepanda-*.deb)
+        run: echo ::set-output name=NAME::$(basename build/Notepanda-*.deb)
       - name: Upload artifact
         uses: actions/upload-artifact@v2-preview
         with:
