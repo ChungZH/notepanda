@@ -108,7 +108,7 @@ jobs:
         shell: bash
         id: get_package
         run: |
-          echo ::set-output name=NAME::$(basename build/notepanda-*.exe)
+          echo ::set-output name=NAME::$(basename build/Notepanda-*.exe)
       - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - uploading artifact
         uses: actions/upload-artifact@master
         with:
