@@ -39,8 +39,6 @@ jobs:
           # 14.1 is for vs2017, 14.2 is vs2019, following the upstream vcpkg build from Qv2ray-deps repo
           toolset: 14.2
           arch: ${{ matrix.arch }}
-        run: |
-          set VCINSTALLDIR="C:\Program Files (x86)\Microsoft Visual Studio 16.0\VC"
       - name: Cache Qt
         id: cache-qt
         uses: actions/cache@v1
@@ -157,6 +155,7 @@ jobs:
           CC: cl.exe
           CXX: cl.exe
         run: |
+          set VCINSTALLDIR="C:\Program Files (x86)\Microsoft Visual Studio 16.0\VC"
           cd src/3rdparty/extra-cmake-modules
           mkdir build
           cd build
