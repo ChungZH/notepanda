@@ -101,8 +101,6 @@ if(CMAKE_PREFIX_PATH)
     endforeach()
 endif()
 
-include(InstallRequiredSystemLibraries)
-
 # Packaging
 set(CPACK_PACKAGE_NAME "Notepanda")
 set(CPACK_PACKAGE_VENDOR "ChungZH")
@@ -117,6 +115,8 @@ if(MSVC)
     set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION .)
    endif()
 endif()
+
+include(InstallRequiredSystemLibraries)
 
 if(WIN32)
     install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION .)
