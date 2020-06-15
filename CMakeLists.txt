@@ -100,7 +100,6 @@ if(CMAKE_PREFIX_PATH)
         list(APPEND DIRS "${dir}/bin" "${dir}/lib")
     endforeach()
 endif()
-include(InstallRequiredSystemLibraries)
 
 # Packaging
 set(CPACK_PACKAGE_NAME "Notepanda")
@@ -112,10 +111,10 @@ set(CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/images/panda.ico")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/LICENSE.md")
 
 if(MSVC)
-   if(NOT BUILD_NSIS)
-    set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION .)
-   endif()
+   set(CMAKE_INSTALL_SYSTEM_RUNTIME_DESTINATION .)
 endif()
+
+include(InstallRequiredSystemLibraries)
 
 if(WIN32)
     install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION .)

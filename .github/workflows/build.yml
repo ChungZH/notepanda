@@ -157,6 +157,7 @@ jobs:
           CC: cl.exe
           CXX: cl.exe
         run: |
+          set VCINSTALLDIR="C:\Program Files (x86)\Microsoft Visual Studio 16.0\VC"
           cd src/3rdparty/extra-cmake-modules
           mkdir build
           cd build
