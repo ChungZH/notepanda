@@ -100,7 +100,13 @@ if(CMAKE_PREFIX_PATH)
         list(APPEND DIRS "${dir}/bin" "${dir}/lib")
     endforeach()
 endif()
-include(InstallRequiredSystemLibraries)
+
+if (MSVC)
+    # Visual Studio
+    set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP true)
+    include(InstallRequiredSystemLibraries)
+    file(COPY ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS} DESTINATION .)
+endif()
 
 # Packaging
 set(CPACK_PACKAGE_NAME "Notepanda")
