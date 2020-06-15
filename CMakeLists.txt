@@ -121,7 +121,7 @@ if(WIN32)
     install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION .)
     if (BUILD_NSIS)
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-            COMMAND windeployqt ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.exe --compiler-runtime --verbose 2 --dir ${CMAKE_BINARY_DIR}/winqt/
+            COMMAND windeployqt ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.exe --compiler-runtime --no-translations --verbose 2 --dir ${CMAKE_BINARY_DIR}/winqt/
             )
         install(DIRECTORY ${CMAKE_BINARY_DIR}/winqt/ DESTINATION .)
     endif()

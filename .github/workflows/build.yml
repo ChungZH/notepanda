@@ -187,7 +187,7 @@ jobs:
           cmake --build . --parallel $(nproc)
           cmake --install .
           cd Release
-          windeployqt notepanda.exe
+          windeployqt notepanda.exe --no-translations
       #---------------------------------------------------------
       - name: MacOS - Build ecm
         if: matrix.platform == 'macos-latest'
