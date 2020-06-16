@@ -22,7 +22,7 @@ jobs:
             qtarch: win64_msvc2017_64
             cmakearch: x64
         exclude:
-          - platform: ubuntu-18.04
+          - platform: ubuntu-16.04
             arch: x86
           - platform: macos-latest
             arch: x86
@@ -58,7 +58,9 @@ jobs:
         with:
           python-version: "3.7"
           architecture: ${{ matrix.arch }}
-      # Linux------------------------------------------
+      - name: Get latest CMake
+        uses: lukka/get-cmake@latest
+# Linux------------------------------------------
       - name: Linux - Install packages
         if: matrix.platform == 'ubuntu-16.04'
         shell: bash
@@ -155,6 +157,7 @@ jobs:
           CC: cl.exe
           CXX: cl.exe
         run: |
+          set VCINSTALLDIR="C:\Program Files (x86)\Microsoft Visual Studio 16.0\VC"
           cd src/3rdparty/extra-cmake-modules
           mkdir build
           cd build
@@ -185,7 +188,7 @@ jobs:
           cmake --build . --parallel $(nproc)
           cmake --install .
           cd Release
-          windeployqt notepanda.exe
+          windeployqt notepanda.exe --no-translations
       #---------------------------------------------------------
       - name: MacOS - Build ecm
         if: matrix.platform == 'macos-latest'

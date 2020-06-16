@@ -15,6 +15,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QStyleFactory>
+#include <string>
 
 #include "./core/configmanager.h"
 #include "./ui/mainwindow.h"
@@ -25,7 +26,7 @@ int main(int argc, char *argv[])
 
   App.setOrganizationName("ChungZH");
   App.setApplicationName("Notepanda");
-  App.setApplicationVersion("0.0.3");
+  App.setApplicationVersion("0.1.3");
 
   QCommandLineParser parser;
   parser.addHelpOption();
@@ -57,5 +58,8 @@ int main(int argc, char *argv[])
   notepanda.show();
   if (parser.positionalArguments().size() == 1)
     notepanda.plainTextEdit->openFile(parser.positionalArguments().at(0));
+
+  qInfo() << QStringLiteral("Welcome to Notepanda!");
+
   return App.exec();
 }

@@ -7,6 +7,7 @@
  *
  * @file mainwindow.cpp
  * @brief This file implements the MainWindow class.
+ *        It is the main window of notepanda.
  *
  */
 #include "mainwindow.h"
@@ -28,9 +29,14 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), configManager(cfManager)
 {
   ui->setupUi(this);
-
   setBaseSize(size());
+
   ToolBar = new QToolBar;
+  DockWidget = new QDockWidget("Preview panel", this, this->windowFlags());
+  previewPanel = new PreviewPanel;
+  DockWidget->setWidget(previewPanel);
+
+  isPintotop = 0;
 
   // Sticky note mode
 
@@ -42,6 +48,7 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
 
   SToolBar->addAction(changeBgColor);
   SToolBar->addAction(ui->actionNormalmode);
+  SToolBar->addAction(ui->actionPin_to_top);
 
   this->addToolBar(Qt::ToolBarArea::BottomToolBarArea, SToolBar);
   SToolBar->setVisible(0);
@@ -138,6 +145,19 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
     stickyNoteMode();
     ui->actionSticky_note_mode->setDisabled(1);
     ui->actionNormalmode->setEnabled(1);
+  });
+  connect(ui->actionPin_to_top, &QAction::triggered, [&]() {
+    Qt::WindowFlags flags = this->windowFlags();
+    if (!isPintotop) {
+      this->setWindowFlags(flags | Qt::CustomizeWindowHint |
+                           Qt::WindowStaysOnTopHint);
+      this->show();
+    } else {
+      this->setWindowFlags(
+          flags ^ (Qt::CustomizeWindowHint | Qt::WindowStaysOnTopHint));
+      this->show();
+    }
+    isPintotop = !isPintotop;
   });
 
   connect(plainTextEdit, &TextEditor::changeTitle, this,

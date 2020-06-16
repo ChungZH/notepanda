@@ -1,4 +1,4 @@
-name: Windows Installer
+name: CPack - NSIS
 
 on: 
   push:
@@ -58,7 +58,8 @@ jobs:
           arch: ${{ matrix.qtarch }}
           mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
           cached: ${{ steps.cache-qt.outputs.cache-hit }}
-# =========================================================================================================
+      - name: Get latest CMake
+        uses: lukka/get-cmake@latest
 # Windows----------------------------------------------------------------------
       - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Build preparation - Download Dependencies
         if: matrix.platform == 'windows-latest'
@@ -70,10 +71,11 @@ jobs:
           CC: cl.exe
           CXX: cl.exe
         run: |
+          set VCINSTALLDIR="C:\Program Files (x86)\Microsoft Visual Studio 16.0\VC"
           cd src/3rdparty/extra-cmake-modules
           mkdir build
           cd build
-          cmake .. -GNinja -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
+          cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
           cmake --build .
           cmake --build . --target install
       - name: Win - Build syntax highlight
@@ -85,7 +87,7 @@ jobs:
           cd src/3rdparty/syntax-highlighting
           mkdir build
           cd build
-          cmake .. -GNinja -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
+          cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DBUILD_HTML_DOCS=OFF -DBUILD_MAN_DOCS=OFF -DBUILD_QTHELP_DOCS=OFF -DBUILD_TESTING=OFF
           cmake --build .
           cmake --build . --target install
       - name: Windows - ${{ matrix.qt_version }} - Generate Dependencies and Build
@@ -96,19 +98,13 @@ jobs:
         run: |
           mkdir build
           cd build
-          tree /F
           cmake .. -GNinja -DCMAKE_BUILD_TYPE=Release -DKF5SyntaxHighlighting_DIR="C:/Program Files (x86)/ECM/lib/cmake/KF5SyntaxHighlighting" -DBUILD_NSIS=ON
-          tree /F
           cmake --build . --target package --parallel $(nproc)
-      - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Uploading DEBUG
-        if: matrix.platform == 'windows-latest' && ${{ failure() }}
-        run: |
-          tree /F
       - name: Windows - Get package name
         shell: bash
         id: get_package
         run: |
-          echo ::set-output name=NAME::$(basename build/notepanda-*.exe)
+          echo ::set-output name=NAME::$(basename build/Notepanda-*.exe)
       - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - uploading artifact
         uses: actions/upload-artifact@master
         with:

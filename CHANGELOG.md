@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.1.3-alpha2
+
+The main purpose of this release is to fix some bugs in the previous alpha version.
+
+> Are you confused when you see this version number? That's right, we've turned 0.0.3 into the more standardized 0.1.3.
+
+### 🌵 Features
+
+- Pin to top
+
+## 🐞 Bug fix
+
+- NSIS installer cannot found dll
+
+A deb package has also been added.
+
+> If you want to track the latest news of Notepanda, welcome to our [📰 Telegram channel](https://t.me/notepanda)!
+
 ## 0.0.3-alpha1
 
 ### 🌵 Features

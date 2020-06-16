@@ -7,6 +7,7 @@
  *
  * @file preferenceswindow.cpp
  * @brief This file implements the PreferencesWindow class.
+ *        All persistent application settings should be in PreferencesWindow.
  *
  */
 #include "preferenceswindow.h"

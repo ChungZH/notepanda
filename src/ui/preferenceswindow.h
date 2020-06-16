@@ -7,6 +7,7 @@
  *
  * @file preferenceswindow.h
  * @brief This file declares the PreferencesWindow class.
+ *        All persistent application settings should be in PreferencesWindow.
  *
  */
 #ifndef PREFERENCESWINDOW_H

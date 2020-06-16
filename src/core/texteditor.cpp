@@ -103,7 +103,7 @@ void TextEditor::open()
       return;
     }
 
-    QPlainTextEdit::clear();
+    clear();
 
     auto def = m_repository.definitionForFileName(fileName);
     if (currentMode == 1) def = m_repository.definitionForName("Markdown");
