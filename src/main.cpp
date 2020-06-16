@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 
   App.setOrganizationName("ChungZH");
   App.setApplicationName("Notepanda");
-  App.setApplicationVersion("0.0.3");
+  App.setApplicationVersion("0.1.3");
 
   QCommandLineParser parser;
   parser.addHelpOption();
