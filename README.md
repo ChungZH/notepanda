@@ -40,12 +40,20 @@ So enjoy this toy 🍵️
 - Syntax highlight
 - Launch from the shell by typing: `notepanda` or `notepanda CMakeLists.txt`.
 
-## Dependencies
+## Build
 
-- CMake >= 3.1.0
-- Qt >= 5.14 (not sure)
-- KSyntaxHighlighting
-    - Extra CMake Modules
+For more information, go to [How to build - GitHub Wiki](https://github.com/ChungZH/notepanda/wiki/How-to-build---%E5%A6%82%E4%BD%95%E6%9E%84%E5%BB%BA).
+
+### Required Tools
+
+- [CMake](https://cmake.org/) >= 3.1.0
+- [Ninja](https://ninja-build.org/)
+
+### Required Dependencies
+
+- [Qt](https://www.qt.io/) >= 5.11 (recommendation 5.14)
+- [KSyntaxHighlighting](https://api.kde.org/frameworks/syntax-highlighting/html/index.html)
+    - [Extra CMake Modules](https://api.kde.org/ecm/)
 
 ## Roadmap
 
