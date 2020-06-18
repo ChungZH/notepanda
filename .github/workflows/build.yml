@@ -135,7 +135,7 @@ jobs:
         if: matrix.platform == 'ubuntu-16.04'
         uses: actions/upload-artifact@master
         with:
-          name: Notepanda-${{ github.sha }}.linux-${{ matrix.arch }}.qt${{ matrix.qt_version }}.AppImage
+          name: Notepanda-${{ github.sha }}.Linux-${{ matrix.arch }}.qt${{ matrix.qt_version }}.AppImage
           path: build/Notepanda.AppImage
       - name: Linux - ${{ matrix.qt_version }} - Upload binaries to release
         uses: svenstaro/upload-release-action@v1-release
@@ -143,7 +143,7 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: build/Notepanda.AppImage
-          asset_name: Notepanda.${{ steps.get_version.outputs.VERSION }}.linux-${{ matrix.arch }}.AppImage
+          asset_name: Notepanda.${{ steps.get_version.outputs.VERSION }}.Linux-${{ matrix.arch }}.AppImage
           tag: ${{ github.ref }}
           overwrite: true
       # Windows----------------------------------------------------------------------
