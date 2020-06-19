@@ -70,8 +70,6 @@ set(SOURCES
     src/ui/preferenceswindow.cpp
     src/ui/preferenceswindow.h
     src/ui/preferenceswindow.ui
-    src/ui/previewpanel.cpp
-    src/ui/previewpanel.h
     src/core/configmanager.cpp
     src/core/configmanager.h
     src/core/texteditor.cpp

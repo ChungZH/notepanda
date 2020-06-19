@@ -38,7 +38,8 @@ So enjoy this toy 🍵️
 - Basic operation
 - Line numbers
 - Syntax highlight
-- Launch from the shell by typing: `notepanda` or `notepanda CMakeLists.txt`.
+- Launch from the shell by typing: `notepanda` or `notepanda CMakeLists.txt`
+- Preview panel
 
 ## Build
 
