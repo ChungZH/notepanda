@@ -13,6 +13,10 @@ All notable changes to this project will be documented in this file.
 
 - Fix file content lost on save (#30)
 
+### ! BREAKING CHANGE !
+
+- The `Style` setting has been changed to `StyleTheme`
+
 ## 0.1.3-alpha2
 
 The main purpose of this release is to fix some bugs in the previous alpha version.
