@@ -33,17 +33,17 @@ int main(int argc, char *argv[])
   parser.addVersionOption();
   parser.addPositionalArgument("source", "The source file to open.");
   QCommandLineOption configFileOption("c", "specify configuration file.",
-                                      "config.ini");
+                                      "config.json");
   parser.addOption(configFileOption);
   parser.process(App);
 
   QString configFile = parser.value(configFileOption);
   if (configFile.isEmpty()) {
 #ifdef Q_OS_WIN
-    configFile = App.applicationDirPath() + "/config.ini";
+    configFile = App.applicationDirPath() + "/config.json";
 #else
     QDir configDir = QDir::homePath() + "/.config/notepanda";
-    configFile = configDir.absolutePath() + "/config.ini";
+    configFile = configDir.absolutePath() + "/config.json";
     if (!configDir.exists()) {
       configDir.mkpath(configDir.absolutePath());
     }
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
   ConfigManager *configManager;
   configManager = new ConfigManager(configFile);
 
-  App.setStyle(QStyleFactory::create(configManager->getStyle()));
+  App.setStyle(QStyleFactory::create(configManager->getStyleTheme()));
 
   MainWindow notepanda(configManager);
   notepanda.show();

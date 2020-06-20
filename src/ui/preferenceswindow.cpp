@@ -47,7 +47,7 @@ void PreferencesWindow::resetAllValues(const bool isFirst)
     ui->highlightThemeCombo->addItem("Solarized Dark");
     ui->highlightThemeCombo->addItem("Solarized Light");
   }
-  ui->themeCombo->setCurrentText(configManager->getStyle());
+  ui->themeCombo->setCurrentText(configManager->getStyleTheme());
   ui->fontComboBox->setCurrentFont(QFont(configManager->getEditorFontFamily()));
   ui->spinBox->setValue(configManager->getEditorFontSize());
   ui->highlightThemeCombo->setCurrentText(configManager->getColorTheme());
