@@ -95,7 +95,7 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
   connect(pfWindow->ui->themeCombo, &QComboBox::currentTextChanged,
           [&](const QString &curTheme) {
             QApplication::setStyle(QStyleFactory::create(curTheme));
-            configManager->setStyle(curTheme);
+            configManager->setStyleTheme(curTheme);
           });
   connect(pfWindow->ui->fontComboBox, &QFontComboBox::currentFontChanged,
           [&](const QFont font) { plainTextEdit->setEditorFont(font); });
@@ -123,7 +123,8 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
     plainTextEdit->setEditorColorTheme(configManager->getColorTheme());
 
     // Restore MainWindow
-    QApplication::setStyle(QStyleFactory::create(configManager->getStyle()));
+    QApplication::setStyle(
+        QStyleFactory::create(configManager->getStyleTheme()));
 
     // Restore PreferencesWindow
     pfWindow->resetAllValues(0);
