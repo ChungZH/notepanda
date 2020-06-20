@@ -43,10 +43,12 @@ bool ConfigManager::writeJsonFile(QIODevice &device,
  */
 void ConfigManager::save()
 {
-  settings->setValue("EditorFontFamily", QVariant(editorFontFamily));
+  settings->beginGroup("Editor");
+  settings->setValue("FontFamily", QVariant(editorFontFamily));
+  settings->setValue("FontSize", QVariant(editorFontSize));
+  settings->setValue("ColorTheme", QVariant(editorColorTheme));
+  settings->endGroup();
   settings->setValue("StyleTheme", QVariant(styleTheme));
-  settings->setValue("EditorFontSize", QVariant(editorFontSize));
-  settings->setValue("ColorTheme", QVariant(colorTheme));
 }
 
 /**
@@ -54,15 +56,15 @@ void ConfigManager::save()
  */
 void ConfigManager::readGeneralSettings()
 {
-  if (settings->contains("EditorFontFamily")) {
-    editorFontFamily = settings->value("EditorFontFamily").toString();
+  if (settings->contains("Editor/FontFamily")) {
+    editorFontFamily = settings->value("Editor/FontFamily").toString();
   } else {
     editorFontFamily =
         QFontDatabase::systemFont(QFontDatabase::FixedFont).toString();
   }
   styleTheme = settings->value("StyleTheme", "Fusion").toString();
-  editorFontSize = settings->value("EditorFontSize", 16).toInt();
-  colorTheme = settings->value("ColorTheme", "Default").toString();
+  editorFontSize = settings->value("Editor/FontSize", 16).toInt();
+  editorColorTheme = settings->value("Editor/ColorTheme", "Default").toString();
 }
 
 QString ConfigManager::getEditorFontFamily() const { return editorFontFamily; }
@@ -86,8 +88,8 @@ void ConfigManager::setEditorFontSize(const int &fontsize)
   editorFontSize = fontsize;
 }
 
-QString ConfigManager::getColorTheme() const { return colorTheme; }
-void ConfigManager::setColorTheme(const QString &ctname)
+QString ConfigManager::getEditorColorTheme() const { return editorColorTheme; }
+void ConfigManager::setEditorColorTheme(const QString &ctname)
 {
-  colorTheme = ctname;
+  editorColorTheme = ctname;
 };

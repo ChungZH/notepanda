@@ -15,7 +15,8 @@ All notable changes to this project will be documented in this file.
 
 ### ! BREAKING CHANGE !
 
-- The `Style` setting has been changed to `StyleTheme`
+- The `Style` setting has been renamed to `StyleTheme`
+- The `ColorTheme` setting has been renamed to `EditorColorTheme`
 
 ## 0.1.3-alpha2
 

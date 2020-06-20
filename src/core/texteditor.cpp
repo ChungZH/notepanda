@@ -38,7 +38,7 @@ TextEditor::TextEditor(ConfigManager *cfManager, QWidget *parent)
       m_highlighter(new KSyntaxHighlighting::SyntaxHighlighter(document()))
 
 {
-  const auto theme = m_repository.theme(configManager->getColorTheme());
+  const auto theme = m_repository.theme(configManager->getEditorColorTheme());
   setTheme(theme);
 
   // Line number area

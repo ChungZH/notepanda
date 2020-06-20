@@ -50,5 +50,5 @@ void PreferencesWindow::resetAllValues(const bool isFirst)
   ui->themeCombo->setCurrentText(configManager->getStyleTheme());
   ui->fontComboBox->setCurrentFont(QFont(configManager->getEditorFontFamily()));
   ui->spinBox->setValue(configManager->getEditorFontSize());
-  ui->highlightThemeCombo->setCurrentText(configManager->getColorTheme());
+  ui->highlightThemeCombo->setCurrentText(configManager->getEditorColorTheme());
 }

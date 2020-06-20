@@ -104,7 +104,7 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
   connect(pfWindow->ui->highlightThemeCombo, &QComboBox::currentTextChanged,
           [&](const QString &ctname) {
             plainTextEdit->setEditorColorTheme(ctname);
-            configManager->setColorTheme(ctname);
+            configManager->setEditorColorTheme(ctname);
           });
 
   // User accepted, so change the `settings`.
@@ -120,7 +120,7 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
     // Restore TextEditor
     plainTextEdit->setEditorFont(configManager->getEditorFontFamily());
     plainTextEdit->setEditorFontSize(configManager->getEditorFontSize());
-    plainTextEdit->setEditorColorTheme(configManager->getColorTheme());
+    plainTextEdit->setEditorColorTheme(configManager->getEditorColorTheme());
 
     // Restore MainWindow
     QApplication::setStyle(
