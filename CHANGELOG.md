@@ -8,6 +8,10 @@ All notable changes to this project will be documented in this file.
 
 - Preview panel
 
+### 🐞 Bug fix
+
+- Fix file content lost on save (#30)
+
 ## 0.1.3-alpha2
 
 The main purpose of this release is to fix some bugs in the previous alpha version.

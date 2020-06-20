@@ -161,37 +161,34 @@ void TextEditor::openFile(const QString &fileName)
 void TextEditor::save()
 {
   QGuiApplication::setOverrideCursor(Qt::WaitCursor);
-  QString fileName;
-  if (currentFile.isEmpty()) {
+  QString fileName, errorMessage;
+  if (currentFile.isEmpty())
     fileName = QFileDialog::getSaveFileName(this, tr("Save"));
-  } else {
+  else
     fileName = currentFile;
-  }
+
   QSaveFile file(fileName);
 
-  if (!file.open(QFile::WriteOnly | QFile::Text)) {
+  if (file.open(QFile::WriteOnly | QFile::Text)) {
+    setCurrentFile(fileName);
+    emit changeTitle();
+
+    QTextStream out(&file);
+    out << toPlainText();
+
+    if (!file.commit())
+      errorMessage = "[WARN 5] Cannot save file: " + file.errorString();
+  } else {
+    errorMessage = "[WARN 3] Cannot save file: " + file.errorString();
+  }
+
+  if (!errorMessage.isEmpty()) {
+    qWarning() << errorMessage;
     QMessageBox::warning(this, tr("Warning"),
                          tr("Cannot save file: ") + file.errorString());
-    qWarning() << "[WARN 3] Failed to save" << fileName << ":"
-               << file.errorString();
-    return;
   }
-
-  setCurrentFile(fileName);
-  emit changeTitle();
-
-  QTextStream out(&file);
-  out << toPlainText();
 
   QGuiApplication::restoreOverrideCursor();
-
-  if (!file.commit()) {
-    QMessageBox::warning(
-        this, tr("Warning"),
-        tr("Cannot save file: ") + fileName + file.errorString());
-    qWarning() << "[WARN 5] Failed to save" << fileName << ":"
-               << file.errorString();
-  }
 }
 
 void TextEditor::saveAs()
