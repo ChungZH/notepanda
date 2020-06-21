@@ -28,22 +28,28 @@ class ConfigManager : public QObject
                          QObject *parent = nullptr);
   void save();
   void readGeneralSettings();
+
+  static bool readJsonFile(QIODevice &device, QSettings::SettingsMap &map);
+  static bool writeJsonFile(QIODevice &device,
+                            const QSettings::SettingsMap &map);
+
+  //
   QString getEditorFontFamily() const;
   void setEditorFontFamily(const QString &fontname);
-  QString getStyle() const;
-  void setStyle(const QString &stylename);
+  QString getStyleTheme() const;
+  void setStyleTheme(const QString &stylename);
   int getEditorFontSize() const;
   void setEditorFontSize(const int &fontsize);
-  QString getColorTheme() const;
-  void setColorTheme(const QString &ctname);
+  QString getEditorColorTheme() const;
+  void setEditorColorTheme(const QString &ctname);
 
  private:
   QSettings *settings;
   QString configFile;
   QString editorFontFamily;
-  QString style;
+  QString styleTheme;
   int editorFontSize;
-  QString colorTheme;
+  QString editorColorTheme;
 };
 
 #endif  // CONFIGMANAGER_H

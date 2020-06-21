@@ -18,6 +18,7 @@
 #include <QFont>
 #include <QMessageBox>
 #include <QPainter>
+#include <QSaveFile>
 #include <QString>
 #include <QStyle>
 #include <QTextBlock>
@@ -37,7 +38,7 @@ TextEditor::TextEditor(ConfigManager *cfManager, QWidget *parent)
       m_highlighter(new KSyntaxHighlighting::SyntaxHighlighter(document()))
 
 {
-  const auto theme = m_repository.theme(configManager->getColorTheme());
+  const auto theme = m_repository.theme(configManager->getEditorColorTheme());
   setTheme(theme);
 
   // Line number area
@@ -159,35 +160,42 @@ void TextEditor::openFile(const QString &fileName)
 
 void TextEditor::save()
 {
-  QString fileName;
-  if (currentFile.isEmpty()) {
+  QGuiApplication::setOverrideCursor(Qt::WaitCursor);
+  QString fileName, errorMessage;
+  if (currentFile.isEmpty())
     fileName = QFileDialog::getSaveFileName(this, tr("Save"));
-  } else {
+  else
     fileName = currentFile;
-  }
-  QFile file(fileName);
 
-  if (!file.open(QIODevice::WriteOnly | QFile::Text)) {
+  QSaveFile file(fileName);
+
+  if (file.open(QFile::WriteOnly | QFile::Text)) {
+    setCurrentFile(fileName);
+    emit changeTitle();
+
+    QTextStream out(&file);
+    out << toPlainText();
+
+    if (!file.commit())
+      errorMessage = "[WARN 5] Cannot save file: " + file.errorString();
+  } else {
+    errorMessage = "[WARN 3] Cannot save file: " + file.errorString();
+  }
+
+  if (!errorMessage.isEmpty()) {
+    qWarning() << errorMessage;
     QMessageBox::warning(this, tr("Warning"),
                          tr("Cannot save file: ") + file.errorString());
-    qWarning() << "[WARN 3] Failed to save" << fileName << ":"
-               << file.errorString();
-    return;
   }
 
-  setCurrentFile(fileName);
-
-  emit changeTitle();
-  QTextStream out(&file);
-  file.close();
-  QString text = QPlainTextEdit::toPlainText();
-  out << text;
+  QGuiApplication::restoreOverrideCursor();
 }
 
 void TextEditor::saveAs()
 {
+  QGuiApplication::setOverrideCursor(Qt::WaitCursor);
   QString fileName = QFileDialog::getSaveFileName(this, tr("Save as"));
-  QFile file(fileName);
+  QSaveFile file(fileName);
 
   if (!file.open(QFile::WriteOnly | QFile::Text)) {
     QMessageBox::warning(this, tr("Warning"),
@@ -201,9 +209,17 @@ void TextEditor::saveAs()
 
   emit changeTitle();
   QTextStream out(&file);
-  QString text = QPlainTextEdit::toPlainText();
-  out << text;
-  file.close();
+  out << toPlainText();
+
+  QGuiApplication::restoreOverrideCursor();
+
+  if (!file.commit()) {
+    QMessageBox::warning(
+        this, tr("Warning"),
+        tr("Cannot save file: ") + fileName + file.errorString());
+    qWarning() << "[WARN 6] Failed to save" << fileName << ":"
+               << file.errorString();
+  }
 }
 
 void TextEditor::print()

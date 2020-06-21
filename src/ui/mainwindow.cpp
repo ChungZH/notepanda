@@ -32,9 +32,6 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
   setBaseSize(size());
 
   ToolBar = new QToolBar;
-  DockWidget = new QDockWidget("Preview panel", this, this->windowFlags());
-  previewPanel = new PreviewPanel;
-  DockWidget->setWidget(previewPanel);
 
   isPintotop = 0;
 
@@ -72,6 +69,13 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
   plainTextEdit = new TextEditor(configManager);
   this->setCentralWidget(plainTextEdit);
 
+  previewPanel = new QTextBrowser(this);
+  DockWidget = new QDockWidget(tr("Preview panel"), this);
+  DockWidget->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
+  DockWidget->setWidget(previewPanel);
+  this->addDockWidget(Qt::RightDockWidgetArea, DockWidget);
+  DockWidget->setVisible(0);
+
   connect(ui->actionNew, &QAction::triggered, plainTextEdit,
           &TextEditor::newDocument);
   connect(ui->actionOpen, &QAction::triggered, plainTextEdit,
@@ -91,7 +95,7 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
   connect(pfWindow->ui->themeCombo, &QComboBox::currentTextChanged,
           [&](const QString &curTheme) {
             QApplication::setStyle(QStyleFactory::create(curTheme));
-            configManager->setStyle(curTheme);
+            configManager->setStyleTheme(curTheme);
           });
   connect(pfWindow->ui->fontComboBox, &QFontComboBox::currentFontChanged,
           [&](const QFont font) { plainTextEdit->setEditorFont(font); });
@@ -100,7 +104,7 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
   connect(pfWindow->ui->highlightThemeCombo, &QComboBox::currentTextChanged,
           [&](const QString &ctname) {
             plainTextEdit->setEditorColorTheme(ctname);
-            configManager->setColorTheme(ctname);
+            configManager->setEditorColorTheme(ctname);
           });
 
   // User accepted, so change the `settings`.
@@ -116,10 +120,11 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
     // Restore TextEditor
     plainTextEdit->setEditorFont(configManager->getEditorFontFamily());
     plainTextEdit->setEditorFontSize(configManager->getEditorFontSize());
-    plainTextEdit->setEditorColorTheme(configManager->getColorTheme());
+    plainTextEdit->setEditorColorTheme(configManager->getEditorColorTheme());
 
     // Restore MainWindow
-    QApplication::setStyle(QStyleFactory::create(configManager->getStyle()));
+    QApplication::setStyle(
+        QStyleFactory::create(configManager->getStyleTheme()));
 
     // Restore PreferencesWindow
     pfWindow->resetAllValues(0);
@@ -159,6 +164,8 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
     }
     isPintotop = !isPintotop;
   });
+  connect(ui->actionPreview_panel, &QAction::triggered,
+          [&]() { DockWidget->setVisible(!DockWidget->isVisible()); });
 
   connect(plainTextEdit, &TextEditor::changeTitle, this,
           &MainWindow::changeWindowTitle);
@@ -259,6 +266,7 @@ void MainWindow::normalMode(bool first)
     ToolBar->addAction(ui->actionQuit);
     ToolBar->addAction(ui->actionAbout);
     ToolBar->addAction(ui->actionSticky_note_mode);
+    ToolBar->addAction(ui->actionPreview_panel);
   }
   ui->actionPreferences->setEnabled(1);
   currentMode = 0;
@@ -285,4 +293,6 @@ void MainWindow::stickyNoteMode()
 void MainWindow::documentWasModified()
 {
   setWindowModified(plainTextEdit->document()->isModified());
+
+  previewPanel->setSource(plainTextEdit->currentFile);
 }

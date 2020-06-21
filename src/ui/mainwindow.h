@@ -18,12 +18,12 @@
 #include <QDockWidget>
 #include <QMainWindow>
 #include <QPlainTextEdit>
+#include <QTextBrowser>
 #include <QToolBar>
 
 #include "../core/configmanager.h"
 #include "../core/texteditor.h"
 #include "preferenceswindow.h"
-#include "previewpanel.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -58,8 +58,9 @@ class MainWindow : public QMainWindow
   QToolBar *ToolBar;
   ConfigManager *configManager;
   PreferencesWindow *pfWindow;
-  PreviewPanel *previewPanel;
-  QDockWidget *DockWidget;  // Preview panel
+  QTextBrowser *previewPanel;
+  QDockWidget *DockWidget;
+
   /**
    * @brief currentMode
    *    0: normal mode

@@ -2,6 +2,40 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.1.3
+
+> If you want to track the latest news of Notepanda, welcome to our [📰 Telegram channel](https://t.me/notepanda)!
+
+### 🌵 Features
+
+- Preview panel
+- JSON format settings
+- Pin to top
+- Set window modified
+- New logo
+- More available syntax highlight themes: `Breeze Dark`, `Default`, `Printing`, `Solarized Dark` and `Solarized  Light`
+- Add normal mode icon
+- Sticky mode
+    - Hide sidebar
+    - Hide line number area
+    - Hide statusbar
+    - Use general font (not monospace)
+    - Smaller window
+    - Custom background color
+
+### 🐞 Bug fix
+
+- Fix font settings cannot take effect
+- Fix file content lost on save (#30)
+- NSIS installer cannot found dll
+
+### ! BREAKING CHANGE !
+
+- The `Style` setting has been renamed to `StyleTheme`
+- The `ColorTheme` setting has been renamed to `EditorColorTheme`
+
+A deb package has also been added.
+
 ## 0.1.3-alpha2
 
 The main purpose of this release is to fix some bugs in the previous alpha version.

@@ -84,6 +84,8 @@
     <addaction name="actionSticky_note_mode"/>
     <addaction name="separator"/>
     <addaction name="actionPin_to_top"/>
+    <addaction name="separator"/>
+    <addaction name="actionPreview_panel"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -296,6 +298,21 @@
    </property>
    <property name="toolTip">
     <string>Pin window</string>
+   </property>
+  </action>
+  <action name="actionPreview_panel">
+   <property name="icon">
+    <iconset resource="../../resources.qrc">
+     <normaloff>:/remixicons/images/remixicons/eye-line.svg</normaloff>:/remixicons/images/remixicons/eye-line.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Preview panel</string>
+   </property>
+   <property name="toolTip">
+    <string>Preview panel</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+P</string>
    </property>
   </action>
  </widget>
