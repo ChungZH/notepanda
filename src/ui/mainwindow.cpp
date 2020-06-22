@@ -294,5 +294,6 @@ void MainWindow::documentWasModified()
 {
   setWindowModified(plainTextEdit->document()->isModified());
 
+  previewPanel->reload();
   previewPanel->setSource(plainTextEdit->currentFile);
 }
