@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## UNRELEASED
+
+### 🌵 Features
+
+- Syntax selection menu
+
 ## 0.1.3
 
 > If you want to track the latest news of Notepanda, welcome to our [📰 Telegram channel](https://t.me/notepanda)!

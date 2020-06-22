@@ -44,6 +44,7 @@ class TextEditor : public QPlainTextEdit
 
  protected:
   void resizeEvent(QResizeEvent *event) override;
+  void contextMenuEvent(QContextMenuEvent *event) override;
 
  public slots:
   bool maybeSave();

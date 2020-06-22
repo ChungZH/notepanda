@@ -11,11 +11,13 @@
  */
 #include "texteditor.h"
 
+#include <QAction>
 #include <QApplication>
 #include <QDebug>
 #include <QFile>
 #include <QFileDialog>
 #include <QFont>
+#include <QMenu>
 #include <QMessageBox>
 #include <QPainter>
 #include <QSaveFile>
@@ -299,6 +301,45 @@ void TextEditor::resizeEvent(QResizeEvent *e)
   QRect cr = contentsRect();
   lineNumberArea->setGeometry(
       QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
+}
+
+void TextEditor::contextMenuEvent(QContextMenuEvent *event)
+{
+  // if you want to **extend** the standard context menu, use
+  // auto menu = createStandardContextMenu(event->pos());
+
+  // if you want to customize the context menu, use
+  QMenu *menu = new QMenu;
+
+  // syntax selection
+  auto hlActionGroup = new QActionGroup(menu);
+  hlActionGroup->setExclusive(true);
+  auto hlGroupMenu = menu->addMenu(QStringLiteral("Syntax"));
+  QMenu *hlSubMenu = hlGroupMenu;
+  QString currentGroup;
+  for (const auto &def : m_repository.definitions()) {
+    if (def.isHidden()) continue;
+    if (currentGroup != def.section()) {
+      currentGroup = def.section();
+      hlSubMenu = hlGroupMenu->addMenu(def.translatedSection());
+    }
+
+    Q_ASSERT(hlSubMenu);
+    auto action = hlSubMenu->addAction(def.translatedName());
+    action->setCheckable(true);
+    action->setData(def.name());
+    hlActionGroup->addAction(action);
+    if (def.name() == m_highlighter->definition().name())
+      action->setChecked(true);
+  }
+  connect(hlActionGroup, &QActionGroup::triggered, this,
+          [this](QAction *action) {
+            const auto defName = action->data().toString();
+            const auto def = m_repository.definitionForName(defName);
+            m_highlighter->setDefinition(def);
+          });
+  menu->exec(event->globalPos());
+  delete menu;
 }
 
 void TextEditor::highlightCurrentLine()
