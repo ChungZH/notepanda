@@ -38,9 +38,14 @@ class TextEditor : public QPlainTextEdit
  public:
   TextEditor(ConfigManager *cfManager, QWidget *parent = nullptr);
   QString currentFile;
+  void openFile(const QString &fileName);
+
   void lineNumberAreaPaintEvent(QPaintEvent *event);
   int lineNumberAreaWidth();
-  void openFile(const QString &fileName);
+  QTextBlock blockAtPosition(int y) const;
+  bool isFoldable(const QTextBlock &block) const;
+  bool isFolded(const QTextBlock &block) const;
+  void toggleFold(const QTextBlock &block);
 
  protected:
   void resizeEvent(QResizeEvent *event) override;
@@ -76,9 +81,11 @@ class TextEditor : public QPlainTextEdit
 
  private:
   ConfigManager *configManager;
+
   KSyntaxHighlighting::Repository m_repository;
   KSyntaxHighlighting::SyntaxHighlighter *m_highlighter;
   void setTheme(const KSyntaxHighlighting::Theme &theme);
+
   QWidget *lineNumberArea;
   int currentMode;
 
