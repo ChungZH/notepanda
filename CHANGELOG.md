@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 - Syntax selection menu
 - Folding
+- Read-Only mode
 
 ## 0.1.3
 

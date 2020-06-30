@@ -80,6 +80,12 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
             &TextEditor::print);
     connect(actionRedo, &QAction::triggered, plainTextEdit, &TextEditor::redo);
     connect(actionUndo, &QAction::triggered, plainTextEdit, &TextEditor::undo);
+    connect(actionReadOnlyMode, &QAction::triggered, [&]() {
+        plainTextEdit->setReadOnly(!plainTextEdit->isReadOnly());
+        updateStatusBar();
+    });
+    connect(plainTextEdit, &TextEditor::readOnlyChanged, this,
+            &MainWindow::updateStatusBar);
 
     previewPanel = new QTextBrowser(this);
     DockWidget = new QDockWidget(tr("Preview panel"), this);
@@ -297,6 +303,8 @@ void MainWindow::setupUi()
     connect(actionAbout, &QAction::triggered,
             [&]() { AboutWindow(this).exec(); });
 
+    actionReadOnlyMode = new QAction(tr("Read-Only mode"), this);
+
     menuFile = menuBar()->addMenu(tr("&File"));
     menuFile->addAction(actionNew);
     menuFile->addAction(actionOpen);
@@ -316,6 +324,8 @@ void MainWindow::setupUi()
     menuEdit->addAction(actionCopy);
     menuEdit->addAction(actionPaste);
     menuEdit->addAction(actionCut);
+    menuEdit->addSeparator();
+    menuEdit->addAction(actionReadOnlyMode);
 
     menuView = menuBar()->addMenu(tr("&View"));
     menuView->addAction(actionNormalmode);
@@ -356,12 +366,18 @@ void MainWindow::quit() { QCoreApplication::quit(); }
 
 void MainWindow::updateStatusBar()
 {
-    if (currentMode != 1)
+    if (currentMode != 1) {
+        QString flags;
+        if (plainTextEdit->isReadOnly() == 1) {
+            flags += "[Read-Only]";
+        }
+
         statusBar()->showMessage(
             tr("Characters:") +
             QString::number(plainTextEdit->document()->characterCount() - 1) +
-            " Lines:" +
-            QString::number(plainTextEdit->document()->lineCount()));
+            tr(" Lines:") +
+            QString::number(plainTextEdit->document()->lineCount()) + flags);
+    }
 }
 
 void MainWindow::normalMode(bool first)

@@ -93,9 +93,7 @@ class MainWindow : public QMainWindow
     QAction *actionNormalmode;
     QAction *actionPin_to_top;
     QAction *actionPreview_panel;
-    QWidget *centralwidget;
-    QWidget *verticalLayoutWidget;
-    QVBoxLayout *verticalLayout;
+    QAction *actionReadOnlyMode;
     QMenu *menuFile;
     QMenu *menuAbout;
     QMenu *menuEdit;
