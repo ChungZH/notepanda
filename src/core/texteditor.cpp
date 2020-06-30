@@ -312,9 +312,13 @@ void TextEditor::contextMenuEvent(QContextMenuEvent *event)
     QMenu *menu = new QMenu;
 
     // Read only
-    auto readOnlyAct = menu->addAction(QStringLiteral("Read-Only mode"));
+    QAction *readOnlyAct = new QAction(tr("Read-Only mode"), this);
+    readOnlyAct->setCheckable(true);
+    readOnlyAct->setChecked(isReadOnly());
+    menu->addAction(readOnlyAct);
     connect(readOnlyAct, &QAction::triggered, [&]() {
         setReadOnly(!isReadOnly());
+        readOnlyAct->setChecked(isReadOnly());
         emit readOnlyChanged();
     });
 

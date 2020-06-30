@@ -84,8 +84,14 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
         plainTextEdit->setReadOnly(!plainTextEdit->isReadOnly());
         updateStatusBar();
     });
-    connect(plainTextEdit, &TextEditor::readOnlyChanged, this,
-            &MainWindow::updateStatusBar);
+    /**
+    if user change Read-Only mode in right-click menu of TextEditor
+    than setChecked in MainWindow::actionReadOnlyMode
+    */
+    connect(plainTextEdit, &TextEditor::readOnlyChanged, [&]() {
+        actionReadOnlyMode->setChecked(plainTextEdit->isReadOnly());
+        updateStatusBar();
+    });
 
     previewPanel = new QTextBrowser(this);
     DockWidget = new QDockWidget(tr("Preview panel"), this);
@@ -94,6 +100,9 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
     DockWidget->setWidget(previewPanel);
     addDockWidget(Qt::RightDockWidgetArea, DockWidget);
     DockWidget->setVisible(0);
+
+    connect(DockWidget, &QDockWidget::visibilityChanged,
+            [&](bool visible) { actionPreview_panel->setChecked(visible); });
 
     // PreferencesWindow START
 
@@ -294,6 +303,7 @@ void MainWindow::setupUi()
     actionPreview_panel =
         new QAction(QIcon(":/remixicons/images/remixicons/eye-line.svg"),
                     tr("Preview panel"), this);
+    actionPreview_panel->setCheckable(true);
     connect(actionPreview_panel, &QAction::triggered,
             [&]() { DockWidget->setVisible(!DockWidget->isVisible()); });
 
@@ -307,6 +317,8 @@ void MainWindow::setupUi()
     connect(actionAboutQt, &QAction::triggered, this, &QApplication::aboutQt);
 
     actionReadOnlyMode = new QAction(tr("Read-Only mode"), this);
+    actionReadOnlyMode->setCheckable(true);
+    actionReadOnlyMode->setChecked(0);
 
     menuFile = menuBar()->addMenu(tr("&File"));
     menuFile->addAction(actionNew);
