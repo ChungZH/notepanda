@@ -72,7 +72,7 @@
           </widget>
          </item>
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout_7" stretch="1,3,1">
+          <layout class="QVBoxLayout" name="verticalLayout_7" stretch="1,3">
            <item>
             <layout class="QGridLayout" name="gridLayout">
              <item row="1" column="0" alignment="Qt::AlignLeft">
@@ -173,18 +173,6 @@
               <url>
                <string>qrc:/asset/assets/CREDIT.md</string>
               </url>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QToolButton" name="AboutQt">
-             <property name="font">
-              <font>
-               <family>Arial</family>
-              </font>
-             </property>
-             <property name="text">
-              <string>About Qt</string>
              </property>
             </widget>
            </item>

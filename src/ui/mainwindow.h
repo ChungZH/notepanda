@@ -46,14 +46,14 @@ class MainWindow : public QMainWindow
 
    private slots:
     void changeWindowTitle();
-    void quit();
     void updateStatusBar();
-    void normalMode(bool first);
+    void normalMode(bool isFirst);
     void stickyNoteMode();
     void documentWasModified();
 
    private:
     void setupUi();
+
     QToolBar *ToolBar;
     ConfigManager *configManager;
     PreferencesWindow *pfWindow;
@@ -75,10 +75,11 @@ class MainWindow : public QMainWindow
     QColorDialog *ColorDialog;
     QColor currentColor;
 
-    // UI
+    // SNM end
+
+    // UI start
     QAction *actionNew;
     QAction *actionOpen;
-    QAction *actionAbout;
     QAction *actionSave;
     QAction *actionSave_As;
     QAction *actionUndo;
@@ -94,10 +95,12 @@ class MainWindow : public QMainWindow
     QAction *actionPin_to_top;
     QAction *actionPreview_panel;
     QAction *actionReadOnlyMode;
+    QAction *actionAbout;
+    QAction *actionAboutQt;
     QMenu *menuFile;
     QMenu *menuAbout;
     QMenu *menuEdit;
     QMenu *menuView;
-    QStatusBar *statusbar;
+    // UI end
 };
 #endif  // MAINWINDOW_H

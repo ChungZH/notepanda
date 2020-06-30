@@ -239,7 +239,7 @@ void MainWindow::setupUi()
         new QAction(QIcon(":/remixicons/images/remixicons/close-line.svg"),
                     tr("&Quit"), this);
     actionQuit->setShortcut(QKeySequence::Quit);
-    connect(actionQuit, &QAction::triggered, this, &MainWindow::quit);
+    connect(actionQuit, &QAction::triggered, this, &QCoreApplication::quit);
 
     actionCut = new QAction(
         QIcon(":/remixicons/images/remixicons/scissors-cut-line.svg"),
@@ -303,6 +303,9 @@ void MainWindow::setupUi()
     connect(actionAbout, &QAction::triggered,
             [&]() { AboutWindow(this).exec(); });
 
+    actionAboutQt = new QAction(tr("&About Qt"), this);
+    connect(actionAboutQt, &QAction::triggered, this, &QApplication::aboutQt);
+
     actionReadOnlyMode = new QAction(tr("Read-Only mode"), this);
 
     menuFile = menuBar()->addMenu(tr("&File"));
@@ -337,6 +340,7 @@ void MainWindow::setupUi()
 
     menuAbout = menuBar()->addMenu(tr("&About"));
     menuAbout->addAction(actionAbout);
+    menuAbout->addAction(actionAboutQt);
 
     menuBar()->addMenu(menuFile);
     menuBar()->addMenu(menuEdit);
@@ -362,8 +366,6 @@ void MainWindow::changeWindowTitle()
         setWindowTitle(tr("Untitled") + "[*] - Notepanda");
 }
 
-void MainWindow::quit() { QCoreApplication::quit(); }
-
 void MainWindow::updateStatusBar()
 {
     if (currentMode != 1) {
@@ -380,9 +382,9 @@ void MainWindow::updateStatusBar()
     }
 }
 
-void MainWindow::normalMode(bool first)
+void MainWindow::normalMode(bool isFirst)
 {
-    if (!first) {
+    if (!isFirst) {
         resize(baseSize());
         plainTextEdit->switchMode(0);
         ToolBar->setVisible(1);

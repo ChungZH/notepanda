@@ -22,14 +22,13 @@
 
 class AboutWindow : public QDialog, private Ui::AboutWindow
 {
-  Q_OBJECT
+    Q_OBJECT
 
- public:
-  explicit AboutWindow(QWidget *parent = nullptr);
+   public:
+    explicit AboutWindow(QWidget *parent = nullptr);
 
- private:
-  Ui::AboutWindow *ui;
-  QAction *a_AboutQt;
+   private:
+    Ui::AboutWindow *ui;
 };
 
 #endif  // ABOUTWINDOW_H

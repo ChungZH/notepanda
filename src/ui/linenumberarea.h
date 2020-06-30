@@ -18,21 +18,24 @@
 
 class LineNumberArea : public QWidget
 {
-  Q_OBJECT
+    Q_OBJECT
 
- public:
-  LineNumberArea(TextEditor *editor) : QWidget(editor), textEditor(editor) {}
-  QSize sizeHint() const { return QSize(textEditor->lineNumberAreaWidth(), 0); }
+   public:
+    LineNumberArea(TextEditor *editor) : QWidget(editor), textEditor(editor) {}
+    QSize sizeHint() const
+    {
+        return QSize(textEditor->lineNumberAreaWidth(), 0);
+    }
 
- protected:
-  void mouseReleaseEvent(QMouseEvent *event) override;
-  void paintEvent(QPaintEvent *event) override
-  {
-    textEditor->lineNumberAreaPaintEvent(event);
-  }
+   protected:
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void paintEvent(QPaintEvent *event) override
+    {
+        textEditor->lineNumberAreaPaintEvent(event);
+    }
 
- private:
-  TextEditor *textEditor;
+   private:
+    TextEditor *textEditor;
 };
 
 #endif  // LINENUMBERAREA_H

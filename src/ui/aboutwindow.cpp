@@ -24,39 +24,35 @@
 AboutWindow::AboutWindow(QWidget *parent)
     : QDialog(parent), ui(new Ui::AboutWindow)
 {
-  ui->setupUi(this);
-  setWindowTitle("About - Notepanda");
+    ui->setupUi(this);
+    setWindowTitle("About - Notepanda");
 
-  QFile ver(":/asset/makespec/VERSION");
-  QFile verSuf(":/asset/makespec/VERSIONSUFFIX");
-  QFile buildVer(":/asset/makespec/BUILDVERSION");
-  ver.open(QFile::ReadOnly);
-  verSuf.open(QFile::ReadOnly);
-  buildVer.open(QFile::ReadOnly);
+    QFile ver(":/asset/makespec/VERSION");
+    QFile verSuf(":/asset/makespec/VERSIONSUFFIX");
+    QFile buildVer(":/asset/makespec/BUILDVERSION");
+    ver.open(QFile::ReadOnly);
+    verSuf.open(QFile::ReadOnly);
+    buildVer.open(QFile::ReadOnly);
 
-  QTextStream t_ver(&ver);
-  QTextStream t_vSf(&verSuf);
-  QTextStream t_bVe(&buildVer);
+    QTextStream t_ver(&ver);
+    QTextStream t_vSf(&verSuf);
+    QTextStream t_bVe(&buildVer);
 
-  QString verString =
-      t_ver.readAll() + t_vSf.readAll() + " BV" + t_bVe.readAll();
-  verString.remove("\n");
+    QString verString =
+        t_ver.readAll() + t_vSf.readAll() + " BV" + t_bVe.readAll();
+    verString.remove("\n");
 
-  ui->label_5->setText(verString);
-  a_AboutQt = new QAction(tr("About Qt"), this);
-  ui->AboutQt->setDefaultAction(a_AboutQt);
-
-  ui->label_2->setFont(QFont(
-      QFontDatabase::systemFont(QFontDatabase::FixedFont).toString(), 15));
-  ui->label_3->setFont(QFont(
-      QFontDatabase::systemFont(QFontDatabase::FixedFont).toString(), 15));
-  ui->label_4->setFont(QFont(
-      QFontDatabase::systemFont(QFontDatabase::FixedFont).toString(), 15));
-  ui->label_5->setFont(QFont(
-      QFontDatabase::systemFont(QFontDatabase::FixedFont).toString(), 15));
-  ui->label_6->setFont(QFont(
-      QFontDatabase::systemFont(QFontDatabase::FixedFont).toString(), 15));
-  ui->label_7->setFont(QFont(
-      QFontDatabase::systemFont(QFontDatabase::FixedFont).toString(), 15));
-  connect(a_AboutQt, &QAction::triggered, this, &QApplication::aboutQt);
+    ui->label_5->setText(verString);
+    ui->label_2->setFont(QFont(
+        QFontDatabase::systemFont(QFontDatabase::FixedFont).toString(), 15));
+    ui->label_3->setFont(QFont(
+        QFontDatabase::systemFont(QFontDatabase::FixedFont).toString(), 15));
+    ui->label_4->setFont(QFont(
+        QFontDatabase::systemFont(QFontDatabase::FixedFont).toString(), 15));
+    ui->label_5->setFont(QFont(
+        QFontDatabase::systemFont(QFontDatabase::FixedFont).toString(), 15));
+    ui->label_6->setFont(QFont(
+        QFontDatabase::systemFont(QFontDatabase::FixedFont).toString(), 15));
+    ui->label_7->setFont(QFont(
+        QFontDatabase::systemFont(QFontDatabase::FixedFont).toString(), 15));
 }

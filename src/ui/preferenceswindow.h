@@ -23,14 +23,14 @@
 
 class PreferencesWindow : public QDialog, public Ui::PreferencesWindow
 {
-  Q_OBJECT
- public:
-  PreferencesWindow(ConfigManager *cfManager, QWidget *parent = nullptr);
-  void resetAllValues(const bool isFirst);
-  Ui::PreferencesWindow *ui;
+    Q_OBJECT
+   public:
+    PreferencesWindow(ConfigManager *cfManager, QWidget *parent = nullptr);
+    void resetAllValues(const bool isFirst);
+    Ui::PreferencesWindow *ui;
 
- private:
-  ConfigManager *configManager;
+   private:
+    ConfigManager *configManager;
 };
 
 #endif  // PREFERENCESWINDOW_H
