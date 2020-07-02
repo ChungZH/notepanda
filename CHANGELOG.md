@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - Syntax selection menu
 - Folding
 - Read-Only mode
+- Ctrl + Wheel to zoom the text
 
 ## 0.1.3
 

@@ -579,3 +579,17 @@ void TextEditor::switchMode(const int &mode)
         m_highlighter->setDefinition(def);
     }
 }
+
+// QPlainTextEdit can only zoomIn in Read-Only mode
+void TextEditor::wheelEvent(QWheelEvent *e)
+{
+    // Qt: if (!(d->control->textInteractionFlags() & Qt::TextEditable))
+    if (e->modifiers() & Qt::ControlModifier) {
+        float delta = e->angleDelta().y() / 120.f;
+        zoomInF(delta);
+        return;
+    }
+
+    QAbstractScrollArea::wheelEvent(e);
+    updateMicroFocus();
+}
