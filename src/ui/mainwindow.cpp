@@ -16,6 +16,7 @@
 #include <QDebug>
 #include <QPainter>
 #include <QSize>
+#include <QSizePolicy>
 #include <QStyle>
 #include <QStyleFactory>
 #include <QTextStream>
@@ -33,15 +34,16 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
     setBaseSize(size());
 
     ToolBar = new QToolBar;
+    ToolBar->setIconSize(QSize(26, 26));
 
     isPintotop = 0;
 
     // Sticky note mode
 
     SToolBar = new QToolBar;
-    changeBgColor = new QAction;
+    changeBgColor = new QAction(QIcon(":/icons/color_background.svg"),
+                                tr("Change background color"), this);
     changeBgColor->setToolTip(tr("Change background color"));
-    changeBgColor->setIconText("BG Color");
     currentColor = "#AAFFFF";
 
     SToolBar->addAction(changeBgColor);
@@ -204,79 +206,58 @@ MainWindow::~MainWindow() { delete plainTextEdit; }
 
 void MainWindow::setupUi()
 {
-    actionNew =
-        new QAction(QIcon(":/remixicons/images/remixicons/file-add-line.svg"),
-                    tr("&New"), this);
+    actionNew = new QAction(QIcon(":/icons/add.svg"), tr("&New"), this);
     actionNew->setShortcut(QKeySequence::New);
 
-    actionOpen =
-        new QAction(QIcon(":/remixicons/images/remixicons/file-3-line.svg"),
-                    tr("&Open"), this);
+    actionOpen = new QAction(QIcon(":/icons/open.svg"), tr("&Open"), this);
     actionOpen->setShortcut(QKeySequence::Open);
 
-    actionSave =
-        new QAction(QIcon(":/remixicons/images/remixicons/save-line.svg"),
-                    tr("&Save"), this);
+    actionSave = new QAction(QIcon(":/icons/save.svg"), tr("&Save"), this);
     actionSave->setShortcut(QKeySequence::Save);
 
     actionSave_As =
-        new QAction(QIcon(":/remixicons/images/remixicons/save-2-line.svg"),
-                    tr("&Save as"), this);
+        new QAction(QIcon(":/icons/save_as.svg"), tr("&Save as"), this);
     actionSave_As->setShortcut(QKeySequence::SaveAs);
 
-    actionUndo = new QAction(
-        QIcon(":/remixicons/images/remixicons/arrow-go-back-line.svg"),
-        tr("&Undo"), this);
+    actionUndo = new QAction(QIcon(":/icons/undo.svg"), tr("&Undo"), this);
     actionUndo->setShortcut(QKeySequence::Undo);
 
-    actionRedo = new QAction(
-        QIcon(":/remixicons/images/remixicons/arrow-go-forward-line.svg"),
-        tr("&Redo"), this);
+    actionRedo = new QAction(QIcon(":/icons/redo.svg"), tr("&Redo"), this);
     actionRedo->setShortcut(QKeySequence::Redo);
 
-    actionCopy =
-        new QAction(QIcon(":/remixicons/images/remixicons/clipboard-line.svg"),
-                    tr("&Copy"), this);
+    actionCopy = new QAction(QIcon(":/icons/copy.svg"), tr("&Copy"), this);
     actionCopy->setShortcut(QKeySequence::Copy);
 
     actionPaste =
-        new QAction(QIcon(":/remixicons/images/remixicons/file-copy-line.svg"),
-                    tr("&Paste"), this);
+        new QAction(QIcon(":/icons/clipboard.svg"), tr("&Paste"), this);
     actionPaste->setShortcut(QKeySequence::Paste);
 
-    actionQuit =
-        new QAction(QIcon(":/remixicons/images/remixicons/close-line.svg"),
-                    tr("&Quit"), this);
+    actionQuit = new QAction(QIcon(":/icons/delete.svg"), tr("&Quit"), this);
     actionQuit->setShortcut(QKeySequence::Quit);
     connect(actionQuit, &QAction::triggered, this, &QCoreApplication::quit);
 
-    actionCut = new QAction(
-        QIcon(":/remixicons/images/remixicons/scissors-cut-line.svg"),
-        tr("Cut"), this);
+    actionCut = new QAction(QIcon(":/icons/cut.svg"), tr("Cut"), this);
     actionCut->setShortcut(QKeySequence::Cut);
 
-    actionPrint =
-        new QAction(QIcon(":/remixicons/images/remixicons/printer-line.svg"),
-                    tr("Print"), this);
+    actionPrint = new QAction(QIcon(":/icons/print.svg"), tr("Print"), this);
     actionPrint->setShortcut(QKeySequence::Print);
 
     actionPreferences =
-        new QAction(QIcon(":/remixicons/images/remixicons/settings-4-line.svg"),
-                    tr("Preferences"), this);
+        new QAction(QIcon(":/icons/settings.svg"), tr("Preferences"), this);
     actionPreferences->setShortcut(QKeySequence::Preferences);
 
-    actionSticky_note_mode = new QAction(
-        QIcon(":/remixicons/images/remixicons/sticky-note-line.svg"),
-        tr("Sticky note mode"), this);
+    actionSticky_note_mode =
+        new QAction(QIcon(":/icons/sticker.svg"), tr("Sticky note mode"), this);
+    actionSticky_note_mode->setToolTip(tr("Switch to sticky note mode"));
     connect(actionSticky_note_mode, &QAction::triggered, [&]() {
         stickyNoteMode();
         actionSticky_note_mode->setDisabled(1);
         actionNormalmode->setEnabled(1);
     });
 
-    actionNormalmode =
-        new QAction(QIcon(":/remixicons/images/remixicons/file-edit-line.svg"),
-                    tr("Normal mode"), this);
+    actionNormalmode = new QAction(QIcon(":/icons/document_edit.svg"),
+                                   tr("Normal mode"), this);
+    actionNormalmode->setToolTip(tr("Switch to normal mode"));
     connect(actionNormalmode, &QAction::triggered, [&]() {
         normalMode(0);
         actionNormalmode->setDisabled(1);
@@ -284,8 +265,7 @@ void MainWindow::setupUi()
     });
 
     actionPin_to_top =
-        new QAction(QIcon(":/remixicons/images/remixicons/pushpin-line.svg"),
-                    tr("Pin to top"), this);
+        new QAction(QIcon(":/icons/pin.svg"), tr("Pin to top"), this);
     connect(actionPin_to_top, &QAction::triggered, [&]() {
         Qt::WindowFlags flags = this->windowFlags();
         if (!isPintotop) {
@@ -301,22 +281,20 @@ void MainWindow::setupUi()
     });
 
     actionPreview_panel =
-        new QAction(QIcon(":/remixicons/images/remixicons/eye-line.svg"),
-                    tr("Preview panel"), this);
+        new QAction(QIcon(":/icons/preview.svg"), tr("Preview panel"), this);
     actionPreview_panel->setCheckable(true);
     connect(actionPreview_panel, &QAction::triggered,
             [&]() { DockWidget->setVisible(!DockWidget->isVisible()); });
 
-    actionAbout = new QAction(
-        QIcon(":/remixicons/images/remixicons/information-line.svg"),
-        tr("&About"), this);
+    actionAbout = new QAction(QIcon(":/icons/info.svg"), tr("&About"), this);
     connect(actionAbout, &QAction::triggered,
             [&]() { AboutWindow(this).exec(); });
 
     actionAboutQt = new QAction(tr("&About Qt"), this);
     connect(actionAboutQt, &QAction::triggered, this, &QApplication::aboutQt);
 
-    actionReadOnlyMode = new QAction(tr("Read-Only mode"), this);
+    actionReadOnlyMode =
+        new QAction(QIcon(":/icons/read_only.svg"), tr("Read-Only mode"), this);
     actionReadOnlyMode->setCheckable(true);
     actionReadOnlyMode->setChecked(0);
 

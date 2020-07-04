@@ -1,23 +1,4 @@
 <RCC>
-    <qresource prefix="/remixicons">
-        <file>images/remixicons/information-line.svg</file>
-        <file>images/remixicons/file-add-line.svg</file>
-        <file>images/remixicons/save-2-line.svg</file>
-        <file>images/remixicons/save-line.svg</file>
-        <file>images/remixicons/arrow-go-back-line.svg</file>
-        <file>images/remixicons/arrow-go-forward-line.svg</file>
-        <file>images/remixicons/file-3-line.svg</file>
-        <file>images/remixicons/clipboard-line.svg</file>
-        <file>images/remixicons/file-copy-line.svg</file>
-        <file>images/remixicons/close-line.svg</file>
-        <file>images/remixicons/scissors-cut-line.svg</file>
-        <file>images/remixicons/printer-line.svg</file>
-        <file>images/remixicons/settings-4-line.svg</file>
-        <file>images/remixicons/sticky-note-line.svg</file>
-        <file>images/remixicons/file-edit-line.svg</file>
-        <file>images/remixicons/pushpin-line.svg</file>
-        <file>images/remixicons/eye-line.svg</file>
-    </qresource>
     <qresource prefix="/asset">
         <file>assets/CREDIT.md</file>
         <file>makespec/VERSION</file>
@@ -25,5 +6,27 @@
         <file>makespec/BUILDVERSION</file>
         <file>images/panda.ico</file>
         <file>images/notepanda.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file alias="icons/open.svg">images/fluentui-icon/open.svg</file>
+        <file alias="icons/add.svg">images/fluentui-icon/add.svg</file>
+        <file alias="icons/clipboard.svg">images/fluentui-icon/clipboard.svg</file>
+        <file alias="icons/info.svg">images/fluentui-icon/info.svg</file>
+        <file alias="icons/redo.svg">images/fluentui-icon/redo.svg</file>
+        <file alias="icons/print.svg">images/fluentui-icon/print.svg</file>
+        <file alias="icons/preview.svg">images/fluentui-icon/preview.svg</file>
+        <file alias="icons/pin.svg">images/fluentui-icon/pin.svg</file>
+        <file alias="icons/save_as.svg">images/fluentui-icon/save_as.svg</file>
+        <file alias="icons/save.svg">images/fluentui-icon/save.svg</file>
+        <file alias="icons/settings.svg">images/fluentui-icon/settings.svg</file>
+        <file alias="icons/sticker.svg">images/fluentui-icon/sticker.svg</file>
+        <file alias="icons/undo.svg">images/fluentui-icon/undo.svg</file>
+        <file alias="icons/document.svg">images/fluentui-icon/document.svg</file>
+        <file alias="icons/cut.svg">images/fluentui-icon/cut.svg</file>
+        <file alias="icons/copy.svg">images/fluentui-icon/copy.svg</file>
+        <file alias="icons/document_edit.svg">images/fluentui-icon/document_edit.svg</file>
+        <file alias="icons/delete.svg">images/fluentui-icon/delete.svg</file>
+        <file alias="/icons/read_only.svg">images/fluentui-icon/read_only.svg</file>
+        <file alias="/icons/color_background.svg">images/fluentui-icon/color_background.svg</file>
     </qresource>
 </RCC>

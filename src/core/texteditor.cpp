@@ -312,7 +312,8 @@ void TextEditor::contextMenuEvent(QContextMenuEvent *event)
     QMenu *menu = new QMenu;
 
     // Read only
-    QAction *readOnlyAct = new QAction(tr("Read-Only mode"), this);
+    QAction *readOnlyAct =
+        new QAction(QIcon(":/icons/read_only.svg"), tr("Read-Only mode"), this);
     readOnlyAct->setCheckable(true);
     readOnlyAct->setChecked(isReadOnly());
     menu->addAction(readOnlyAct);

@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - Folding
 - Read-Only mode
 - Ctrl + Wheel to zoom the text
+- Fluent System Icons
 
 ## 0.1.3
 
