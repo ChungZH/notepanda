@@ -22,34 +22,40 @@
  */
 class ConfigManager : public QObject
 {
-  Q_OBJECT
- public:
-  explicit ConfigManager(const QString &configuration,
-                         QObject *parent = nullptr);
-  void save();
-  void readGeneralSettings();
+    Q_OBJECT
+   public:
+    explicit ConfigManager(const QString &configuration,
+                           QObject *parent = nullptr);
+    void save();
+    void readGeneralSettings();
 
-  static bool readJsonFile(QIODevice &device, QSettings::SettingsMap &map);
-  static bool writeJsonFile(QIODevice &device,
-                            const QSettings::SettingsMap &map);
+    static bool readJsonFile(QIODevice &device, QSettings::SettingsMap &map);
+    static bool writeJsonFile(QIODevice &device,
+                              const QSettings::SettingsMap &map);
 
-  //
-  QString getEditorFontFamily() const;
-  void setEditorFontFamily(const QString &fontname);
-  QString getStyleTheme() const;
-  void setStyleTheme(const QString &stylename);
-  int getEditorFontSize() const;
-  void setEditorFontSize(const int &fontsize);
-  QString getEditorColorTheme() const;
-  void setEditorColorTheme(const QString &ctname);
+    //
+    QString getEditorFontFamily() const;
+    void setEditorFontFamily(const QString &fontname);
+    QString getStyleTheme() const;
+    void setStyleTheme(const QString &stylename);
+    int getEditorFontSize() const;
+    void setEditorFontSize(const int &fontsize);
+    QString getEditorColorTheme() const;
+    void setEditorColorTheme(const QString &ctname);
+    int getEditorTabSize() const;
+    void setEditorTabSize(const int &tabsize);
+    QString getEditorIndentMode() const;
+    void setEditorIndentMode(const QString & indentmode);
 
- private:
-  QSettings *settings;
-  QString configFile;
-  QString editorFontFamily;
-  QString styleTheme;
-  int editorFontSize;
-  QString editorColorTheme;
+   private:
+    QSettings *settings;
+    QString configFile;
+    QString editorFontFamily;
+    QString styleTheme;
+    int editorFontSize;
+    QString editorColorTheme;
+    int editorTabSize;
+    QString editorIndentMode;
 };
 
 #endif  // CONFIGMANAGER_H

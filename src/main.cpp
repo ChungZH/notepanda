@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
   if (parser.positionalArguments().size() == 1)
     notepanda.plainTextEdit->openFile(parser.positionalArguments().at(0));
 
-  qInfo() << QStringLiteral("Welcome to Notepanda!");
+  qInfo() << QStringLiteral("Welcome to Notepanda!") << "";
 
   return App.exec();
 }

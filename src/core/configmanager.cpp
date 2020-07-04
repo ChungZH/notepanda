@@ -21,7 +21,16 @@ ConfigManager::ConfigManager(const QString &configuration, QObject *parent)
     const QSettings::Format JsonFormat =
         QSettings::registerFormat("json", readJsonFile, writeJsonFile);
     settings = new QSettings(configFile, JsonFormat, this);
+
     readGeneralSettings();
+
+    // print all settings
+    qDebug() << ""
+             << "All settings:";
+    for (auto i : settings->allKeys()) {
+        qDebug() << i << ":" << settings->value(i);
+    }
+    qDebug() << "";
 }
 
 bool ConfigManager::readJsonFile(QIODevice &device, QSettings::SettingsMap &map)
@@ -47,6 +56,8 @@ void ConfigManager::save()
     settings->setValue("FontFamily", QVariant(editorFontFamily));
     settings->setValue("FontSize", QVariant(editorFontSize));
     settings->setValue("ColorTheme", QVariant(editorColorTheme));
+    settings->setValue("TabSize", QVariant(editorTabSize));
+    settings->setValue("IndentMode", QVariant(editorIndentMode));
     settings->endGroup();
     settings->setValue("StyleTheme", QVariant(styleTheme));
 }
@@ -66,24 +77,24 @@ void ConfigManager::readGeneralSettings()
     editorFontSize = settings->value("Editor/FontSize", 16).toInt();
     editorColorTheme =
         settings->value("Editor/ColorTheme", "Default").toString();
+    editorTabSize = settings->value("Editor/TabSize", 4).toInt();
+    editorIndentMode =
+        settings->value("Editor/IndentMode", "Spaces").toString();
 }
 
 QString ConfigManager::getEditorFontFamily() const { return editorFontFamily; }
-
 void ConfigManager::setEditorFontFamily(const QString &fontname)
 {
     editorFontFamily = fontname;
 }
 
 QString ConfigManager::getStyleTheme() const { return styleTheme; }
-
 void ConfigManager::setStyleTheme(const QString &stylename)
 {
     styleTheme = stylename;
 }
 
 int ConfigManager::getEditorFontSize() const { return editorFontSize; }
-
 void ConfigManager::setEditorFontSize(const int &fontsize)
 {
     editorFontSize = fontsize;
@@ -93,4 +104,16 @@ QString ConfigManager::getEditorColorTheme() const { return editorColorTheme; }
 void ConfigManager::setEditorColorTheme(const QString &ctname)
 {
     editorColorTheme = ctname;
-};
+}
+
+int ConfigManager::getEditorTabSize() const { return editorTabSize; }
+void ConfigManager::setEditorTabSize(const int &tabsize)
+{
+    editorTabSize = tabsize;
+}
+
+QString ConfigManager::getEditorIndentMode() const { return editorIndentMode; }
+void ConfigManager::setEditorIndentMode(const QString &indentmode)
+{
+    editorIndentMode = indentmode;
+}

@@ -51,6 +51,7 @@ class TextEditor : public QPlainTextEdit
     void resizeEvent(QResizeEvent *event) override;
     void contextMenuEvent(QContextMenuEvent *event) override;
     void wheelEvent(QWheelEvent *e) override;
+    void keyPressEvent(QKeyEvent *e) override;
 
    public slots:
     bool maybeSave();

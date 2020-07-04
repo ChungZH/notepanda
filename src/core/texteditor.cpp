@@ -17,6 +17,7 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QFont>
+#include <QKeyEvent>
 #include <QMenu>
 #include <QMessageBox>
 #include <QPainter>
@@ -42,6 +43,11 @@ TextEditor::TextEditor(ConfigManager *cfManager, QWidget *parent)
 {
     const auto theme = m_repository.theme(configManager->getEditorColorTheme());
     setTheme(theme);
+
+    setTabStopDistance(QFontMetricsF(QFont(configManager->getEditorFontFamily(),
+                                           configManager->getEditorFontSize()))
+                           .horizontalAdvance(' ') *
+                       configManager->getEditorTabSize());
 
     // Line number area
     lineNumberArea = new LineNumberArea(this);
@@ -351,6 +357,17 @@ void TextEditor::contextMenuEvent(QContextMenuEvent *event)
             });
     menu->exec(event->globalPos());
     delete menu;
+}
+
+void TextEditor::keyPressEvent(QKeyEvent *e)
+{
+    if (e->key() == Qt::Key_Tab &&
+        configManager->getEditorIndentMode() == "Spaces") {
+        this->insertPlainText(QString(configManager->getEditorTabSize(), ' '));
+        e->accept();
+    } else {
+        QPlainTextEdit::keyPressEvent(e);
+    }
 }
 
 void TextEditor::highlightCurrentLine()

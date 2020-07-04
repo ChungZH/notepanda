@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - Read-Only mode
 - Ctrl + Wheel to zoom the text
 - Fluent System Icons
+- Tab / Spaces indent
 
 ## 0.1.3
 
