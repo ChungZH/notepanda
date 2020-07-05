@@ -98,9 +98,9 @@ class MainWindow : public QMainWindow
     QAction *actionAbout;
     QAction *actionAboutQt;
     QMenu *menuFile;
-    QMenu *menuAbout;
     QMenu *menuEdit;
     QMenu *menuView;
+    QMenu *menuHelp;
     // UI end
 };
 #endif  // MAINWINDOW_H

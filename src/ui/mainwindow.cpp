@@ -19,6 +19,8 @@
 #include <QSizePolicy>
 #include <QStyle>
 #include <QStyleFactory>
+#include <QTabBar>
+#include <QTabWidget>
 #include <QTextStream>
 #include <QToolBar>
 
@@ -39,7 +41,6 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
     isPintotop = 0;
 
     // Sticky note mode
-
     SToolBar = new QToolBar;
     changeBgColor = new QAction(QIcon(":/icons/color_background.svg"),
                                 tr("Change background color"), this);
@@ -63,7 +64,7 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
                                              currentColor.name());
             });
 
-    //
+    // Sticky note mode END
 
     this->addToolBar(Qt::LeftToolBarArea, ToolBar);
 
@@ -328,14 +329,14 @@ void MainWindow::setupUi()
     menuView->addSeparator();
     menuView->addAction(actionPreview_panel);
 
-    menuAbout = menuBar()->addMenu(tr("&About"));
-    menuAbout->addAction(actionAbout);
-    menuAbout->addAction(actionAboutQt);
+    menuHelp = menuBar()->addMenu(tr("&Help"));
+    menuHelp->addAction(actionAbout);
+    menuHelp->addAction(actionAboutQt);
 
     menuBar()->addMenu(menuFile);
     menuBar()->addMenu(menuEdit);
     menuBar()->addMenu(menuView);
-    menuBar()->addMenu(menuAbout);
+    menuBar()->addMenu(menuHelp);
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
