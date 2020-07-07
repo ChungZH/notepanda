@@ -20,7 +20,6 @@
 #include <QStyle>
 #include <QStyleFactory>
 #include <QTabBar>
-#include <QTabWidget>
 #include <QTextStream>
 #include <QToolBar>
 
@@ -29,19 +28,23 @@
 #include "ui_preferenceswindow.h"
 
 MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
-    : QMainWindow(parent), configManager(cfManager)
+    : QMainWindow(parent),
+      TabBar(new QTabBar),
+      SToolBar(new QToolBar),
+      ColorDialog(new QColorDialog),
+      previewPanel(new QTextBrowser),
+      ToolBar(new QToolBar),
+      configManager(cfManager)
 {
     resize(800, 600);
     setupUi();
     setBaseSize(size());
 
-    ToolBar = new QToolBar;
     ToolBar->setIconSize(QSize(26, 26));
 
     isPintotop = 0;
 
     // Sticky note mode
-    SToolBar = new QToolBar;
     changeBgColor = new QAction(QIcon(":/icons/color_background.svg"),
                                 tr("Change background color"), this);
     changeBgColor->setToolTip(tr("Change background color"));
@@ -53,8 +56,6 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
 
     addToolBar(Qt::ToolBarArea::BottomToolBarArea, SToolBar);
     SToolBar->setVisible(0);
-
-    ColorDialog = new QColorDialog;
 
     connect(changeBgColor, &QAction::triggered, [&]() { ColorDialog->open(); });
     connect(ColorDialog, &QColorDialog::currentColorChanged,
@@ -96,7 +97,6 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
         updateStatusBar();
     });
 
-    previewPanel = new QTextBrowser(this);
     DockWidget = new QDockWidget(tr("Preview panel"), this);
     DockWidget->setAllowedAreas(Qt::LeftDockWidgetArea |
                                 Qt::RightDockWidgetArea);

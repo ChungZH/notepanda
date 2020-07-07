@@ -54,6 +54,7 @@ class MainWindow : public QMainWindow
    private:
     void setupUi();
 
+    QTabBar *TabBar;
     QToolBar *ToolBar;
     ConfigManager *configManager;
     PreferencesWindow *pfWindow;
