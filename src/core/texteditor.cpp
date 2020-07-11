@@ -90,16 +90,15 @@ bool TextEditor::maybeSave()
     return true;
 }
 
-void TextEditor::newDocument()
+bool TextEditor::newDocument()
 {
-    if (maybeSave()) {
-        clear();
-        setCurrentFile(QString());
-        emit changeTitle();
-    }
+    clear();
+    setCurrentFile(QString());
+    emit changeTitle();
+    return true;
 }
 
-void TextEditor::open()
+bool TextEditor::open()
 {
     if (maybeSave()) {
         QString fileName =
@@ -110,7 +109,7 @@ void TextEditor::open()
                                  tr("Cannot open file: ") + file.errorString());
             qWarning() << "[WARN 1] Failed to open" << fileName << ":"
                        << file.errorString();
-            return;
+            return false;
         }
 
         clear();
@@ -132,7 +131,9 @@ void TextEditor::open()
 
         setCurrentFile(fileName);
         emit changeTitle();
+        return true;
     }
+    return false;
 }
 
 /**
@@ -610,4 +611,10 @@ void TextEditor::wheelEvent(QWheelEvent *e)
 
     QAbstractScrollArea::wheelEvent(e);
     updateMicroFocus();
+}
+
+void TextEditor::updateSyntaxHighlight()
+{
+    const auto def = m_repository.definitionForFileName(currentFile);
+    m_highlighter->setDefinition(def);
 }

@@ -55,8 +55,8 @@ class TextEditor : public QPlainTextEdit
 
    public slots:
     bool maybeSave();
-    void newDocument();
-    void open();
+    bool newDocument();
+    bool open();
     void save();
     void saveAs();
     void print();
@@ -72,6 +72,7 @@ class TextEditor : public QPlainTextEdit
     void setEditorFontSize(const int &size);
     void setEditorColorTheme(const QString &ctname);
     void setCurrentFile(const QString &fileName);
+    void updateSyntaxHighlight();
 
     /**
      * @brief switchMode

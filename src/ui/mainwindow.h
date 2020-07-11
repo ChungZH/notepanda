@@ -23,6 +23,7 @@
 #include <QStatusBar>
 #include <QTextBrowser>
 #include <QToolBar>
+#include <QVector>
 
 #include "../core/configmanager.h"
 #include "../core/texteditor.h"
@@ -31,6 +32,13 @@
 QT_BEGIN_NAMESPACE
 class TextEditor;
 QT_END_NAMESPACE
+
+struct TabData
+{
+    QString plainText;
+    QString fileName;
+    bool isModified;
+};
 
 class MainWindow : public QMainWindow
 {
@@ -54,12 +62,20 @@ class MainWindow : public QMainWindow
    private:
     void setupUi();
 
-    QTabBar *TabBar;
+    // TODO: use QTabBar::tabData
+    QVector<TabData> tabData;
+
     QToolBar *ToolBar;
     ConfigManager *configManager;
     PreferencesWindow *pfWindow;
     QTextBrowser *previewPanel;
     QDockWidget *DockWidget;
+    QTabBar *TabBar;
+    QToolBar *TabToolBar;
+
+    bool lastTabRemoveFlag, doNotSaveDataFlag;
+    int curTabIndex, prevTabIndex;
+    void saveTabData(const int index);
 
     /**
      * @brief currentMode

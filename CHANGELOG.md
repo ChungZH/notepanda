@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - Ctrl + Wheel to zoom the text
 - Fluent System Icons
 - Tab / Spaces indent
+- Multi-tab
 
 ## 0.1.3
 

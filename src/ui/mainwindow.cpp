@@ -34,7 +34,11 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
       ColorDialog(new QColorDialog),
       previewPanel(new QTextBrowser),
       ToolBar(new QToolBar),
-      configManager(cfManager)
+      configManager(cfManager),
+      curTabIndex(0),
+      prevTabIndex(0),
+      lastTabRemoveFlag(0),
+      doNotSaveDataFlag(0)
 {
     resize(800, 600);
     setupUi();
@@ -71,11 +75,79 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
 
     normalMode(1);
 
+    /** TODO: TabBar->setMovable(true);
+        If move, index will change. So I must adjust `tabData`.
+    */
+
+    TabBar->setTabsClosable(true);
+    TabToolBar = new QToolBar;
+    TabToolBar->addWidget(TabBar);
+    TabToolBar->setMovable(false);
+    TabToolBar->setFloatable(false);
+    this->addToolBar(Qt::TopToolBarArea, TabToolBar);
+
     plainTextEdit = new TextEditor(configManager);
     this->setCentralWidget(plainTextEdit);
 
-    connect(actionNew, &QAction::triggered, plainTextEdit,
-            &TextEditor::newDocument);
+    TabBar->addTab("Untitled.txt");
+    tabData.push_back(TabData{"", "", 0});
+
+    connect(TabBar, &QTabBar::currentChanged, [&](int index) {
+        prevTabIndex = curTabIndex;
+        curTabIndex = index;
+
+        if (curTabIndex == -1) curTabIndex = 0;
+        if (prevTabIndex == -1) prevTabIndex = 0;
+
+        if (TabBar->count() == 0) {
+            prevTabIndex = 0;
+            tabData.push_back(TabData{"", "", 0});
+            TabBar->addTab("Untitled.txt");
+        }
+
+        if (lastTabRemoveFlag == true) {
+            prevTabIndex = curTabIndex = index;
+            lastTabRemoveFlag = false;
+        } else if (doNotSaveDataFlag == true) {
+            doNotSaveDataFlag = false;
+        } else {
+            saveTabData(prevTabIndex);
+        }
+        if (index != -1) {
+            plainTextEdit->setCurrentFile(tabData[index].fileName);
+            plainTextEdit->setPlainText(tabData[index].plainText);
+            plainTextEdit->document()->setModified(tabData[index].isModified);
+        } else {
+            plainTextEdit->clear();
+        }
+        plainTextEdit->updateSyntaxHighlight();
+        changeWindowTitle();
+    });
+
+    connect(TabBar, &QTabBar::tabCloseRequested, [&](int index) {
+        tabData.remove(index);
+        lastTabRemoveFlag = true;
+        TabBar->removeTab(index);
+
+        if (TabBar->count() != 0) {
+            TabData tempTD = tabData[TabBar->currentIndex()];
+            plainTextEdit->setPlainText(tempTD.plainText);
+            plainTextEdit->setCurrentFile(tempTD.fileName);
+            plainTextEdit->document()->setModified(tempTD.isModified);
+        }
+        changeWindowTitle();
+    });
+
+    connect(actionNew, &QAction::triggered, [&]() {
+        saveTabData(TabBar->currentIndex());
+        doNotSaveDataFlag = true;
+        if (plainTextEdit->newDocument()) {
+            const int newIndex = TabBar->addTab("Untitled.txt");
+            tabData.push_back(TabData{"", "", 0});
+            TabBar->setCurrentIndex(newIndex);
+            changeWindowTitle();
+        }
+    });
     connect(actionOpen, &QAction::triggered, plainTextEdit, &TextEditor::open);
     connect(actionSave, &QAction::triggered, plainTextEdit, &TextEditor::save);
     connect(actionSave_As, &QAction::triggered, plainTextEdit,
@@ -350,11 +422,13 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::changeWindowTitle()
 {
+    QString showName;
     if (!plainTextEdit->currentFile.isEmpty())
-        setWindowTitle(plainTextEdit->currentFile.split("/").last() +
-                       "[*] - Notepanda");
+        showName = plainTextEdit->currentFile.split("/").last();
     else
-        setWindowTitle(tr("Untitled") + "[*] - Notepanda");
+        showName = "Untitled";
+    setWindowTitle(showName + "[*] - Notepanda");
+    TabBar->setTabText(TabBar->currentIndex(), showName);
 }
 
 void MainWindow::updateStatusBar()
@@ -421,4 +495,11 @@ void MainWindow::documentWasModified()
 
     previewPanel->reload();
     previewPanel->setSource(plainTextEdit->currentFile);
+}
+
+void MainWindow::saveTabData(const int index)
+{
+    tabData[index].fileName = plainTextEdit->currentFile;
+    tabData[index].isModified = plainTextEdit->document()->isModified();
+    tabData[index].plainText = plainTextEdit->toPlainText();
 }
