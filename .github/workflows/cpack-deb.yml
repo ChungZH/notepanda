@@ -18,6 +18,10 @@ jobs:
         run: |
           echo "::set-output name=message::$(git log --format=%B -n 1 ${{ github.event.after }})"
           echo "::set-env name=message::$(git log --format=%B -n 1 ${{ github.event.after }})"
+      - name: Get the version
+        id: get_version
+        shell: bash
+        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)          
   linux:
     strategy:
         matrix:
