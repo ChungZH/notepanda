@@ -356,6 +356,12 @@ void TextEditor::contextMenuEvent(QContextMenuEvent *event)
                 const auto def = m_repository.definitionForName(defName);
                 m_highlighter->setDefinition(def);
             });
+
+    // clear
+    QAction *clearAct = new QAction(tr("Clear"), this);
+    menu->addAction(clearAct);
+    connect(clearAct, &QAction::triggered, [&]() { newDocument(); });
+
     menu->exec(event->globalPos());
     delete menu;
 }

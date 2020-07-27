@@ -6,9 +6,11 @@ All notable changes to this project will be documented in this file.
 
 ### 🌵 Features
 
-- Syntax selection menu
+- Right click menu
+  - Syntax selection menu
+  - Clear
+  - Read-Only mode
 - Folding
-- Read-Only mode
 - Ctrl + Wheel to zoom the text
 - Fluent System Icons
 - Tab / Spaces indent
