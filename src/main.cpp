@@ -22,44 +22,52 @@
 
 int main(int argc, char *argv[])
 {
-  QApplication App(argc, argv);
+    QApplication App(argc, argv);
 
-  App.setOrganizationName("ChungZH");
-  App.setApplicationName("Notepanda");
-  App.setApplicationVersion("0.1.3");
+    App.setOrganizationName("ChungZH");
+    App.setApplicationName("Notepanda");
+    App.setApplicationVersion("0.1.3");
 
-  QCommandLineParser parser;
-  parser.addHelpOption();
-  parser.addVersionOption();
-  parser.addPositionalArgument("source", "The source file to open.");
-  QCommandLineOption configFileOption("c", "specify configuration file.",
-                                      "config.json");
-  parser.addOption(configFileOption);
-  parser.process(App);
+    QCommandLineParser parser;
+    parser.addHelpOption();
+    parser.addVersionOption();
+    parser.addPositionalArgument("source", "The source file to open.");
+    QCommandLineOption configFileOption("c", "specify configuration file.",
+                                        "config.json");
+    parser.addOption(configFileOption);
+    parser.process(App);
 
-  QString configFile = parser.value(configFileOption);
-  if (configFile.isEmpty()) {
+    QString configFile = parser.value(configFileOption);
+    if (configFile.isEmpty()) {
 #ifdef Q_OS_WIN
-    configFile = App.applicationDirPath() + "/config.json";
+        configFile = App.applicationDirPath() + "/config.json";
 #else
-    QDir configDir = QDir::homePath() + "/.config/notepanda";
-    configFile = configDir.absolutePath() + "/config.json";
-    if (!configDir.exists()) {
-      configDir.mkpath(configDir.absolutePath());
-    }
+        // For Scoop package
+        QDir currentPathDir = QApplication::applicationDirPath() + "/config";
+        QDir configDir = QDir::homePath() + "/.config/notepanda";
+
+        if (QDir(currentPathDir).exists()) {
+            configFile = currentPathDir.absolutePath() + "/config.json";
+        } else {
+            configFile = configDir.absolutePath() + "/config.json";
+            if (!configDir.exists()) {
+                configDir.mkpath(configDir.absolutePath());
+            }
+        }
+
 #endif
-  }
-  ConfigManager *configManager;
-  configManager = new ConfigManager(configFile);
+    }
+    ConfigManager *configManager;
+    configManager = new ConfigManager(configFile);
 
-  App.setStyle(QStyleFactory::create(configManager->getStyleTheme()));
+    App.setStyle(QStyleFactory::create(configManager->getStyleTheme()));
 
-  MainWindow notepanda(configManager);
-  notepanda.show();
-  if (parser.positionalArguments().size() == 1)
-    notepanda.plainTextEdit->openFile(parser.positionalArguments().at(0));
+    MainWindow notepanda(configManager);
+    notepanda.show();
+    if (parser.positionalArguments().size() == 1)
+        notepanda.plainTextEdit->openFile(parser.positionalArguments().at(0));
 
-  qInfo() << QStringLiteral("Welcome to Notepanda!") << "";
+    qInfo() << QStringLiteral("Welcome to Notepanda!") << "";
 
-  return App.exec();
+    return App.exec();
 }
