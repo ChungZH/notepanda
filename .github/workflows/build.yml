@@ -203,7 +203,7 @@ jobs:
         if: matrix.platform == 'macos-latest'
         shell: bash
         run: |
-#         brew install ninja
+          brew install ninja
           cd src/3rdparty/extra-cmake-modules
           mkdir build
           cd build
