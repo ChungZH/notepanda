@@ -38,7 +38,7 @@ jobs:
         with:
           # 14.1 is for vs2017, 14.2 is vs2019, following the upstream vcpkg build from Qv2ray-deps repo
           toolset: 14.2
-          arch: ${{ matrix.arch }}
+          arch: ${{ matrix.arch }}          
       - name: Cache Qt
         id: cache-qt
         uses: actions/cache@v1
@@ -60,6 +60,10 @@ jobs:
           architecture: ${{ matrix.arch }}
       - name: Get latest CMake
         uses: lukka/get-cmake@latest
+      - name: Get the version
+        id: get_version
+        shell: bash
+        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)        
 # Linux------------------------------------------
       - name: Linux - Install packages
         if: matrix.platform == 'ubuntu-16.04'
