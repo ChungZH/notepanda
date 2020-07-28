@@ -77,7 +77,7 @@ jobs:
           CC: /usr/bin/gcc-9
           CXX: /usr/bin/g++-9
         run: |
-          sudo apt install libgl-dev libx11-dev libxkbcommon-x11-dev 
+          sudo apt install libgl-dev libx11-dev libxkbcommon-x11-dev ninja-build
       - name: Linux - Build ecm
         if: matrix.platform == 'ubuntu-16.04'
         shell: bash
