@@ -64,6 +64,11 @@ jobs:
         id: get_version
         shell: bash
         run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)        
+      - name: Setup Ninja
+        uses: ashutoshvarma/setup-ninja@master
+        with:
+          # ninja version to download. Default: 1.10.0
+          version: 1.10.0        
 # Linux------------------------------------------
       - name: Linux - Install packages
         if: matrix.platform == 'ubuntu-16.04'
@@ -72,7 +77,7 @@ jobs:
           CC: /usr/bin/gcc-9
           CXX: /usr/bin/g++-9
         run: |
-          sudo apt install libgl-dev libx11-dev libxkbcommon-x11-dev ninja-build
+          sudo apt install libgl-dev libx11-dev libxkbcommon-x11-dev 
       - name: Linux - Build ecm
         if: matrix.platform == 'ubuntu-16.04'
         shell: bash
@@ -151,10 +156,10 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
       # Windows----------------------------------------------------------------------
-      - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Build preparation - Download Dependencies
-        if: matrix.platform == 'windows-latest'
-        run: |
-          choco install -y ninja
+#     - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Build preparation - Download Dependencies
+#       if: matrix.platform == 'windows-latest'
+#       run: |
+#         choco install -y ninja
       - name: Win - Build ecm
         if: matrix.platform == 'windows-latest'
         env:
@@ -198,7 +203,7 @@ jobs:
         if: matrix.platform == 'macos-latest'
         shell: bash
         run: |
-          brew install ninja
+#         brew install ninja
           cd src/3rdparty/extra-cmake-modules
           mkdir build
           cd build
