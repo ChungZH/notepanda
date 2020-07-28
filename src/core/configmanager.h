@@ -45,7 +45,7 @@ class ConfigManager : public QObject
     int getEditorTabSize() const;
     void setEditorTabSize(const int &tabsize);
     QString getEditorIndentMode() const;
-    void setEditorIndentMode(const QString & indentmode);
+    void setEditorIndentMode(const QString &indentmode);
 
    private:
     QSettings *settings;
