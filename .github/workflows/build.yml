@@ -58,8 +58,6 @@ jobs:
         with:
           python-version: "3.7"
           architecture: ${{ matrix.arch }}
-      - name: Get latest CMake
-        uses: lukka/get-cmake@latest
       - name: Get the version
         id: get_version
         shell: bash
