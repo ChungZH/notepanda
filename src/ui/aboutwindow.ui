@@ -62,7 +62,6 @@
           <widget class="QLabel" name="label">
            <property name="font">
             <font>
-             <family>Noto Sans CJK SC</family>
              <pointsize>26</pointsize>
             </font>
            </property>
@@ -79,7 +78,6 @@
               <widget class="QLabel" name="label_2">
                <property name="font">
                 <font>
-                 <family>Noto Sans CJK SC</family>
                  <pointsize>16</pointsize>
                 </font>
                </property>
@@ -95,7 +93,6 @@
               <widget class="QLabel" name="label_7">
                <property name="font">
                 <font>
-                 <family>Noto Sans CJK SC</family>
                  <pointsize>16</pointsize>
                 </font>
                </property>
@@ -114,7 +111,6 @@
               <widget class="QLabel" name="label_6">
                <property name="font">
                 <font>
-                 <family>Noto Sans CJK SC</family>
                  <pointsize>16</pointsize>
                 </font>
                </property>
@@ -127,7 +123,6 @@
               <widget class="QLabel" name="label_3">
                <property name="font">
                 <font>
-                 <family>Noto Sans CJK SC</family>
                  <pointsize>16</pointsize>
                 </font>
                </property>
@@ -140,7 +135,6 @@
               <widget class="QLabel" name="label_4">
                <property name="font">
                 <font>
-                 <family>Noto Sans CJK SC</family>
                  <pointsize>16</pointsize>
                 </font>
                </property>
@@ -159,7 +153,6 @@
               <widget class="QLabel" name="label_5">
                <property name="font">
                 <font>
-                 <family>Noto Sans CJK SC</family>
                  <pointsize>16</pointsize>
                 </font>
                </property>

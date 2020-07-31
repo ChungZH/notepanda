@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [UNRELEASED]
+
+### 🌵 Features
+
+- Use `Segoe UI` font on Microsoft Windows
+
 ## 0.1.4
 
 ### 🌵 Features

@@ -41,6 +41,14 @@ int main(int argc, char *argv[])
     QString configFile = parser.value(configFileOption);
     if (configFile.isEmpty()) {
 #ifdef Q_OS_WIN
+
+        /*
+        if (QLocale::system().country() == QLocale::China ||
+            QLocale::system().language() == QLocale::Chinese)
+            App.setFont(QFont("Microsoft Yahei", 9, QFont::Normal, false));
+        else */
+        App.setFont(QFont("Segoe UI", 9, QFont::Normal, false));
+
         if (QDir(App.applicationDirPath() + "/config").exists()) {
             configFile = App.applicationDirPath() + "/config/notepanda.json";
         } else {
@@ -56,6 +64,7 @@ int main(int argc, char *argv[])
         }
 #endif
     }
+    qDebug() << configFile;
 
     ConfigManager *configManager;
     configManager = new ConfigManager(configFile);
