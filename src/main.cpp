@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
     if (configFile.isEmpty()) {
 #ifdef Q_OS_WIN
         if (QDir(App.applicationDirPath() + "/config").exists()) {
-            configFile = App.applicationDirPath() + "/config/config.json";
+            configFile = App.applicationDirPath() + "/config/notepanda.json";
         } else {
             QDir configDir = QStandardPaths::writableLocation(
                 QStandardPaths::StandardLocation::AppConfigLocation);
