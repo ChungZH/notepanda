@@ -14,6 +14,7 @@
 #include <QCommandLineParser>
 #include <QDebug>
 #include <QDir>
+#include <QStandardPaths>
 #include <QStyleFactory>
 #include <string>
 
@@ -40,23 +41,22 @@ int main(int argc, char *argv[])
     QString configFile = parser.value(configFileOption);
     if (configFile.isEmpty()) {
 #ifdef Q_OS_WIN
-        configFile = App.applicationDirPath() + "/config.json";
-#else
-        // For Scoop package
-        QDir currentPathDir = QApplication::applicationDirPath() + "/config";
-        QDir configDir = QDir::homePath() + "/.config/notepanda";
-
-        if (QDir(currentPathDir).exists()) {
-            configFile = currentPathDir.absolutePath() + "/config.json";
+        if (QDir(App.applicationDirPath() + "/config").exists()) {
+            configFile = App.applicationDirPath() + "/config/config.json";
         } else {
+            QDir configDir = QStandardPaths::writableLocation(
+                QStandardPaths::StandardLocation::AppConfigLocation);
             configFile = configDir.absolutePath() + "/config.json";
-            if (!configDir.exists()) {
-                configDir.mkpath(configDir.absolutePath());
-            }
         }
-
+#else
+        QDir configDir = QDir::homePath() + "/.config/notepanda";
+        configFile = configDir.absolutePath() + "/config.json";
+        if (!configDir.exists()) {
+            configDir.mkpath(configDir.absolutePath());
+        }
 #endif
     }
+
     ConfigManager *configManager;
     configManager = new ConfigManager(configFile);
 
