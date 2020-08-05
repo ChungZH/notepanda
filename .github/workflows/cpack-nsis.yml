@@ -59,10 +59,16 @@ jobs:
           mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
           cached: ${{ steps.cache-qt.outputs.cache-hit }}
 # Windows----------------------------------------------------------------------
-      - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Build preparation - Download Dependencies
+#      - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Build preparation - Download Dependencies
+#        if: matrix.platform == 'windows-latest'
+#        run: |
+#         choco install -y ninja
+      - name: Setup Ninja
         if: matrix.platform == 'windows-latest'
-        run: |
-         choco install -y ninja
+        uses: ashutoshvarma/setup-ninja@master
+        with:
+          # ninja version to download. Default: 1.10.0
+          version: 1.10.0          
       - name: Win - Build ecm
         if: matrix.platform == 'windows-latest'
         env:

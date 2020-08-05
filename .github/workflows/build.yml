@@ -61,12 +61,7 @@ jobs:
       - name: Get the version
         id: get_version
         shell: bash
-        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)        
-      - name: Setup Ninja
-        uses: ashutoshvarma/setup-ninja@master
-        with:
-          # ninja version to download. Default: 1.10.0
-          version: 1.10.0        
+        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)               
 # Linux------------------------------------------
       - name: Linux - Install packages
         if: matrix.platform == 'ubuntu-16.04'
@@ -158,6 +153,12 @@ jobs:
 #       if: matrix.platform == 'windows-latest'
 #       run: |
 #         choco install -y ninja
+      - name: Setup Ninja
+        if: matrix.platform == 'windows-latest'
+        uses: ashutoshvarma/setup-ninja@master
+        with:
+          # ninja version to download. Default: 1.10.0
+          version: 1.10.0 
       - name: Win - Build ecm
         if: matrix.platform == 'windows-latest'
         env:
