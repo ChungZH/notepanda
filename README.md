@@ -28,10 +28,10 @@ So enjoy this toy 🍵️
 
 ## Screenshots
 
-| Light  | Dark |
-|:--------:|:-------:|
+|                Light                 |                Dark                 |
+| :----------------------------------: | :---------------------------------: |
 | ![Light](./images/notepanda-sc1.png) | ![Dark](./images/notepanda-sc3.png) |
-| ![Light](./images/notepanda-sc2.png) | ![Dark](/images/notepanda-sc4.png)|
+| ![Light](./images/notepanda-sc2.png) | ![Dark](/images/notepanda-sc4.png)  |
 
 ## Feature
 
@@ -42,6 +42,26 @@ So enjoy this toy 🍵️
 - Preview panel (Support Markdown & HTML)
 - Opening files with Drag and Drop.
 
+## Install
+
+If you are Windows / MacOS / Linux user, you can go to [Releases](https://github.com/ChungZH/notepanda/releases) page.
+
+If you are using [Scoop](https://scoop.sh), you can get Notepanda from my sweet scoop bucket [🍑 peach](https://github.com/ChungZH/peach):
+
+```powershell
+scoop bucket add peach https://github.com/ChungZH/peach
+scoop install notepanda
+```
+
+If you are Arch Linux (or Arch-based distros) user, you can get Notepanda from AUR. ![AUR Badge](https://img.shields.io/aur/version/notepanda)
+
+You may use an AUR helper such as `yay` to automatically handle the build process of AUR packages:
+
+```sh
+yay -S notepanda
+```
+
+The latest version is `v0.1.4` now.
 
 ## Build
 
@@ -62,19 +82,6 @@ For more information, go to [How to build - GitHub Wiki](https://github.com/Chun
 
 See [Projects](https://github.com/ChungZH/notepanda/projects/).
 
-## Install
-
-If you are Windows / MacOS / Linux user, you can go to [Releases](https://github.com/ChungZH/notepanda/releases) page.
-
-If you are Arch Linux (or Arch-based distros) user, you can get Notepanda from AUR. ![AUR Badge](https://img.shields.io/aur/version/notepanda)
-
-You may use an AUR helper such as `yay` to automatically handle the build process of AUR packages:
-
-```sh
-yay -S notepanda
-```
-
-The latest version is `v0.1.4` now.
 
 ## Contributions / Bugs
 
