@@ -39,7 +39,9 @@ So enjoy this toy 🍵️
 - Line numbers
 - Syntax highlight
 - Launch from the shell by typing: `notepanda` or `notepanda CMakeLists.txt`
-- Preview panel
+- Preview panel (Support Markdown & HTML)
+- Opening files with Drag and Drop.
+
 
 ## Build
 

@@ -37,7 +37,7 @@ class TextEditor : public QPlainTextEdit
 
    public:
     TextEditor(ConfigManager *cfManager, QWidget *parent = nullptr);
-    QString currentFile;
+    QString currentFile, currentFileName;
     void openFile(const QString &fileName);
 
     void lineNumberAreaPaintEvent(QPaintEvent *event);
@@ -52,6 +52,7 @@ class TextEditor : public QPlainTextEdit
     void contextMenuEvent(QContextMenuEvent *event) override;
     void wheelEvent(QWheelEvent *e) override;
     void keyPressEvent(QKeyEvent *e) override;
+    void dropEvent(QDropEvent *e) override;
 
    public slots:
     bool maybeSave();
@@ -96,6 +97,7 @@ class TextEditor : public QPlainTextEdit
     void changeTitle();
     void modifiedFalse();
     void readOnlyChanged();
+    void openFileInNewTab(const QString &file);
 };
 
 #endif  // TEXTEDITOR_H

@@ -92,7 +92,7 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
     TabBar->addTab("Untitled.txt");
     tabData.push_back(TabData{"", "", 0});
 
-    connect(TabBar, &QTabBar::currentChanged, [&](int index) {
+    connect(TabBar, &QTabBar::currentChanged, [&](const int index) {
         prevTabIndex = curTabIndex;
         curTabIndex = index;
 
@@ -113,14 +113,15 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
         } else {
             saveTabData(prevTabIndex);
         }
+
+        plainTextEdit->clear();
         if (index != -1) {
             plainTextEdit->setCurrentFile(tabData[index].fileName);
             plainTextEdit->setPlainText(tabData[index].plainText);
-            plainTextEdit->document()->setModified(tabData[index].isModified);
-        } else {
-            plainTextEdit->clear();
         }
+
         plainTextEdit->updateSyntaxHighlight();
+        plainTextEdit->document()->setModified(tabData[index].isModified);
         changeWindowTitle();
     });
 
@@ -140,15 +141,24 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
 
     connect(actionNew, &QAction::triggered, [&]() {
         saveTabData(TabBar->currentIndex());
-        doNotSaveDataFlag = true;
+
         if (plainTextEdit->newDocument()) {
+            doNotSaveDataFlag = true;
             const int newIndex = TabBar->addTab("Untitled.txt");
             tabData.push_back(TabData{"", "", 0});
             TabBar->setCurrentIndex(newIndex);
-            changeWindowTitle();
         }
     });
-    connect(actionOpen, &QAction::triggered, plainTextEdit, &TextEditor::open);
+    connect(actionOpen, &QAction::triggered, [&]() {
+        saveTabData(TabBar->currentIndex());
+        if (plainTextEdit->open()) {
+            doNotSaveDataFlag = true;
+            const int newIndex = TabBar->addTab(plainTextEdit->currentFileName);
+            tabData.push_back(TabData{plainTextEdit->toPlainText(),
+                                      plainTextEdit->currentFileName, 0});
+            TabBar->setCurrentIndex(newIndex);
+        }
+    });
     connect(actionSave, &QAction::triggered, plainTextEdit, &TextEditor::save);
     connect(actionSave_As, &QAction::triggered, plainTextEdit,
             &TextEditor::saveAs);
@@ -244,6 +254,18 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
 
     connect(plainTextEdit, &TextEditor::textChanged, this,
             &MainWindow::updateStatusBar);
+    connect(
+        plainTextEdit, &TextEditor::openFileInNewTab, [&](const QString &file) {
+            saveTabData(TabBar->currentIndex());
+
+            const int newIndex = TabBar->addTab(plainTextEdit->currentFileName);
+            plainTextEdit->openFile(file);
+            tabData.push_back(TabData{plainTextEdit->toPlainText(),
+                                      plainTextEdit->currentFileName, 0});
+            doNotSaveDataFlag = true;
+            TabBar->setCurrentIndex(newIndex);
+            changeWindowTitle();
+        });
 
     updateStatusBar();
     changeWindowTitle();
@@ -424,11 +446,17 @@ void MainWindow::changeWindowTitle()
 {
     QString showName;
     if (!plainTextEdit->currentFile.isEmpty())
-        showName = plainTextEdit->currentFile.split("/").last();
+        showName = plainTextEdit->currentFileName;
     else
         showName = "Untitled";
+
+    for (int i = 0; i < tabData.size(); i++) {
+        if (tabData[i].fileName.isEmpty())
+            TabBar->setTabText(i, "Untitled");
+        else
+            TabBar->setTabText(i, tabData[i].fileName);
+    }
     setWindowTitle(showName + "[*] - Notepanda");
-    TabBar->setTabText(TabBar->currentIndex(), showName);
 }
 
 void MainWindow::updateStatusBar()
@@ -499,7 +527,7 @@ void MainWindow::documentWasModified()
 
 void MainWindow::saveTabData(const int index)
 {
-    tabData[index].fileName = plainTextEdit->currentFile;
+    tabData[index].fileName = plainTextEdit->currentFileName;
     tabData[index].isModified = plainTextEdit->document()->isModified();
     tabData[index].plainText = plainTextEdit->toPlainText();
 }

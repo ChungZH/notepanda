@@ -1,4 +1,5 @@
 # CMakeLists.txt
+
 cmake_minimum_required(VERSION 3.1.0)
 
 file(STRINGS "${CMAKE_SOURCE_DIR}/makespec/VERSION" VERSION)
@@ -30,6 +31,10 @@ if(CMAKE_VERSION VERSION_LESS "3.7.0")
     set(CMAKE_INCLUDE_CURRENT_DIR ON)
 endif()
 
+# =======================
+# Notepanda Build Message
+# =======================
+
 message(" ")
 message("Notepanda Version: ${VERSION_STRING}")
 message("Notepanda Build Version: ${BUILD_VERSION}")
@@ -57,6 +62,10 @@ if(WIN32)
 elseif(APPLE)
     set(GUI_TYPE MACOSX_BUNDLE)
 endif()
+
+# =============================
+# Notepanda Sources and Headers
+# =============================
 
 set(SOURCES
     src/main.cpp
@@ -98,7 +107,10 @@ if(CMAKE_PREFIX_PATH)
     endforeach()
 endif()
 
+# =========
 # Packaging
+# =========
+
 set(CPACK_PACKAGE_NAME "Notepanda")
 set(CPACK_PACKAGE_VENDOR "ChungZH")
 set(CPACK_PACKAGE_VERSION ${VERSION_STRING})

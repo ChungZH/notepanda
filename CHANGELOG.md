@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### 🌵 Features
 
 - Use `Segoe UI` font on Microsoft Windows
+- Opening files with Drag and Drop.
 
 ## 0.1.4
 

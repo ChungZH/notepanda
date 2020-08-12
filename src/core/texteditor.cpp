@@ -14,12 +14,14 @@
 #include <QAction>
 #include <QApplication>
 #include <QDebug>
+#include <QDropEvent>
 #include <QFile>
 #include <QFileDialog>
 #include <QFont>
 #include <QKeyEvent>
 #include <QMenu>
 #include <QMessageBox>
+#include <QMimeData>
 #include <QPainter>
 #include <QSaveFile>
 #include <QString>
@@ -123,7 +125,9 @@ bool TextEditor::open()
 #ifndef QT_NO_CURSOR
         QGuiApplication::setOverrideCursor(Qt::WaitCursor);
 #endif
+
         setPlainText(in.readAll());
+
 #ifndef QT_NO_CURSOR
         QGuiApplication::restoreOverrideCursor();
 #endif
@@ -461,6 +465,19 @@ void TextEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
     }
 }
 
+void TextEditor::dropEvent(QDropEvent *e)
+{
+    QList<QUrl> urls = e->mimeData()->urls();
+
+    for (auto iUrl : urls) {
+        QString filename = iUrl.toLocalFile();
+        qDebug() << filename;
+        emit openFileInNewTab(filename);
+    }
+
+    e->accept();
+}
+
 void LineNumberArea::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->x() >= width() - textEditor->fontMetrics().lineSpacing()) {
@@ -552,6 +569,7 @@ void TextEditor::setTheme(const KSyntaxHighlighting::Theme &theme)
     m_highlighter->rehighlight();
     highlightCurrentLine();
 }
+
 void TextEditor::setEditorFont(const QFont &font)
 {
     QFont f = QFont(font.family(), configManager->getEditorFontSize());
@@ -577,6 +595,7 @@ void TextEditor::setEditorColorTheme(const QString &ctname)
 void TextEditor::setCurrentFile(const QString &fileName)
 {
     currentFile = fileName;
+    if (!fileName.isEmpty()) currentFileName = QFileInfo(fileName).fileName();
     document()->setModified(false);
     setWindowModified(false);
     emit modifiedFalse();
