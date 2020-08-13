@@ -93,6 +93,9 @@ class TextEditor : public QPlainTextEdit
     QWidget *lineNumberArea;
     int currentMode;
 
+    void addInEachLineOfSelection(const QRegularExpression &regex,
+                                  const QString &str);
+
    signals:
     void changeTitle();
     void modifiedFalse();

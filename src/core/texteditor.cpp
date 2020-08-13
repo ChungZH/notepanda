@@ -23,6 +23,7 @@
 #include <QMessageBox>
 #include <QMimeData>
 #include <QPainter>
+#include <QRegularExpression>
 #include <QSaveFile>
 #include <QString>
 #include <QStyle>
@@ -372,13 +373,80 @@ void TextEditor::contextMenuEvent(QContextMenuEvent *event)
 
 void TextEditor::keyPressEvent(QKeyEvent *e)
 {
-    if (e->key() == Qt::Key_Tab &&
-        configManager->getEditorIndentMode() == "Spaces") {
-        this->insertPlainText(QString(configManager->getEditorTabSize(), ' '));
+    if (e->key() == Qt::Key_Tab) {
+        if (this->textCursor().hasSelection()) {
+            qDebug() << "wtf";
+            addInEachLineOfSelection(
+                QRegularExpression("^"),
+                configManager->getEditorIndentMode() == "Spaces"
+                    ? QString(configManager->getEditorTabSize(), ' ')
+                    : "\t");
+            return;
+        } else if (configManager->getEditorIndentMode() == "Spaces") {
+            this->insertPlainText(
+                QString(configManager->getEditorTabSize(), ' '));
+            e->accept();
+        }
+    } else if (e->key() == '(') {
+        this->insertPlainText("()");
+        this->moveCursor(QTextCursor::MoveOperation::Left,
+                         QTextCursor::MoveAnchor);
         e->accept();
-    } else {
-        QPlainTextEdit::keyPressEvent(e);
+    } else if (e->key() == '{') {
+        this->insertPlainText("{}");
+        this->moveCursor(QTextCursor::MoveOperation::Left,
+                         QTextCursor::MoveAnchor);
+        e->accept();
+    } else if (e->key() == '[') {
+        this->insertPlainText("[]");
+        this->moveCursor(QTextCursor::MoveOperation::Left,
+                         QTextCursor::MoveAnchor);
+        e->accept();
     }
+    QPlainTextEdit::keyPressEvent(e);
+}
+
+void TextEditor::addInEachLineOfSelection(const QRegularExpression &regex,
+                                          const QString &str)
+{
+    auto cursor = textCursor();
+    auto lines = toPlainText().remove('\r').split('\n');
+    int selectionStart = cursor.selectionStart();
+    int selectionEnd = cursor.selectionEnd();
+    bool cursorAtEnd = cursor.position() == selectionEnd;
+    cursor.setPosition(selectionStart);
+    int lineStart = cursor.blockNumber();
+    cursor.setPosition(selectionEnd);
+    int lineEnd = cursor.blockNumber();
+    QString newText;
+    QTextStream stream(&newText);
+    for (int i = lineStart; i <= lineEnd; ++i) {
+        auto line = lines[i];
+        stream << line.insert(line.indexOf(regex), str);
+        if (i != lineEnd)
+#if QT_VERSION >= 0x50E00
+            stream << Qt::endl;
+#else
+            stream << endl;
+#endif
+    }
+    cursor.movePosition(QTextCursor::Start);
+    cursor.movePosition(QTextCursor::NextBlock, QTextCursor::MoveAnchor,
+                        lineStart);
+    cursor.movePosition(QTextCursor::NextBlock, QTextCursor::KeepAnchor,
+                        lineEnd - lineStart);
+    cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
+    cursor.insertText(newText);
+    int pos = selectionStart + str.length();
+    int pos2 = selectionEnd + str.length() * (lineEnd - lineStart + 1);
+    if (cursorAtEnd) {
+        cursor.setPosition(pos);
+        cursor.setPosition(pos2, QTextCursor::KeepAnchor);
+    } else {
+        cursor.setPosition(pos2);
+        cursor.setPosition(pos, QTextCursor::KeepAnchor);
+    }
+    setTextCursor(cursor);
 }
 
 void TextEditor::highlightCurrentLine()

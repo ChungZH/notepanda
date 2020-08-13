@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 - Use `Segoe UI` font on Microsoft Windows
 - Opening files with Drag and Drop.
+- Auto complete brackets
 
 ### 🦋 Optimization
 
