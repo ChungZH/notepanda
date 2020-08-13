@@ -530,6 +530,7 @@ void MainWindow::documentWasModified()
     if (previewPanel->isEnabled()) {
         previewPanel->reload();
 
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
         const QString fileSuffix =
             plainTextEdit->currentFileName.split('.').last();
 
@@ -537,6 +538,7 @@ void MainWindow::documentWasModified()
             fileSuffix == "mdown")
             previewPanel->setMarkdown(plainTextEdit->toPlainText());
         else
+#endif
             previewPanel->setText(plainTextEdit->toPlainText());
     }
 }
