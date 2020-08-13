@@ -13,6 +13,10 @@ All notable changes to this project will be documented in this file.
 
 - Disable PreviewPanel when not in use
 
+### 🐞 Bug fix
+
+- PreviewPanel didn't work
+
 ## 0.1.4
 
 ### 🌵 Features

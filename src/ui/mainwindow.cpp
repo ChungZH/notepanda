@@ -529,7 +529,15 @@ void MainWindow::documentWasModified()
 
     if (previewPanel->isEnabled()) {
         previewPanel->reload();
-        previewPanel->setSource(plainTextEdit->currentFile);
+
+        const QString fileSuffix =
+            plainTextEdit->currentFileName.split('.').last();
+
+        if (fileSuffix == "md" || fileSuffix == "markdown" ||
+            fileSuffix == "mdown")
+            previewPanel->setMarkdown(plainTextEdit->toPlainText());
+        else
+            previewPanel->setText(plainTextEdit->toPlainText());
     }
 }
 
