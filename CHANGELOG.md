@@ -9,6 +9,10 @@ All notable changes to this project will be documented in this file.
 - Use `Segoe UI` font on Microsoft Windows
 - Opening files with Drag and Drop.
 
+### 🦋 Optimization
+
+- Disable PreviewPanel when not in use
+
 ## 0.1.4
 
 ### 🌵 Features
@@ -37,12 +41,12 @@ All notable changes to this project will be documented in this file.
 - More available syntax highlight themes: `Breeze Dark`, `Default`, `Printing`, `Solarized Dark` and `Solarized  Light`
 - Add normal mode icon
 - Sticky mode
-    - Hide sidebar
-    - Hide line number area
-    - Hide statusbar
-    - Use general font (not monospace)
-    - Smaller window
-    - Custom background color
+  - Hide sidebar
+  - Hide line number area
+  - Hide statusbar
+  - Use general font (not monospace)
+  - Smaller window
+  - Custom background color
 
 ### 🐞 Bug fix
 
@@ -84,12 +88,12 @@ A deb package has also been added.
 - More available syntax highlight themes: `Breeze Dark`, `Default`, `Printing`, `Solarized Dark` and `Solarized  Light`
 - Add normal mode icon
 - Sticky mode
-    - Hide sidebar
-    - Hide line number area
-    - Hide statusbar
-    - Use general font (not monospace)
-    - Smaller window
-    - Custom background color
+  - Hide sidebar
+  - Hide line number area
+  - Hide statusbar
+  - Use general font (not monospace)
+  - Smaller window
+  - Custom background color
 
 ### 🐞 Bug fix
 

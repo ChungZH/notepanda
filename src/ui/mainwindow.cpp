@@ -186,8 +186,12 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
     addDockWidget(Qt::RightDockWidgetArea, DockWidget);
     DockWidget->setVisible(0);
 
-    connect(DockWidget, &QDockWidget::visibilityChanged,
-            [&](bool visible) { actionPreview_panel->setChecked(visible); });
+    previewPanel->setEnabled(0);
+
+    connect(DockWidget, &QDockWidget::visibilityChanged, [&](bool visible) {
+        actionPreview_panel->setChecked(visible);
+        previewPanel->setEnabled(visible);
+    });
 
     // PreferencesWindow START
 
@@ -378,8 +382,10 @@ void MainWindow::setupUi()
     actionPreview_panel =
         new QAction(QIcon(":/icons/preview.svg"), tr("Preview panel"), this);
     actionPreview_panel->setCheckable(true);
-    connect(actionPreview_panel, &QAction::triggered,
-            [&]() { DockWidget->setVisible(!DockWidget->isVisible()); });
+    connect(actionPreview_panel, &QAction::triggered, [&]() {
+        previewPanel->setEnabled(1);
+        DockWidget->setVisible(!DockWidget->isVisible());
+    });
 
     actionAbout = new QAction(QIcon(":/icons/info.svg"), tr("&About"), this);
     connect(actionAbout, &QAction::triggered,
@@ -521,8 +527,10 @@ void MainWindow::documentWasModified()
 {
     setWindowModified(plainTextEdit->document()->isModified());
 
-    previewPanel->reload();
-    previewPanel->setSource(plainTextEdit->currentFile);
+    if (previewPanel->isEnabled()) {
+        previewPanel->reload();
+        previewPanel->setSource(plainTextEdit->currentFile);
+    }
 }
 
 void MainWindow::saveTabData(const int index)
