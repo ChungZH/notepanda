@@ -2,8 +2,6 @@
 
 ###### Notepanda's icon is owned by ChungZH, any unanthorized usage will be blamed.
 
-### **⚠ WARN: Notepanda is now migrating to QtQuick. During this process, there will be no new changes to this repo. If you want to track the latest progress, please go to [#41](https://github.com/ChungZH/notepanda/issues/41)**
-
 # Notepanda
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a226323cc991499b9c324238949d3cb5)](https://app.codacy.com/manual/ChungZH/notepanda?utm_source=github.com&utm_medium=referral&utm_content=ChungZH/notepanda&utm_campaign=Badge_Grade_Dashboard)
