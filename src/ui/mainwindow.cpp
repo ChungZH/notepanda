@@ -74,7 +74,6 @@ MainWindow::MainWindow(ConfigManager *cfManager, QWidget *parent)
     this->addToolBar(Qt::LeftToolBarArea, ToolBar);
 
     normalMode(1);
-    actionNormalmode->setDisabled(1);
 
     /** TODO: TabBar->setMovable(true);
         If move, index will change. So I must adjust `tabData`.
