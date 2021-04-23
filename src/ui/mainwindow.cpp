@@ -500,6 +500,7 @@ void MainWindow::normalMode(bool isFirst)
         ToolBar->addAction(actionAbout);
         ToolBar->addAction(actionSticky_note_mode);
         ToolBar->addAction(actionPreview_panel);
+        actionNormalmode->setDisabled(1);
     }
     actionPreferences->setEnabled(1);
     currentMode = 0;
