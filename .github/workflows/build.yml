@@ -50,7 +50,7 @@ jobs:
         with:
           version: ${{ matrix.qt_version }}
           arch: ${{ matrix.qtarch }}
-          mirror: "http://mirrors.ocf.berkeley.edu/qt/"
+          extra: "-b http://mirrors.ocf.berkeley.edu/qt/"
           cached: ${{ steps.cache-qt.outputs.cache-hit }}
       - name: Install Python 3.7 version
         if: matrix.platform == 'windows-latest'
