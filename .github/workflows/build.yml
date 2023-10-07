@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         qt_version: [5.14.2]
-        platform: [ubuntu-16.04, macos-latest, windows-latest]
+        platform: [ubuntu-20.04, macos-latest, windows-latest]
         arch: [x86, x64]
         include:
           - platform: windows-latest
@@ -22,7 +22,7 @@ jobs:
             qtarch: win64_msvc2017_64
             cmakearch: x64
         exclude:
-          - platform: ubuntu-16.04
+          - platform: ubuntu-20.04
             arch: x86
           - platform: macos-latest
             arch: x86
@@ -30,7 +30,7 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Checking out sources
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: "recursive"
       - name: Install MSVC compiler
@@ -39,32 +39,26 @@ jobs:
           # 14.1 is for vs2017, 14.2 is vs2019, following the upstream vcpkg build from Qv2ray-deps repo
           toolset: 14.2
           arch: ${{ matrix.arch }}          
-      - name: Cache Qt
-        id: cache-qt
-        uses: actions/cache@v1
-        with:
-          path: ../Qt
-          key: QtCache-${{ matrix.platform }}-${{ matrix.arch }}-${{ matrix.qt_version }}
       - name: Installing Qt - ${{ matrix.arch }}
-        uses: jurplel/install-qt-action@v2
+        uses: jurplel/install-qt-action@v3
         with:
           version: ${{ matrix.qt_version }}
           arch: ${{ matrix.qtarch }}
           extra: "-b http://mirrors.ocf.berkeley.edu/qt/"
-          cached: ${{ steps.cache-qt.outputs.cache-hit }}
-      - name: Install Python 3.7 version
+          cache: true
+      - name: Install Python 3.8 version
         if: matrix.platform == 'windows-latest'
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v4
         with:
-          python-version: "3.7"
+          python-version: "3.8"
           architecture: ${{ matrix.arch }}
       - name: Get the version
         id: get_version
         shell: bash
-        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)               
+        run: echo "VERSION=$(echo $GITHUB_REF | cut -d / -f 3)" >> "$GITHUB_OUTPUT"
 # Linux------------------------------------------
       - name: Linux - Install packages
-        if: matrix.platform == 'ubuntu-16.04'
+        if: matrix.platform == 'ubuntu-20.04'
         shell: bash
         env:
           CC: /usr/bin/gcc-9
@@ -72,7 +66,7 @@ jobs:
         run: |
           sudo apt install libgl-dev libx11-dev libxkbcommon-x11-dev ninja-build
       - name: Linux - Build ecm
-        if: matrix.platform == 'ubuntu-16.04'
+        if: matrix.platform == 'ubuntu-20.04'
         shell: bash
         env:
           CC: /usr/bin/gcc-9
@@ -85,7 +79,7 @@ jobs:
           cmake --build . --parallel $(nproc)
           sudo cmake --build . --target install
       - name: Linux - Build SyntaxHighlighting
-        if: matrix.platform == 'ubuntu-16.04'
+        if: matrix.platform == 'ubuntu-20.04'
         shell: bash
         env:
           CC: /usr/bin/gcc-9
@@ -98,7 +92,7 @@ jobs:
           cmake --build . --parallel $(nproc)
           sudo cmake --build . --target install
       - name: Linux - ${{ matrix.qt_version }} - Generate Dependencies and Build
-        if: matrix.platform == 'ubuntu-16.04'
+        if: matrix.platform == 'ubuntu-20.04'
         shell: bash
         env:
           CC: /usr/bin/gcc-9
@@ -110,38 +104,39 @@ jobs:
           cmake --build . --parallel $(nproc)
           cmake --install .
       - name: Linux - ${{ matrix.qt_version }} - Generating AppImage
-        if: matrix.platform == 'ubuntu-16.04'
+        if: matrix.platform == 'ubuntu-20.04'
         shell: bash
         env:
           CC: /usr/bin/gcc-9
           CXX: /usr/bin/g++-9
         run: |
           cd build
-          wget https://github.com/probonopd/linuxdeployqt/releases/download/6/linuxdeployqt-6-x86_64.AppImage
-          chmod +x ./linuxdeployqt-6-x86_64.AppImage
-          ./linuxdeployqt-6-x86_64.AppImage --appimage-extract
-          cd AppDir
-          wget -c https://github.com/darealshinji/AppImageKit-checkrt/releases/download/continuous/AppRun-patched-x86_64 -O AppRun
-          chmod a+x AppRun
-          mkdir -p ./usr/{lib,optional}/
-          wget -c https://github.com/darealshinji/AppImageKit-checkrt/releases/download/continuous/exec-x86_64.so -O ./usr/optional/exec.so
-          mkdir -p ./usr/optional/libstdc++/
-          cp -fv /usr/lib/x86_64-linux-gnu/libstdc++.so.6 ./usr/optional/libstdc++/
-          mkdir -p ./usr/optional/libgcc_s/
-          cp -fv /lib/x86_64-linux-gnu/libgcc_s.so.1 ./usr/optional/libgcc_s/
-          cp -fv /usr/lib/x86_64-linux-gnu/{libssl.so.1.1,libcrypto.so.1.1} ./usr/lib/
-          cd ..
-          squashfs-root/AppRun AppDir/usr/share/applications/notepanda.desktop -appimage -no-strip -always-overwrite
+          # get linuxdeploy and linuxdeploy-plugin-checkrt and make them executable
+          wget -c "https://github.com/darealshinji/linuxdeploy-plugin-checkrt/releases/download/continuous/linuxdeploy-plugin-checkrt.sh"
+          wget -c "https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage"
+          wget -c "https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage"
+          chmod a+x linuxdeploy-x86_64.AppImage linuxdeploy-plugin-checkrt.sh linuxdeploy-plugin-qt-x86_64.AppImage
+
+          # add GCC's libraries to the search path
+          # and call through linuxdeploy using the `--plugin checkrt` option
+          ./linuxdeploy-x86_64.AppImage \
+            --appdir AppDir \
+            --plugin checkrt \
+            --plugin qt \
+            --output appimage \
+            --icon-file ../images/panda.ico \
+            --desktop-file AppDir/usr/share/applications/notepanda.desktop
+
           mv ./Notepanda*.AppImage ./Notepanda.AppImage
       - name: Linux - ${{ matrix.qt_version }} - Uploading artifact
-        if: matrix.platform == 'ubuntu-16.04'
-        uses: actions/upload-artifact@master
+        if: matrix.platform == 'ubuntu-20.04'
+        uses: actions/upload-artifact@v3
         with:
           name: Notepanda-${{ github.sha }}.Linux-${{ matrix.arch }}.qt${{ matrix.qt_version }}.AppImage
           path: build/Notepanda.AppImage
       - name: Linux - ${{ matrix.qt_version }} - Upload binaries to release
         uses: svenstaro/upload-release-action@v1-release
-        if: github.event_name == 'release' && matrix.platform == 'ubuntu-16.04' && matrix.qt_version == '5.14.2'
+        if: github.event_name == 'release' && matrix.platform == 'ubuntu-20.04' && matrix.qt_version == '5.14.2'
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: build/Notepanda.AppImage
@@ -205,7 +200,7 @@ jobs:
           pathTarget: ./release.7z
       - name: Win - ${{ matrix.arch }} - ${{ matrix.qt_version }} - Uploading artifact
         if: matrix.platform == 'windows-latest'
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@v3
         with:
           name: Notepanda-${{ github.sha }}.Windows-${{ matrix.arch }}.qt${{ matrix.qt_version }}.7z
           path: release.7z
@@ -250,7 +245,7 @@ jobs:
           macdeployqt notepanda.app -dmg
       - name: macOS - ${{ matrix.qt_version }} - Uploading Artifact
         if: matrix.platform == 'macos-latest'
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@v3
         with:
           name: Notepanda-${{ github.sha }}.macOS-${{ matrix.arch }}.qt${{ matrix.qt_version }}.dmg
           path: build/notepanda.dmg

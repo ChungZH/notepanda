@@ -12,12 +12,20 @@ jobs:
     name: Check if the workflow has been disabled.
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v4
       - name: Get commit message
         id: get_message
         run: |
-          echo "::set-output name=message::$(git log --format=%B -n 1 ${{ github.event.after }})"
-          echo "message=$(git log --format=%B -n 1 ${{ github.event.after }})" >> $GITHUB_ENV
+          {
+            echo 'message<<EOF'
+            git log --format=%B -n 1 ${{ github.event.after }}
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
+          {
+            echo 'message<<EOF'
+            git log --format=%B -n 1 ${{ github.event.after }}
+            echo EOF
+          } >> "$GITHUB_ENV"
   linux:
     strategy:
         matrix:
@@ -34,7 +42,7 @@ jobs:
           apt-get update
           apt-get install -y git
       - name: Checking out sources
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - name: Install build dependencies
@@ -50,13 +58,13 @@ jobs:
         shell: bash
         id: get_package
         run: |
-          echo ::set-output name=NAME::$(basename build/Notepanda-*.deb)
+          echo "NAME=$(basename build/Notepanda-*.deb)" >> "$GITHUB_OUTPUT"
       - name: Get the version
         id: get_version
         shell: bash
-        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)              
+        run: echo "VERSION=$(echo $GITHUB_REF | cut -d / -f 3)" >> "$GITHUB_OUTPUT"
       - name: Upload artifact
-        uses: actions/upload-artifact@v2-preview
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ steps.get_package.outputs.NAME }}
           path: build/${{ steps.get_package.outputs.NAME }}
