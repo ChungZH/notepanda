@@ -29,15 +29,15 @@ jobs:
       - name: Get the version
         id: get_version
         shell: bash
-        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+        run: echo "VERSION=$(echo $GITHUB_REF | cut -d / -f 3)" >> "$GITHUB_OUTPUT"
       - name: Checking out sources
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: 'recursive'
-      - name: Install Python 3.7 version
-        uses: actions/setup-python@v1
+      - name: Install Python 3.8 version
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.7'
+          python-version: '3.8'
           architecture: ${{ matrix.arch }}
 # =========================================================================================================
       - name: Install MSVC compiler
@@ -45,19 +45,13 @@ jobs:
         with: 
           toolset: 14.2
           arch: ${{ matrix.arch }}
-      - name: Cache Qt
-        id: cache-qt
-        uses: actions/cache@v1
-        with:
-          path: ../Qt
-          key: QtCache-${{ matrix.platform }}-${{ matrix.arch }}-${{ matrix.qt_version }}
       - name: Installing Qt - ${{ matrix.arch }}
-        uses: jurplel/install-qt-action@v2.5.0
+        uses: jurplel/install-qt-action@v3
         with:
           version: ${{ matrix.qt_version }}
           arch: ${{ matrix.qtarch }}
-          mirror: 'http://mirrors.ocf.berkeley.edu/qt/'
-          cached: ${{ steps.cache-qt.outputs.cache-hit }}
+          extra: "-b http://mirrors.ocf.berkeley.edu/qt/"
+          cache: true
 # Windows----------------------------------------------------------------------
 #      - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - Build preparation - Download Dependencies
 #        if: matrix.platform == 'windows-latest'
@@ -108,9 +102,9 @@ jobs:
         shell: bash
         id: get_package
         run: |
-          echo ::set-output name=NAME::$(basename build/Notepanda-*.exe)
+          echo "NAME=$(basename build/Notepanda-*.exe)" >> "$GITHUB_OUTPUT"
       - name: Win-${{ matrix.arch }} - ${{ matrix.qt_version }} - uploading artifact
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ steps.get_package.outputs.NAME }}
           path: build/${{ steps.get_package.outputs.NAME }}
